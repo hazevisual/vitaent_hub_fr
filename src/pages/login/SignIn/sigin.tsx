@@ -20,9 +20,9 @@ const Card = styled(MuiCard)(({ theme }) => ({
     flexDirection: "column",
     width: "100%",
     maxWidth: "460px",
-    minHeight: "min(700px, calc(100vh - 48px))",
-    padding: theme.spacing(4, 4, 3),
-    gap: theme.spacing(2),
+    minHeight: "min(620px, calc(100vh - 48px))",
+    padding: theme.spacing(3, 4, 2.5),
+    gap: theme.spacing(1.5),
     backgroundColor: "#ffffff",
     borderRadius: "24px",
     border: "1px solid rgba(15, 23, 42, 0.08)",
@@ -30,7 +30,7 @@ const Card = styled(MuiCard)(({ theme }) => ({
     fontFamily: "Lato, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
     [theme.breakpoints.down("sm")]: {
         minHeight: "auto",
-        padding: theme.spacing(3),
+        padding: theme.spacing(2.5, 2.5, 2),
         borderRadius: "18px",
     },
     ...theme.applyStyles?.("dark", {
@@ -145,19 +145,18 @@ export default function SignIn() {
                         display: "flex",
                         flexDirection: "column",
                         width: "100%",
-                        flex: 1,
-                        justifyContent: { xs: "flex-start", md: "center" },
-                        gap: { xs: 3, md: 2 },
+                        justifyContent: "flex-start",
+                        gap: 1.5,
                     }}
                 >
-                    <Box sx={{ display: "flex", justifyContent: "center", width: "100%", mt: { xs: 0.5, md: 0 } }}>
+                    <Box sx={{ display: "flex", justifyContent: "center", width: "100%", mt: 0 }}>
                         <img src={signinLogo} alt="Logo" style={{ width: 180 }} />
                     </Box>
-                    <Box sx={{ width: "100%", textAlign: "center", mb: { xs: 1, md: 1.5 } }}>
+                    <Box sx={{ width: "100%", textAlign: "center", mb: 0.5 }}>
                         <Typography variant="h4" align="center" sx={{ fontWeight: 500, letterSpacing: "0.01em", fontSize: { xs: "1.7rem", md: "2rem" } }}>
                             Sign in
                         </Typography>
-                        <Typography variant="body1" align="center" sx={{ color: "text.secondary", mt: 1.5, fontSize: "0.95rem", fontWeight: 400 }}>
+                        <Typography variant="body1" align="center" sx={{ color: "text.secondary", mt: 1, fontSize: "0.95rem", fontWeight: 400 }}>
                             Access Vitaent HUB
                         </Typography>
                     </Box>
@@ -175,7 +174,7 @@ export default function SignIn() {
                         sx={{
                             display: "flex",
                             flexDirection: "column",
-                            gap: 2,
+                            gap: 1.5,
                             width: "100%",
                             maxWidth: "380px",
                             mx: "auto",
@@ -197,7 +196,13 @@ export default function SignIn() {
                                     sx: {
                                         height: "48px",
                                         borderRadius: "12px",
-                                        "& input": { padding: "0 14px", fontWeight: 400 },
+                                        "& input": {
+                                            height: "100%",
+                                            boxSizing: "border-box",
+                                            padding: "12px 14px",
+                                            lineHeight: 1.2,
+                                            fontWeight: 400,
+                                        },
                                     },
                                 }}
                             />
@@ -231,7 +236,13 @@ export default function SignIn() {
                                     sx: {
                                         height: "48px",
                                         borderRadius: "12px",
-                                        "& input": { padding: "0 14px", fontWeight: 400 },
+                                        "& input": {
+                                            height: "100%",
+                                            boxSizing: "border-box",
+                                            padding: "12px 14px",
+                                            lineHeight: 1.2,
+                                            fontWeight: 400,
+                                        },
                                     },
                                 }}
                             />
@@ -245,7 +256,7 @@ export default function SignIn() {
                             sx={{
                                 height: "50px",
                                 borderRadius: "14px",
-                                mt: 2,
+                                mt: 1,
                                 textTransform: "none",
                                 letterSpacing: "0.02em",
                                 fontWeight: 500,
@@ -264,17 +275,17 @@ export default function SignIn() {
                             {mutation.isPending ? "Входим..." : "Войти"}
                         </Button>
 
-                        <Typography variant="caption" align="center" sx={{ color: "text.secondary", mt: 1 }}>
+                        <Typography variant="caption" align="center" sx={{ color: "text.secondary", mt: 0.5 }}>
                             Need help? Contact your administrator.
                         </Typography>
 
-                        <Link component="button" onClick={() => { /* TODO: модал восстановления */ }} variant="body2" sx={{ mx: "auto" }}>
+                        <Link component="button" onClick={() => { /* TODO: модал восстановления */ }} variant="body2" sx={{ mx: "auto", mt: 0.5 }}>
                             Забыли пароль?
                         </Link>
                     </Box>
                 </Box>
 
-                <Divider sx={{ width: "100%" }} />
+                <Divider sx={{ width: "100%", mt: 1 }} />
 
                 <Box sx={{ textAlign: "center", display: "flex", flexDirection: "column", gap: 1 }}>
                     {!!clinic?.brandName && (
