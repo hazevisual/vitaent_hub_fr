@@ -3,7 +3,7 @@ import * as React from "react";
 import { useNavigate, Link as RouterLink } from "react-router-dom";
 import {
     Box, Button, Divider, FormControl, Link, TextField, Typography,
-    Card as MuiCard, Snackbar, Alert, IconButton, InputAdornment
+    Card as MuiCard, Alert, IconButton, InputAdornment
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useForm } from "react-hook-form";
@@ -18,16 +18,19 @@ import { ClinicInfoDto } from "types/Clinic/ClinicInfoDto";
 const Card = styled(MuiCard)(({ theme }) => ({
     display: "flex",
     flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    width: "clamp(300px, 50vw, 460px)",
+    width: "100%",
+    maxWidth: "460px",
     padding: theme.spacing(4),
-    gap: theme.spacing(2),
-    margin: "auto",
+    gap: theme.spacing(2.5),
     backgroundColor: "#FCFCFC",
-    borderRadius: "25px",
+    borderRadius: "20px",
+    border: "1px solid rgba(15, 23, 42, 0.08)",
     boxShadow:
-        "hsla(220, 30%, 5%, 0.05) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.05) 0px 15px 35px -5px",
+        "0px 20px 45px rgba(15, 23, 42, 0.08)",
+    [theme.breakpoints.down("sm")]: {
+        padding: theme.spacing(3),
+        borderRadius: "16px",
+    },
     ...theme.applyStyles?.("dark", {
         boxShadow:
             "hsla(220, 30%, 5%, 0.5) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.08) 0px 15px 35px -5px",
@@ -45,7 +48,6 @@ export default function SignIn() {
     const navigate = useNavigate();
     const { signIn, user } = useAuth();
     const [errorMessage, setErrorMessage] = React.useState("");
-    const [openSnackbar, setOpenSnackbar] = React.useState(false);
     const [showPassword, setShowPassword] = React.useState(false);
 
     const {
@@ -113,31 +115,44 @@ export default function SignIn() {
                     ? e.message
                     : "Не удалось выполнить вход. Проверьте логин и пароль.";
             setErrorMessage(msg);
-            setOpenSnackbar(true);
         },
     });
 
     const onSubmit = (data: FormData) => {
         // защита от двойного сабмита
         if (isSubmitting || mutation.isPending) return;
+        setErrorMessage("");
         mutation.mutate(data);
     };
 
     return (
-        <>
-            <Card variant="outlined" sx={{
-                backgroundColor: clinic?.backgroundColor,
-                color: clinic?.textColor,
-            }}>
+        <Box
+            sx={{
+                minHeight: "100vh",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                px: { xs: 2, sm: 3 },
+                py: { xs: 3, sm: 4 },
+                background: "linear-gradient(180deg, #f8fbff 0%, #eef3fb 100%)",
+            }}
+        >
+            <Card variant="outlined" sx={{ backgroundColor: clinic?.backgroundColor, color: clinic?.textColor }}>
                 <Box sx={{ display: "flex", justifyContent: "center", width: "100%" }}>
                     <img src={signinLogo} alt="Logo" style={{ width: 200 }} />
                 </Box>
-                <Typography variant="h5" align="center">
-                    {clinic?.brandName}
+                <Typography variant="h4" align="center" sx={{ fontWeight: 700 }}>
+                    Sign in
                 </Typography>
-                <Typography variant="h6" align="center" sx={{ opacity: 0.4 }}>
-                    Для входа введите ваш логин и пароль
+                <Typography variant="body1" align="center" sx={{ opacity: 0.7, mt: -1 }}>
+                    Access Vitaent HUB
                 </Typography>
+
+                {!!errorMessage && (
+                    <Alert severity="error" sx={{ width: "100%" }}>
+                        {errorMessage}
+                    </Alert>
+                )}
 
                 <Box
                     component="form"
@@ -148,14 +163,15 @@ export default function SignIn() {
                         flexDirection: "column",
                         gap: 2,
                         width: "100%",
-                        alignItems: "center",
                     }}
                 >
-                    <FormControl>
+                    <FormControl fullWidth>
                         <TextField
                             id="login"
+                            label="Username"
                             placeholder="Ваш логин"
                             autoComplete="username"
+                            autoFocus
                             fullWidth
                             disabled={mutation.isPending}
                             error={!!errors.username}
@@ -163,7 +179,6 @@ export default function SignIn() {
                             {...register("username")}
                             InputProps={{
                                 sx: {
-                                    width: "clamp(280px, 50vw, 357px)",
                                     height: "44px",
                                     borderRadius: "10px",
                                     "& input": { padding: "0 14px" },
@@ -172,9 +187,10 @@ export default function SignIn() {
                         />
                     </FormControl>
 
-                    <FormControl>
+                    <FormControl fullWidth>
                         <TextField
                             id="password"
+                            label="Password"
                             type={showPassword ? "text" : "password"}
                             placeholder="••••••"
                             autoComplete="current-password"
@@ -197,7 +213,6 @@ export default function SignIn() {
                                     </InputAdornment>
                                 ),
                                 sx: {
-                                    width: "clamp(280px, 50vw, 357px)",
                                     height: "44px",
                                     borderRadius: "10px",
                                     "& input": { padding: "0 14px" },
@@ -211,10 +226,14 @@ export default function SignIn() {
                         variant="contained"
                         fullWidth
                         disabled={mutation.isPending || isSubmitting}
-                        sx={{ width: "clamp(280px, 50vw, 357px)", height: "44px", borderRadius: "10px" }}
+                        sx={{ height: "44px", borderRadius: "10px", mt: 0.5 }}
                     >
                         {mutation.isPending ? "Входим..." : "Войти"}
                     </Button>
+
+                    <Typography variant="caption" align="center" sx={{ color: "text.secondary", mt: 0.5 }}>
+                        Need help? Contact your administrator.
+                    </Typography>
 
                     <Link component="button" onClick={() => { /* TODO: модал восстановления */ }} variant="body2">
                         Забыли пароль?
@@ -223,22 +242,17 @@ export default function SignIn() {
 
                 <Divider sx={{ width: "100%" }} />
 
-                <Box sx={{ textAlign: "center" }}>
+                <Box sx={{ textAlign: "center", display: "flex", flexDirection: "column", gap: 1 }}>
+                    {!!clinic?.brandName && (
+                        <Typography variant="body2" sx={{ color: "text.secondary" }}>
+                            {clinic.brandName}
+                        </Typography>
+                    )}
                     <Button component={RouterLink} to="/register" variant="contained">
                         Зарегистрироваться
                     </Button>
                 </Box>
             </Card>
-
-            <Snackbar
-                open={openSnackbar}
-                autoHideDuration={6000}
-                onClose={() => setOpenSnackbar(false)}
-            >
-                <Alert onClose={() => setOpenSnackbar(false)} severity="error" sx={{ width: "100%" }}>
-                    {errorMessage}
-                </Alert>
-            </Snackbar>
-        </>
+        </Box>
     );
 }
