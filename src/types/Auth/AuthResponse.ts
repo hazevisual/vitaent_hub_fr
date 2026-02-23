@@ -1,6 +1,7 @@
 export type AuthResponse = {
     success: boolean;
     token?: string;
+    accessToken?: string;
     refreshToken?: string;
     errorMessage?: string;
     user?: {
@@ -8,4 +9,4 @@ export type AuthResponse = {
         userName: string;
         urlHospital: string;
     };
-}
+};
