@@ -18,7 +18,7 @@ type RetriableConfig = InternalAxiosRequestConfig & { __isRetry?: boolean };
 
 export const api = axios.create({
     baseURL: apiBaseUrl || undefined,
-    withCredentials: true,
+    withCredentials: false,
 });
 
 // Подставляем Authorization
