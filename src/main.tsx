@@ -1,18 +1,34 @@
-// src/main.tsx (или src/index.tsx)
 import React from "react";
 import { createRoot } from "react-dom/client";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { Navigate, RouterProvider, createBrowserRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Paths } from "./paths";
 import SignIn from "./pages/login/SignIn/sigin";
 import SignUp from "./pages/login/SignUp/signup";
-import { AuthProvider } from "@/auth/AuthProvider"; // <= важно: правильный путь
+import { AuthProvider } from "@/auth/AuthProvider";
+import RequireAuth from "@/components/RequireAuth";
+import AppLayout from "@/pages/app/AppLayout";
+import HomePage from "@/pages/app/HomePage";
+import ProfilePage from "@/pages/app/ProfilePage";
 import "./index.css";
 
 const router = createBrowserRouter([
-    { path: Paths.sigin, element: <SignIn /> },     // провайдер будет СВЕРХУ
+    { path: "/", element: <Navigate to={Paths.login} replace /> },
+    { path: Paths.login, element: <SignIn /> },
     { path: Paths.register, element: <SignUp /> },
-    // ... остальные маршруты
+    {
+        element: <RequireAuth />,
+        children: [
+            {
+                path: Paths.app,
+                element: <AppLayout />,
+                children: [
+                    { index: true, element: <HomePage /> },
+                    { path: "profile", element: <ProfilePage /> },
+                ],
+            },
+        ],
+    },
 ]);
 
 const queryClient = new QueryClient();

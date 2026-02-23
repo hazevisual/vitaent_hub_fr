@@ -4,7 +4,7 @@ import { api, setAccessToken } from "./client";
 
 export type AuthRequest = { UserName: string; Password: string };
 
-type MeResponse = {
+export type MeResponse = {
     email?: string;
     userName?: string;
     username?: string;
@@ -26,6 +26,11 @@ function getApiErrorMessage(error: unknown, fallback: string): string {
     return error instanceof Error ? error.message : fallback;
 }
 
+export async function getMe(): Promise<MeResponse> {
+    const response = await api.get<MeResponse>("/api/me");
+    return response.data ?? {};
+}
+
 export async function signIn(payload: AuthRequest): Promise<AuthResponse> {
     try {
         const res = await api.post<{ accessToken: string; expiresIn?: number }>("/api/auth/sign-in", {
@@ -40,14 +45,7 @@ export async function signIn(payload: AuthRequest): Promise<AuthResponse> {
 
         setAccessToken(token);
 
-        let me: MeResponse;
-        try {
-            const meRes = await api.get<MeResponse>("/api/me");
-            me = meRes.data ?? {};
-        } catch {
-            throw new Error("Signed in, but /me failed");
-        }
-
+        const me = await getMe();
         const resolvedUserName = me.email ?? me.userName ?? me.username ?? payload.UserName;
 
         return {
@@ -67,10 +65,6 @@ export async function signIn(payload: AuthRequest): Promise<AuthResponse> {
 
 export async function signOut(): Promise<void> {
     setAccessToken(null);
-}
-
-export async function refreshSession(): Promise<AuthResponse> {
-    throw new Error("Refresh session is not configured for local JWT flow.");
 }
 
 export async function registerUser(payload: RegisterRequest): Promise<AuthResponse> {

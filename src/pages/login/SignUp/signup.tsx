@@ -61,7 +61,7 @@ const SignUp = () => {
                 window.location.href = url;
             } else {
                 // внутри SPA
-                navigate(url || "/dashboard", { replace: true });
+                navigate(url || "/app", { replace: true });
             }
         },
         onError: (error) => {

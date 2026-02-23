@@ -52,7 +52,7 @@ export default function SignIn() {
     const [errorMessage, setErrorMessage] = React.useState("");
     const [showPassword, setShowPassword] = React.useState(false);
     const [isSuccessOpen, setIsSuccessOpen] = React.useState(false);
-    const [signedInUserName, setSignedInUserName] = React.useState("admin@local");
+    const [signedInUserName, setSignedInUserName] = React.useState("vitaent");
 
     const {
         register,
@@ -92,16 +92,8 @@ export default function SignIn() {
 
     // Если уже авторизованы — уводим
     React.useEffect(() => {
-        if (user?.urlHospital) {
-            const url = user.urlHospital.startsWith("http")
-                ? user.urlHospital
-                : "/dashboard";
-            // Для внешнего URL делаем полноценно:
-            if (url.startsWith("http")) {
-                window.location.href = url;
-            } else {
-                navigate(url, { replace: true });
-            }
+        if (user) {
+            navigate("/app", { replace: true });
         }
     }, [user, navigate]);
 
@@ -114,7 +106,7 @@ export default function SignIn() {
             });
         },
         onSuccess: () => {
-            setSignedInUserName(user?.userName ?? "admin@local");
+            setSignedInUserName(user?.userName ?? "vitaent");
             setIsSuccessOpen(true);
         },
         onError: (e: unknown) => {
@@ -316,13 +308,13 @@ export default function SignIn() {
             <Dialog open={isSuccessOpen} onClose={() => setIsSuccessOpen(false)}>
                 <DialogTitle>Успешный вход</DialogTitle>
                 <DialogContent>
-                    <Typography>Вы вошли как: {signedInUserName || "admin@local"}</Typography>
+                    <Typography>Вы вошли как: {signedInUserName || "vitaent"}</Typography>
                 </DialogContent>
                 <DialogActions>
                     <Button
                         onClick={() => {
                             setIsSuccessOpen(false);
-                            navigate("/dashboard");
+                            navigate("/app");
                         }}
                         variant="contained"
                     >

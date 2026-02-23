@@ -1,10 +1,6 @@
 export const Paths = {
-    /*home: '/',*/
-    sigin: '/',
-    register: '/register',
-    quest: '/form',
-    questpatient: '/quest/patientquest',
-    questdoctor: '/quest/doctorquest',
-    welcomePage: '/welcomePage',
-    patientMain: '/main/P/*'
+    login: "/login",
+    register: "/register",
+    app: "/app",
+    profile: "/app/profile",
 } as const;
