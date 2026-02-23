@@ -3,7 +3,7 @@ import * as React from "react";
 import { useNavigate, Link as RouterLink } from "react-router-dom";
 import {
     Box, Button, Divider, FormControl, Link, TextField, Typography,
-    Card as MuiCard, Alert, IconButton, InputAdornment
+    Card as MuiCard, Alert, IconButton, InputAdornment, Dialog, DialogActions, DialogContent, DialogTitle
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useForm } from "react-hook-form";
@@ -51,6 +51,8 @@ export default function SignIn() {
     const { signIn, user } = useAuth();
     const [errorMessage, setErrorMessage] = React.useState("");
     const [showPassword, setShowPassword] = React.useState(false);
+    const [isSuccessOpen, setIsSuccessOpen] = React.useState(false);
+    const [signedInUserName, setSignedInUserName] = React.useState("admin@local");
 
     const {
         register,
@@ -111,6 +113,10 @@ export default function SignIn() {
                 Password: values.password,
             });
         },
+        onSuccess: () => {
+            setSignedInUserName(user?.userName ?? "admin@local");
+            setIsSuccessOpen(true);
+        },
         onError: (e: unknown) => {
             const msg =
                 e instanceof Error
@@ -120,6 +126,12 @@ export default function SignIn() {
         },
     });
 
+    React.useEffect(() => {
+        if (user?.userName) {
+            setSignedInUserName(user.userName);
+        }
+    }, [user]);
+
     const onSubmit = (data: FormData) => {
         // защита от двойного сабмита
         if (isSubmitting || mutation.isPending) return;
@@ -128,6 +140,7 @@ export default function SignIn() {
     };
 
     return (
+        <>
         <Box
             sx={{
                 minHeight: "100vh",
@@ -299,5 +312,24 @@ export default function SignIn() {
                 </Box>
             </Card>
         </Box>
+
+            <Dialog open={isSuccessOpen} onClose={() => setIsSuccessOpen(false)}>
+                <DialogTitle>Успешный вход</DialogTitle>
+                <DialogContent>
+                    <Typography>Вы вошли как: {signedInUserName || "admin@local"}</Typography>
+                </DialogContent>
+                <DialogActions>
+                    <Button
+                        onClick={() => {
+                            setIsSuccessOpen(false);
+                            navigate("/dashboard");
+                        }}
+                        variant="contained"
+                    >
+                        Continue
+                    </Button>
+                </DialogActions>
+            </Dialog>
+        </>
     );
 }
