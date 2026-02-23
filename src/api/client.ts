@@ -1,19 +1,27 @@
-// src/api/client.ts
 import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
 
-/** Держим access-token ТОЛЬКО в памяти */
+/** access-token Р¶РёРІРµС‚ РІ РїР°РјСЏС‚Рё */
 let accessToken: string | null = null;
 export const setAccessToken = (t: string | null) => { accessToken = t; };
 export const getAccessToken = () => accessToken;
 
+const envApiUrl = (import.meta.env.VITE_API_URL as string | undefined)?.trim();
+const normalizedEnvApiUrl = envApiUrl ? envApiUrl.replace(/\/+$/, "") : "";
+const apiBaseUrl = normalizedEnvApiUrl || (import.meta.env.DEV ? "" : "http://localhost:5163");
+
+export const buildApiUrl = (path: string) => {
+    const normalizedPath = path.startsWith("/") ? path : `/${path}`;
+    return `${apiBaseUrl}${normalizedPath}`;
+};
+
 type RetriableConfig = InternalAxiosRequestConfig & { __isRetry?: boolean };
 
 export const api = axios.create({
-    baseURL: "/api",
+    baseURL: apiBaseUrl || undefined,
     withCredentials: true,
 });
 
-// Проставляем Authorization
+// РџРѕРґСЃС‚Р°РІР»СЏРµРј Authorization
 api.interceptors.request.use((config) => {
     if (accessToken) {
         config.headers = config.headers ?? {};
@@ -22,7 +30,7 @@ api.interceptors.request.use((config) => {
     return config;
 });
 
-// ---- Типы и гварды под ASP.NET ProblemDetails ----
+// ---- С‚РёРї Рё guard РґР»СЏ ASP.NET ProblemDetails ----
 type ValidationProblemDetails = {
     title?: string;
     errors?: Record<string, string[]>;
@@ -41,7 +49,7 @@ async function performRefresh(): Promise<string | null> {
     const raw = axios.create({ withCredentials: true });
 
     try {
-        const resp = await raw.post("/api/auth/refresh", {});
+        const resp = await raw.post(buildApiUrl("/api/auth/refresh"), {});
         return resp.data?.token ?? null;
     } catch (err: unknown) {
         const isAx = axios.isAxiosError(err);
@@ -58,7 +66,7 @@ async function performRefresh(): Promise<string | null> {
 
         if (!needsBody) throw err;
 
-        // fallback через localStorage
+        // fallback Р±РµСЂРµРј РёР· localStorage
         const stored =
             localStorage.getItem("vitaent.refreshToken") ??
             localStorage.getItem("refreshToken");
@@ -67,14 +75,14 @@ async function performRefresh(): Promise<string | null> {
 
         try {
             const objResp = await raw.post(
-                "/api/auth/refresh",
+                buildApiUrl("/api/auth/refresh"),
                 { refreshToken: stored },
                 { headers: { "Content-Type": "application/json" } }
             );
             return objResp.data?.token ?? null;
         } catch {
             const strResp = await raw.post(
-                "/api/auth/refresh",
+                buildApiUrl("/api/auth/refresh"),
                 JSON.stringify(stored),
                 { headers: { "Content-Type": "application/json" } }
             );

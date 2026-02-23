@@ -1,7 +1,14 @@
+import axios from "axios";
 import type { AuthResponse } from "types/Auth/AuthResponse";
 import { api, setAccessToken } from "./client";
 
 export type AuthRequest = { UserName: string; Password: string };
+
+type MeResponse = {
+    email?: string;
+    userName?: string;
+    username?: string;
+};
 
 export type RegisterRequest = {
     login: string;
@@ -10,29 +17,52 @@ export type RegisterRequest = {
     hospitalId?: number;
 };
 
-export async function signIn(payload: AuthRequest): Promise<AuthResponse> {
-    const res = await api.post<{ accessToken: string }>("/auth/sign-in", {
-        username: payload.UserName,
-        password: payload.Password,
-    });
-
-    const token = res.data?.accessToken;
-    if (!token) {
-        throw new Error("Ошибка авторизации");
+function getApiErrorMessage(error: unknown, fallback: string): string {
+    if (axios.isAxiosError(error)) {
+        const data = error.response?.data as { message?: string; title?: string } | undefined;
+        return data?.message ?? data?.title ?? fallback;
     }
 
-    setAccessToken(token);
+    return error instanceof Error ? error.message : fallback;
+}
 
-    return {
-        success: true,
-        token,
-        accessToken: token,
-        user: {
-            userId: 1,
-            userName: payload.UserName,
-            urlHospital: "",
-        },
-    };
+export async function signIn(payload: AuthRequest): Promise<AuthResponse> {
+    try {
+        const res = await api.post<{ accessToken: string; expiresIn?: number }>("/api/auth/sign-in", {
+            username: payload.UserName,
+            password: payload.Password,
+        });
+
+        const token = res.data?.accessToken;
+        if (!token) {
+            throw new Error("Ошибка авторизации");
+        }
+
+        setAccessToken(token);
+
+        let me: MeResponse;
+        try {
+            const meRes = await api.get<MeResponse>("/api/me");
+            me = meRes.data ?? {};
+        } catch {
+            throw new Error("Signed in, but /me failed");
+        }
+
+        const resolvedUserName = me.email ?? me.userName ?? me.username ?? payload.UserName;
+
+        return {
+            success: true,
+            token,
+            accessToken: token,
+            user: {
+                userId: 1,
+                userName: resolvedUserName,
+                urlHospital: "",
+            },
+        };
+    } catch (error: unknown) {
+        throw new Error(getApiErrorMessage(error, "Не удалось выполнить вход. Проверьте логин и пароль."));
+    }
 }
 
 export async function signOut(): Promise<void> {
