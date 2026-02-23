@@ -83,24 +83,27 @@ if (app.Environment.IsDevelopment())
         }
     }
 
-    const string adminUsername = "admin@local";
-    if (!await db.Users.AnyAsync(u => u.Username == adminUsername))
+    const string seededUsername = "vitaent";
+    const string seededPassword = "vitaent";
+
+    var seededUser = await db.Users.FirstOrDefaultAsync(u => u.Username == seededUsername);
+    if (seededUser is null)
     {
-        logger.LogInformation("Seeding default admin user: {Username}", adminUsername);
+        logger.LogInformation("Seeding default user: {Username}", seededUsername);
         db.Users.Add(new User
         {
             Id = Guid.NewGuid(),
-            Username = adminUsername,
-            PasswordHash = passwordHasher.HashPassword("Pass123!")
+            Username = seededUsername,
+            PasswordHash = passwordHasher.HashPassword(seededPassword)
         });
-
-        await db.SaveChangesAsync();
-        logger.LogInformation("Default admin user seeded.");
     }
     else
     {
-        logger.LogInformation("Default admin user already exists.");
+        logger.LogInformation("Default user exists. Updating password for: {Username}", seededUsername);
+        seededUser.PasswordHash = passwordHasher.HashPassword(seededPassword);
     }
+
+    await db.SaveChangesAsync();
 
     app.UseSwagger();
     app.UseSwaggerUI();

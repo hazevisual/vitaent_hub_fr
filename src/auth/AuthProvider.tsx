@@ -1,11 +1,10 @@
-// src/auth/AuthProvider.tsx
 import * as React from "react";
 import { createContext, useContext, useEffect, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import type { AuthResponse } from "types/Auth/AuthResponse";
-import { refreshSession, signIn as apiSignIn, signOut as apiSignOut, type AuthRequest } from "@/api/auth";
+import { getMe, signIn as apiSignIn, signOut as apiSignOut, type AuthRequest } from "@/api/auth";
+import { getAccessToken, setAccessToken } from "@/api/client";
 
-/** Пример пользовательского типа; подгоните под ваш AuthResponse.user */
 type User = AuthResponse["user"] | null;
 
 type AuthContextShape = {
@@ -28,13 +27,25 @@ export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
     const [isLoading, setIsLoading] = useState(true);
     const qc = useQueryClient();
 
-    // Попытка авто-входа с refresh-cookie при первом рендере
     useEffect(() => {
         (async () => {
+            const token = getAccessToken();
+            if (!token) {
+                setUser(null);
+                setIsLoading(false);
+                return;
+            }
+
             try {
-                const data = await refreshSession();
-                setUser(data.user ?? null);
+                const me = await getMe();
+                const resolvedUserName = me.email ?? me.userName ?? me.username ?? "vitaent";
+                setUser({
+                    userId: 1,
+                    userName: resolvedUserName,
+                    urlHospital: "",
+                });
             } catch {
+                setAccessToken(null);
                 setUser(null);
             } finally {
                 setIsLoading(false);
@@ -45,7 +56,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
     const signIn = async (p: AuthRequest) => {
         const data = await apiSignIn(p);
         setUser(data.user ?? null);
-        await qc.invalidateQueries(); // при необходимости обновить кэш
+        await qc.invalidateQueries();
     };
 
     const signOut = async () => {
