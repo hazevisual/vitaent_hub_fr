@@ -1,4 +1,5 @@
 import { Box, Typography } from "@mui/material";
+import { useMemo, useState } from "react";
 import PageContainer from "@/components/ui/PageContainer";
 import SoftCard from "@/components/ui/SoftCard";
 
@@ -33,6 +34,16 @@ const weekDays = Array.from({ length: 7 }).map((_, index) => {
 });
 
 export default function WeekDayPage() {
+  const [selectedDayId, setSelectedDayId] = useState<string | null>(null);
+
+  const selectedOrCurrentDayId = useMemo(() => {
+    if (selectedDayId) {
+      return selectedDayId;
+    }
+
+    return weekDays.find((day) => day.isCurrent)?.id ?? weekDays[0]?.id ?? null;
+  }, [selectedDayId]);
+
   return (
     <PageContainer>
       <Box
@@ -61,41 +72,56 @@ export default function WeekDayPage() {
               gap: 3,
             }}
           >
-            {weekDays.map((day) => (
-              <Box
-                key={day.id}
-                sx={{
-                  minWidth: 0,
-                  minHeight: { xs: 240, lg: 300, xl: 340 },
-                  borderRadius: "12px",
-                  border: day.isCurrent ? "1px solid #2D6AE3" : "1px solid #E5E5E7",
-                  bgcolor: day.isCurrent ? "#2D6AE3" : "#FFFFFF",
-                  color: day.isCurrent ? "#FFFFFF" : "#000000",
-                  p: 2,
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "space-between",
-                  transition: "transform 200ms ease, border-color 200ms ease, box-shadow 200ms ease",
-                  boxShadow: "none",
-                  "&:hover": {
-                    transform: "translateY(-10px)",
-                    borderColor: day.isCurrent ? "#2D6AE3" : "#C9C9CB",
-                    boxShadow: "0 4px 12px rgba(0,0,0,0.06)",
-                  },
-                }}
-              >
-                <Box>
-                  <Typography sx={{ fontSize: "1.35rem", lineHeight: 1.1, fontWeight: 600 }}>{day.dateNumber}</Typography>
-                  <Typography sx={{ mt: 0.75, color: day.isCurrent ? "rgba(255,255,255,0.85)" : "#6B6B6B", fontSize: "0.78rem" }}>{day.subDate}</Typography>
+            {weekDays.map((day) => {
+              const isSelected = day.id === selectedOrCurrentDayId;
+              const isBlueCurrent = day.isCurrent;
+              const isNeutralSelected = isSelected && !day.isCurrent;
+
+              return (
+                <Box
+                  key={day.id}
+                  onClick={() => setSelectedDayId(day.id)}
+                  sx={{
+                    minWidth: 0,
+                    minHeight: { xs: 240, lg: 300, xl: 340 },
+                    borderRadius: "12px",
+                    border: isBlueCurrent ? "1px solid #2D6AE3" : isNeutralSelected ? "1px solid #C9C9CB" : "1px solid #E5E5E7",
+                    bgcolor: isBlueCurrent ? "#2D6AE3" : isNeutralSelected ? "#F5F5F7" : "#FFFFFF",
+                    color: isBlueCurrent ? "#FFFFFF" : "#000000",
+                    p: 2,
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    cursor: "pointer",
+                    transition: "transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease",
+                    boxShadow: "none",
+                    "&:hover": {
+                      transform: "translateY(-10px)",
+                      borderColor: isBlueCurrent ? "#2D6AE3" : "#C9C9CB",
+                      boxShadow: "0 6px 14px rgba(0, 0, 0, 0.08)",
+                    },
+                    "&:active": {
+                      transform: "translateY(-4px)",
+                    },
+                  }}
+                >
+                  <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 1 }}>
+                    {isBlueCurrent && (
+                      <Typography sx={{ fontSize: "0.72rem", lineHeight: 1, color: "rgba(255,255,255,0.88)", textAlign: "center" }}>Текущий день</Typography>
+                    )}
+                    <Typography sx={{ fontSize: "1.35rem", lineHeight: 1.1, fontWeight: 600, textAlign: "center" }}>{day.dateNumber}</Typography>
+                    <Typography sx={{ color: isBlueCurrent ? "rgba(255,255,255,0.9)" : "#6B6B6B", fontSize: "0.78rem", textAlign: "center" }}>{day.subDate}</Typography>
+                  </Box>
+
+                  <Typography sx={{ fontSize: "1rem", fontWeight: 500, textAlign: "center", color: isBlueCurrent ? "#FFFFFF" : "#000000" }}>{day.label}</Typography>
+
+                  <Typography sx={{ fontSize: "0.9rem", color: isBlueCurrent ? "#FFFFFF" : "#6B6B6B", textAlign: "center" }}>
+                    Заполнено {day.completion}%
+                  </Typography>
                 </Box>
-
-                <Typography sx={{ fontSize: "1rem", fontWeight: 500, textAlign: "center" }}>{day.label}</Typography>
-
-                <Typography sx={{ fontSize: "0.9rem", color: day.isCurrent ? "rgba(255,255,255,0.92)" : "#6B6B6B", textAlign: "left" }}>
-                  Заполнено {day.completion}%
-                </Typography>
-              </Box>
-            ))}
+              );
+            })}
           </Box>
         </SoftCard>
       </Box>
