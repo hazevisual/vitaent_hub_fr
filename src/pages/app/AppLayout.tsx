@@ -173,11 +173,11 @@ export default function AppLayout() {
       <Box
         component="main"
         sx={{
-          flexGrow: 1,
+          flex: 1,
+          minWidth: 0,
           width: "100%",
-          px: { xs: 0.5, sm: 1.25, md: 2 },
           pb: { xs: 1.5, md: 2.5 },
-          overflowX: "hidden",
+          overflowX: "clip",
         }}
       >
         <Toolbar sx={{ minHeight: { xs: 68, md: 74 } }} />
