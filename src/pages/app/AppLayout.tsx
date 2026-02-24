@@ -11,13 +11,13 @@ import {
   ListItemButton,
   ListItemText,
   Toolbar,
-  Typography,
   useMediaQuery,
 } from "@mui/material";
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
 import FavoriteBorderRoundedIcon from "@mui/icons-material/FavoriteBorderRounded";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
+import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
 import MedicationRoundedIcon from "@mui/icons-material/MedicationRounded";
 import BedtimeRoundedIcon from "@mui/icons-material/BedtimeRounded";
 import MoodRoundedIcon from "@mui/icons-material/MoodRounded";
@@ -30,6 +30,26 @@ const drawerWidth = 248;
 const appBarOffset = { xs: 68, md: 74 };
 const contentColumnMaxWidth = 1920;
 
+function VitaentLogo() {
+  return (
+    <Box sx={{ display: "inline-flex", alignItems: "center", minWidth: 0 }} aria-label="Vitaent logo">
+      <Box
+        component="svg"
+        viewBox="0 0 124 24"
+        role="img"
+        aria-hidden="true"
+        sx={{ height: 24, width: "auto", display: "block" }}
+      >
+        <rect x="1" y="1" width="22" height="22" rx="7" fill="none" stroke="currentColor" strokeWidth="2" />
+        <path d="M7 13h4l2-4 2 8 2-4h3" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+        <text x="30" y="16" fontFamily="Inter, Segoe UI, Roboto, sans-serif" fontSize="13" fontWeight="600" fill="currentColor">
+          Vitaent
+        </text>
+      </Box>
+    </Box>
+  );
+}
+
 const navItems = [
   { label: "Главная", to: "/app", icon: <HomeRoundedIcon fontSize="small" /> },
   { label: "Профиль", to: "/app/profile", icon: <PersonRoundedIcon fontSize="small" /> },
@@ -41,7 +61,7 @@ const navItems = [
 ];
 
 export default function AppLayout() {
-  const { user, signOut } = useAuth();
+  const { signOut } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const theme = useTheme();
@@ -75,15 +95,30 @@ export default function AppLayout() {
             to={item.to}
             selected={location.pathname === item.to || location.pathname.startsWith(`${item.to}/`)}
             onClick={handleNavClick}
-            sx={{ gap: 1.4, py: 1.1, px: 1.4, color: "text.secondary" }}
+            sx={{
+              gap: 1.4,
+              py: 1.1,
+              px: 1.4,
+              color: "text.secondary",
+              "& .MuiListItemText-primary": {
+                color: "text.secondary",
+              },
+              "& .nav-icon": {
+                color: "text.secondary",
+              },
+              "&.Mui-selected .MuiListItemText-primary, &.Mui-selected .nav-icon": {
+                color: "primary.main",
+              },
+            }}
           >
-            {item.icon}
+            <Box className="nav-icon" sx={{ display: "inline-flex", alignItems: "center" }}>
+              {item.icon}
+            </Box>
             <ListItemText
               primary={item.label}
               primaryTypographyProps={{
                 fontSize: 14,
                 fontWeight: 600,
-                color: location.pathname === item.to || location.pathname.startsWith(`${item.to}/`) ? "text.primary" : "text.secondary",
               }}
             />
           </ListItemButton>
@@ -113,33 +148,35 @@ export default function AppLayout() {
               </IconButton>
             )}
 
-            <Box sx={{ display: "flex", alignItems: "center", gap: 1.2 }}>
-              <Box
-                sx={{
-                  width: 32,
-                  height: 32,
-                  borderRadius: "50%",
-                  bgcolor: "rgba(140, 167, 220, 0.18)",
-                  color: "primary.dark",
-                  display: "grid",
-                  placeItems: "center",
-                }}
-              >
-                <FavoriteBorderRoundedIcon sx={{ fontSize: 18 }} />
-              </Box>
-              <Typography variant="h6" sx={{ fontWeight: 700, fontSize: { xs: "1rem", sm: "1.1rem" } }}>
-                Vitaent
-              </Typography>
+            <Box sx={{ color: "primary.main" }}>
+              <VitaentLogo />
             </Box>
 
             <Box sx={{ display: "flex", alignItems: "center", gap: { xs: 0.75, sm: 1.5 }, ml: "auto" }}>
-              <Typography
-                variant="body2"
-                sx={{ color: "text.secondary", maxWidth: { xs: 110, sm: 200 }, textOverflow: "ellipsis", overflow: "hidden" }}
+              <IconButton aria-label="Profile" size="small">
+                <PersonRoundedIcon fontSize="small" />
+              </IconButton>
+              <IconButton aria-label="Settings" size="small">
+                <SettingsRoundedIcon fontSize="small" />
+              </IconButton>
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={handleSignOut}
+                sx={{
+                  minWidth: 0,
+                  px: 1.75,
+                  height: 34,
+                  borderWidth: 1,
+                  borderColor: "primary.main",
+                  color: "primary.main",
+                  "&:hover": {
+                    borderColor: "primary.main",
+                    bgcolor: "primary.main",
+                    color: "primary.contrastText",
+                  },
+                }}
               >
-                {user?.userName ?? "vitaent"}
-              </Typography>
-              <Button variant="text" color="inherit" onClick={handleSignOut} sx={{ color: "text.secondary", minWidth: 0, px: 1 }}>
                 Выйти
               </Button>
             </Box>
