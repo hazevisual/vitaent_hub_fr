@@ -20,6 +20,7 @@ import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import MedicationRoundedIcon from "@mui/icons-material/MedicationRounded";
 import BedtimeRoundedIcon from "@mui/icons-material/BedtimeRounded";
+import MoodRoundedIcon from "@mui/icons-material/MoodRounded";
 import { useTheme } from "@mui/material/styles";
 import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/auth/AuthProvider";
@@ -32,6 +33,7 @@ const navItems = [
   { label: "Главная", to: "/app", icon: <HomeRoundedIcon fontSize="small" /> },
   { label: "Профиль", to: "/app/profile", icon: <PersonRoundedIcon fontSize="small" /> },
   { label: "Режим дня / Сон", to: "/app/sleep", icon: <BedtimeRoundedIcon fontSize="small" /> },
+  { label: "Эмоции", to: "/emotions", icon: <MoodRoundedIcon fontSize="small" /> },
   { label: "Лекарства", to: "/app/medicines", icon: <MedicationRoundedIcon fontSize="small" /> },
 ];
 
