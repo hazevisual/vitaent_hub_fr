@@ -59,9 +59,12 @@ function SectionList({ title, items, isLoading }: SectionListProps) {
 
 const textOverflowScrollSx = {
   minWidth: 0,
-  maxHeight: { xs: "none", md: "calc(100vh - 260px)" },
+  width: "100%",
+  flex: 1,
+  maxHeight: { xs: "none", md: "calc(100vh - 320px)" },
   overflowY: { xs: "visible", md: "auto" },
-  pr: { md: 0.75 },
+  pr: { md: 0.25 },
+  scrollbarGutter: { md: "stable" },
   scrollbarWidth: "thin",
   scrollbarColor: "rgba(23, 23, 23, 0.25) transparent",
   "&::-webkit-scrollbar": {
@@ -137,43 +140,43 @@ export default function DiseasePage() {
             alignItems: "start",
           }}
         >
-          <Box sx={{ minWidth: 0 }}>
+          <Box sx={{ minWidth: 0, display: "flex", flexDirection: "column", gap: 3, height: "100%" }}>
+            <Stack
+              direction={{ xs: "column", sm: "row" }}
+              spacing={1.5}
+              justifyContent="space-between"
+              alignItems={{ xs: "flex-start", sm: "center" }}
+              sx={{ minWidth: 0, flexShrink: 0 }}
+            >
+              <Box sx={{ minWidth: 0 }}>
+                {diseaseQuery.isLoading ? (
+                  <>
+                    <Skeleton variant="text" width={320} height={42} />
+                    <Skeleton variant="text" width={180} height={28} />
+                  </>
+                ) : (
+                  <>
+                    <Typography variant="h5" sx={{ fontWeight: 700, overflowWrap: "anywhere" }}>
+                      {diseaseQuery.data?.name ?? "Карточка заболевания"}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{ mt: 0.75, overflowWrap: "anywhere", wordBreak: "break-word" }}
+                    >
+                      {diseaseQuery.data?.code ?? "Код не указан"}
+                    </Typography>
+                  </>
+                )}
+              </Box>
+              <Button variant="contained" sx={{ borderRadius: "10px", boxShadow: "none", flexShrink: 0 }}>
+                Редактировать
+              </Button>
+            </Stack>
+
+            <Divider />
+
             <Stack spacing={3.5} sx={textOverflowScrollSx}>
-              <Stack
-                direction={{ xs: "column", sm: "row" }}
-                spacing={1.5}
-                justifyContent="space-between"
-                alignItems={{ xs: "flex-start", sm: "center" }}
-                sx={{ minWidth: 0 }}
-              >
-                <Box sx={{ minWidth: 0 }}>
-                  {diseaseQuery.isLoading ? (
-                    <>
-                      <Skeleton variant="text" width={320} height={42} />
-                      <Skeleton variant="text" width={180} height={28} />
-                    </>
-                  ) : (
-                    <>
-                      <Typography variant="h5" sx={{ fontWeight: 700, overflowWrap: "anywhere" }}>
-                        {diseaseQuery.data?.name ?? "Карточка заболевания"}
-                      </Typography>
-                      <Typography
-                        variant="body2"
-                        color="text.secondary"
-                        sx={{ mt: 0.75, overflowWrap: "anywhere", wordBreak: "break-word" }}
-                      >
-                        {diseaseQuery.data?.code ?? "Код не указан"}
-                      </Typography>
-                    </>
-                  )}
-                </Box>
-                <Button variant="contained" sx={{ borderRadius: "10px", boxShadow: "none", flexShrink: 0 }}>
-                  Редактировать
-                </Button>
-              </Stack>
-
-              <Divider />
-
               <Stack spacing={1.5} sx={{ minWidth: 0 }}>
                 <Typography variant="h6" sx={{ fontSize: "1.05rem", fontWeight: 600 }}>
                   Описание
