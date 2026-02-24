@@ -6,5 +6,5 @@ export const Paths = {
     sleep: "/app/sleep",
     medicines: "/app/medicines",
     medicinesAdd: "/app/medicines/add",
-    weekDays: "/app/week-days",
+    weekDays: "/app/calendar-week",
 } as const;
