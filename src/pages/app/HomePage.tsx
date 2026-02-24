@@ -134,15 +134,16 @@ export default function HomePage() {
       <Box
         sx={{
           display: "grid",
-          gridTemplateColumns: { xs: "1fr", md: "1fr 1fr", lg: "2.2fr 1fr" },
-          gap: { xs: 1.5, sm: 2, md: 2.25, lg: 2.5 },
+          gridTemplateColumns: "repeat(12, minmax(0, 1fr))",
+          gap: { xs: "16px", sm: "24px", lg: "32px" },
         }}
       >
         <Box
           sx={{
+            gridColumn: { xs: "1 / -1", lg: "1 / span 8" },
             display: "grid",
-            gap: { xs: 1.5, sm: 2, md: 2.25, lg: 2.5 },
-            gridTemplateColumns: { xs: "1fr", sm: "1fr", md: "1fr", xl: "1fr 1.1fr" },
+            gap: { xs: "16px", sm: "24px", lg: "32px" },
+            gridTemplateColumns: { xs: "1fr", md: "repeat(2, minmax(0, 1fr))" },
           }}
         >
           <SoftCard title="Daily completion" sx={{ minHeight: { xs: 250, sm: 265, md: 280 } }}>
@@ -236,7 +237,13 @@ export default function HomePage() {
           </SoftCard>
         </Box>
 
-        <SoftCard title="Summary" sx={{ minHeight: { xs: 255, sm: 270, md: 280 } }}>
+        <SoftCard
+          title="Summary"
+          sx={{
+            gridColumn: { xs: "1 / -1", lg: "9 / span 4" },
+            minHeight: { xs: 255, sm: 270, md: 280 },
+          }}
+        >
           {renderStateBody({
             state: summaryState,
             emptyText: "No symptoms recorded",
@@ -281,14 +288,15 @@ export default function HomePage() {
 
       <Box
         sx={{
-          mt: { xs: 1.5, sm: 2, md: 2.25, lg: 2.5 },
+          mt: { xs: "16px", sm: "24px", lg: "32px" },
           display: "grid",
-          gridTemplateColumns: { xs: "1fr", md: "1fr 1fr", lg: "1.8fr 1.2fr" },
-          gap: { xs: 1.5, sm: 2, md: 2.25, lg: 2.5 },
+          gridTemplateColumns: "repeat(12, minmax(0, 1fr))",
+          gap: { xs: "16px", sm: "24px", lg: "32px" },
         }}
       >
         <SoftCard
           sx={{
+            gridColumn: { xs: "1 / -1", md: "1 / span 7" },
             minHeight: { xs: 235, sm: 250, md: 255 },
             display: "flex",
             alignItems: "center",
@@ -333,7 +341,14 @@ export default function HomePage() {
           })}
         </SoftCard>
 
-        <SoftCard sx={{ minHeight: { xs: 235, sm: 250, md: 255 }, display: "grid", placeItems: "center" }}>
+        <SoftCard
+          sx={{
+            gridColumn: { xs: "1 / -1", md: "8 / span 5" },
+            minHeight: { xs: 235, sm: 250, md: 255 },
+            display: "grid",
+            placeItems: "center",
+          }}
+        >
           {renderStateBody({
             state: appointmentState,
             emptyText: "No upcoming appointments",
