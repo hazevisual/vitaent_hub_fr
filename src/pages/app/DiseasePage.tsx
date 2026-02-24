@@ -71,13 +71,12 @@ export default function DiseasePage() {
     <PageContainer>
       <Box
         sx={{
+          boxSizing: "border-box",
           width: "100%",
-          maxWidth: 1560,
-          mx: "auto",
-          pt: { xs: 1, md: 2 },
-          pb: { xs: 2, md: 3 },
+          minHeight: 0,
           minWidth: 0,
-          overflowX: "clip",
+          display: "flex",
+          flexDirection: "column",
         }}
       >
         <SoftCard
@@ -89,13 +88,14 @@ export default function DiseasePage() {
           contentSx={{
             gap: { xs: 2, md: 3 },
             minWidth: 0,
+            minHeight: 0,
           }}
         >
           <Box sx={{ minWidth: 0 }}>
             <Typography variant="h4" sx={{ fontSize: { xs: "1.5rem", md: "1.8rem" }, fontWeight: 600, mb: 0.75 }}>
               {disease.name}
             </Typography>
-            <Typography variant="body2" sx={{ color: "text.secondary" }}>
+            <Typography variant="body2" sx={{ color: "text.secondary", overflowWrap: "anywhere" }}>
               Код: {disease.code}
             </Typography>
           </Box>
@@ -172,7 +172,7 @@ export default function DiseasePage() {
                 ))}
               </Box>
 
-              <Typography variant="caption" sx={{ color: "text.secondary" }}>
+              <Typography variant="caption" sx={{ color: "text.secondary", overflowWrap: "anywhere" }}>
                 Последнее обновление: {new Date(updatedAt).toLocaleDateString("ru-RU")}
               </Typography>
             </Box>
