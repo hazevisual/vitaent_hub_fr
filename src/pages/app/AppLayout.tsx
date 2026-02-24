@@ -18,6 +18,7 @@ import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
 import FavoriteBorderRoundedIcon from "@mui/icons-material/FavoriteBorderRounded";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
+import MedicationRoundedIcon from "@mui/icons-material/MedicationRounded";
 import { useTheme } from "@mui/material/styles";
 import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/auth/AuthProvider";
@@ -27,6 +28,7 @@ const drawerWidth = 248;
 const navItems = [
   { label: "Главная", to: "/app", icon: <HomeRoundedIcon fontSize="small" /> },
   { label: "Профиль", to: "/app/profile", icon: <PersonRoundedIcon fontSize="small" /> },
+  { label: "Лекарства", to: "/app/medicines/add", icon: <MedicationRoundedIcon fontSize="small" /> },
 ];
 
 export default function AppLayout() {
