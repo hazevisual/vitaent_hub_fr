@@ -5,6 +5,7 @@ import {
   Button,
   Chip,
   Divider,
+  Grid,
   IconButton,
   List,
   ListItemButton,
@@ -61,7 +62,7 @@ export default function MedicinesHomePage() {
   return (
     <PageContainer>
       <Stack spacing={3} sx={{ width: "100%" }}>
-        <Box>
+        <Box sx={{ mb: { xs: 0.5, md: 1 } }}>
           <Typography variant="h4" sx={{ fontSize: { xs: "1.4rem", md: "1.7rem" }, fontWeight: 700 }}>
             Лекарства
           </Typography>
@@ -70,25 +71,19 @@ export default function MedicinesHomePage() {
           </Typography>
         </Box>
 
-        <Box
-          sx={{
-            display: "grid",
-            gridTemplateColumns: { xs: "1fr", md: "1.2fr 1fr", xl: "1.1fr 1fr 1fr" },
-            gap: 3,
-            alignItems: "start",
-          }}
-        >
-          <SoftCard title="Расписание приёма" sx={{ minHeight: 500 }}>
-            <Stack spacing={2}>
+        <Grid container spacing={3} alignItems="stretch">
+          <Grid size={{ xs: 12, md: 4 }}>
+            <SoftCard title="Расписание приёма" sx={{ minHeight: { xs: "auto", lg: 520 } }}>
+              <Stack spacing={2.25}>
               {slots.map((slot) => (
-                <Box key={slot.id} sx={{ p: 1.5, borderRadius: 3, bgcolor: "rgba(140, 167, 220, 0.1)" }}>
-                  <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 1 }}>
+                <Box key={slot.id} sx={{ px: 2, py: 1.75, borderRadius: 3, bgcolor: "rgba(140, 167, 220, 0.1)" }}>
+                  <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 1.1, pr: 0.5 }}>
                     <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
                       {slot.time}
                     </Typography>
-                    <Chip size="small" label={`${slot.medications.length} шт`} />
+                    <Chip size="small" label={`${slot.medications.length} шт`} sx={{ mr: 0.5 }} />
                   </Stack>
-                  <Stack spacing={0.75}>
+                  <Stack spacing={1}>
                     {slot.medications.map((name) => (
                       <Typography key={`${slot.id}-${name}`} variant="body2" color="text.secondary">
                         • {name}
@@ -97,49 +92,71 @@ export default function MedicinesHomePage() {
                   </Stack>
                 </Box>
               ))}
-              <Stack direction={{ xs: "column", sm: "row" }} spacing={1.25} sx={{ pt: 1 }}>
-                <Button variant="contained">Добавить лекарства</Button>
-                <Button variant="outlined">Добавить временной слот</Button>
+                <Stack direction={{ xs: "column", sm: "row" }} spacing={1.5} sx={{ pt: 1.25, mt: "auto" }}>
+                  <Button variant="contained">Добавить лекарства</Button>
+                  <Button variant="outlined">Добавить временной слот</Button>
+                </Stack>
               </Stack>
-            </Stack>
-          </SoftCard>
+            </SoftCard>
+          </Grid>
 
-          <SoftCard title="Лекарства" sx={{ minHeight: 500 }}>
-            <Stack spacing={2} sx={{ minHeight: 0, flex: 1 }}>
-              <TextField
-                value={query}
-                onChange={(event) => setQuery(event.target.value)}
-                placeholder="Найти препарат"
-                InputProps={{
-                  startAdornment: <SearchRoundedIcon sx={{ color: "text.secondary", mr: 1 }} fontSize="small" />,
-                }}
-                fullWidth
-              />
+          <Grid size={{ xs: 12, md: 4 }}>
+            <SoftCard title="Лекарства" sx={{ minHeight: { xs: "auto", lg: 520 } }}>
+              <Stack spacing={2.25} sx={{ minHeight: 0, flex: 1 }}>
+                <TextField
+                  value={query}
+                  onChange={(event) => setQuery(event.target.value)}
+                  placeholder="Найти препарат"
+                  InputProps={{
+                    startAdornment: <SearchRoundedIcon sx={{ color: "text.secondary", mr: 1 }} fontSize="small" />,
+                  }}
+                  fullWidth
+                />
 
-              <List disablePadding sx={{ overflowY: "auto", flex: 1, minHeight: 260 }}>
-                {filtered.map((item) => (
-                  <ListItemButton
-                    key={item.id}
-                    selected={item.id === selectedMedication.id}
-                    onClick={() => setSelectedId(item.id)}
-                    sx={{ mb: 0.8, px: 1.2, py: 1.1 }}
-                  >
-                    <Avatar sx={{ width: 34, height: 34, mr: 1.2, bgcolor: "rgba(140, 167, 220, 0.24)", color: "primary.dark" }}>
-                      {item.name.slice(0, 1)}
-                    </Avatar>
-                    <ListItemText
-                      primary={item.name}
-                      secondary={`${item.dosage} • ${item.stock}`}
-                      primaryTypographyProps={{ fontWeight: 600, fontSize: 14 }}
-                    />
-                  </ListItemButton>
-                ))}
-              </List>
-            </Stack>
-          </SoftCard>
+                <List disablePadding sx={{ overflowY: "auto", flex: 1, minHeight: 300 }}>
+                  {filtered.map((item) => (
+                    <ListItemButton
+                      key={item.id}
+                      selected={item.id === selectedMedication.id}
+                      onClick={() => setSelectedId(item.id)}
+                      sx={{
+                        mb: 1,
+                        px: 1.5,
+                        py: 1.25,
+                        borderRadius: 2,
+                        border: "1px solid transparent",
+                        "&.Mui-selected": {
+                          bgcolor: "rgba(140, 167, 220, 0.12)",
+                          borderColor: "rgba(140, 167, 220, 0.32)",
+                        },
+                        "&.Mui-selected:hover": {
+                          bgcolor: "rgba(140, 167, 220, 0.16)",
+                        },
+                        "&:hover": {
+                          bgcolor: "rgba(140, 167, 220, 0.08)",
+                        },
+                      }}
+                    >
+                      <Avatar
+                        sx={{ width: 34, height: 34, mr: 1.2, bgcolor: "rgba(140, 167, 220, 0.24)", color: "primary.dark" }}
+                      >
+                        {item.name.slice(0, 1)}
+                      </Avatar>
+                      <ListItemText
+                        primary={item.name}
+                        secondary={`${item.dosage} • ${item.stock}`}
+                        primaryTypographyProps={{ fontWeight: 600, fontSize: 14 }}
+                      />
+                    </ListItemButton>
+                  ))}
+                </List>
+              </Stack>
+            </SoftCard>
+          </Grid>
 
-          <SoftCard title="Карточка препарата" sx={{ minHeight: 500, gridColumn: { xs: "1 / -1", xl: "auto" } }}>
-            <Stack spacing={2.2}>
+          <Grid size={{ xs: 12, md: 4 }}>
+            <SoftCard title="Карточка препарата" sx={{ minHeight: { xs: "auto", lg: 520 } }}>
+              <Stack spacing={2.5}>
               <Box>
                 <Typography variant="h5" sx={{ fontSize: "1.05rem" }}>
                   {selectedMedication.name}
@@ -151,7 +168,7 @@ export default function MedicinesHomePage() {
 
               <Divider />
 
-              <Box>
+              <Box sx={{ pt: 0.5 }}>
                 <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 1 }}>
                   Примечание
                 </Typography>
@@ -160,7 +177,7 @@ export default function MedicinesHomePage() {
                 </Typography>
               </Box>
 
-              <Box>
+              <Box sx={{ pt: 0.5 }}>
                 <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 1 }}>
                   Количество
                 </Typography>
@@ -175,12 +192,13 @@ export default function MedicinesHomePage() {
                 </Stack>
               </Box>
 
-              <Button variant="contained" sx={{ mt: "auto" }}>
+              <Button variant="contained" sx={{ mt: "auto", pt: 1.4, pb: 1.4 }}>
                 Добавить в расписание приёма
               </Button>
-            </Stack>
-          </SoftCard>
-        </Box>
+              </Stack>
+            </SoftCard>
+          </Grid>
+        </Grid>
       </Stack>
     </PageContainer>
   );
