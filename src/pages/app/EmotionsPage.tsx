@@ -149,6 +149,7 @@ export default function EmotionsPage() {
     () => sequence.filter((emotion) => emotion.fillable).every((emotion) => emotion.value !== null),
     [sequence]
   );
+  const gridGapSx = { xs: 1.5, md: 1.75, lg: 2 };
 
   React.useEffect(() => {
     if (!selectedEmotion) {
@@ -234,26 +235,23 @@ export default function EmotionsPage() {
       >
         <Box
           sx={{
-            display: "flex",
-            alignItems: "flex-start",
+            flex: 1,
+            minHeight: 0,
+            display: "grid",
+            gridTemplateColumns: "minmax(0, 1fr)",
+            alignItems: "stretch",
+            alignContent: "start",
+            justifyContent: "flex-start",
+            gap: gridGapSx,
+            [twoKMediaQuery]: { gap: 2.5 },
+            "& > *": {
+              minHeight: 0,
+            },
+            "@media (min-width:1200px)": {
+              gridTemplateColumns: "minmax(260px, 1fr) minmax(340px, 1.15fr) minmax(300px, 1fr)",
+            },
           }}
         >
-        <Box
-          sx={{
-              flex: 1,
-              minHeight: 0,
-              display: "grid",
-              gridTemplateColumns: "minmax(0, 1fr)",
-              alignItems: "stretch",
-              alignContent: "start",
-              justifyContent: "flex-start",
-              gap: { xs: 1.5, md: 1.75, lg: 2 },
-              [twoKMediaQuery]: { gap: 2.5 },
-              "@media (min-width:1200px)": {
-                gridTemplateColumns: "minmax(260px, 1fr) minmax(340px, 1.15fr) minmax(300px, 1fr)",
-              },
-            }}
-          >
           <SoftCard
             title="Расписание за день"
             sx={{ minHeight: 0 }}
@@ -437,14 +435,15 @@ export default function EmotionsPage() {
           <Box
             sx={{
               minWidth: 0,
-              minHeight: "100%",
+              minHeight: 0,
+              height: "100%",
               display: "flex",
               flexDirection: "column",
               alignSelf: "stretch",
               width: "100%",
               boxSizing: "border-box",
-              gap: { xs: 2, md: 2, lg: 2 },
-              [twoKMediaQuery]: { gap: 2 },
+              gap: gridGapSx,
+              [twoKMediaQuery]: { gap: 2.5 },
               "& > *": {
                 width: "100%",
                 boxSizing: "border-box",
@@ -488,9 +487,16 @@ export default function EmotionsPage() {
             <SoftCard
               title="Общая статистика за день (Заполните расписание за день)"
               sx={{ minHeight: 0, flex: 1, display: "flex", flexDirection: "column" }}
-              contentSx={{ minHeight: 0, p: { xs: 2, sm: 2, md: 2 }, "&:last-child": { pb: { xs: 2, sm: 2, md: 2 } } }}
+              contentSx={{
+                minHeight: 0,
+                flex: 1,
+                display: "flex",
+                flexDirection: "column",
+                p: { xs: 2, sm: 2, md: 2 },
+                "&:last-child": { pb: { xs: 2, sm: 2, md: 2 } },
+              }}
             >
-              <Stack spacing={0.75} sx={{ minHeight: 0 }}>
+              <Stack spacing={0.75} sx={{ minHeight: 0, alignContent: "flex-start" }}>
                 {sequence
                   .filter((item) => item.fillable)
                   .map((item) => {
@@ -518,7 +524,6 @@ export default function EmotionsPage() {
               </Stack>
             </SoftCard>
 
-          </Box>
           </Box>
         </Box>
 
