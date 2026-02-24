@@ -71,9 +71,10 @@ export default function DiseasePage() {
           gap: { xs: 2, md: 3 },
           alignItems: "start",
           minWidth: 0,
+          overflowX: "hidden",
         }}
       >
-        <SoftCard contentSx={{ gap: 3 }}>
+        <SoftCard sx={{ minWidth: 0 }} contentSx={{ gap: 3, minWidth: 0 }}>
           <Box>
             <Typography variant="h4" sx={{ fontSize: { xs: "1.5rem", md: "1.8rem" }, fontWeight: 600, mb: 0.75 }}>
               {disease.name}
@@ -81,7 +82,16 @@ export default function DiseasePage() {
             <Typography variant="body2" sx={{ color: "text.secondary", mb: 2 }}>
               Код: {disease.code}
             </Typography>
-            <Typography variant="body1">{disease.description}</Typography>
+            <Box
+              sx={{
+                maxHeight: { xs: 240, md: 320, xl: 400 },
+                overflowY: "auto",
+                pr: 1,
+                minWidth: 0,
+              }}
+            >
+              <Typography variant="body1">{disease.description}</Typography>
+            </Box>
           </Box>
 
           <Divider />
@@ -100,7 +110,7 @@ export default function DiseasePage() {
           </Stack>
         </SoftCard>
 
-        <SoftCard title="Статистика" sx={{ alignSelf: "start" }} contentSx={{ gap: 2.5 }}>
+        <SoftCard title="Статистика" sx={{ alignSelf: "start", minWidth: 0 }} contentSx={{ gap: 2.5, minWidth: 0 }}>
           <Box
             sx={{
               display: "grid",
