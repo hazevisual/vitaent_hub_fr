@@ -8,12 +8,12 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import ChevronLeftRoundedIcon from "@mui/icons-material/ChevronLeftRounded";
-import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 import { useNavigate } from "react-router-dom";
 import PageContainer from "@/components/ui/PageContainer";
 import SoftCard from "@/components/ui/SoftCard";
 import { Paths } from "@/paths";
+import arrowDefault from "@/assets/ArrowDefault.svg";
+import arrowHover from "@/assets/ArrowHower.svg";
 
 type CardState = "loading" | "error" | "empty" | "ready";
 
@@ -130,6 +130,24 @@ const homeCardSx = {
   },
 };
 
+function NavArrowIcon({ direction = "left" }: { direction?: "left" | "right" }) {
+  return (
+    <Box
+      component="img"
+      src={arrowDefault}
+      alt=""
+      aria-hidden="true"
+      className="arrow-icon-default"
+      sx={{
+        width: 18,
+        height: 18,
+        display: "block",
+        transform: direction === "right" ? "rotate(180deg)" : "none",
+      }}
+    />
+  );
+}
+
 export default function HomePage() {
   const navigate = useNavigate();
   const completionState = resolveState({
@@ -233,8 +251,24 @@ export default function HomePage() {
             ready: (
                 <Stack sx={{ height: "100%" }}>
                   <Box sx={{ display: "grid", gridTemplateColumns: "40px 1fr 40px", alignItems: "center", mb: 2 }}>
-                  <IconButton size="small" sx={{ color: "primary.main", justifySelf: "start" }}>
-                    <ChevronLeftRoundedIcon fontSize="small" />
+                  <IconButton
+                    size="small"
+                    sx={{
+                      justifySelf: "start",
+                      "& .arrow-icon-hover": { display: "none" },
+                      "&:hover .arrow-icon-default": { display: "none" },
+                      "&:hover .arrow-icon-hover": { display: "block" },
+                    }}
+                  >
+                    <NavArrowIcon direction="left" />
+                    <Box
+                      component="img"
+                      src={arrowHover}
+                      alt=""
+                      aria-hidden="true"
+                      className="arrow-icon-hover"
+                      sx={{ width: 18, height: 18, display: "none" }}
+                    />
                   </IconButton>
                   <Box
                     sx={{
@@ -250,8 +284,24 @@ export default function HomePage() {
                       16.02.2026
                     </Typography>
                   </Box>
-                  <IconButton size="small" sx={{ color: "primary.main", justifySelf: "end" }}>
-                    <ChevronRightRoundedIcon fontSize="small" />
+                  <IconButton
+                    size="small"
+                    sx={{
+                      justifySelf: "end",
+                      "& .arrow-icon-hover": { display: "none" },
+                      "&:hover .arrow-icon-default": { display: "none" },
+                      "&:hover .arrow-icon-hover": { display: "block" },
+                    }}
+                  >
+                    <NavArrowIcon direction="right" />
+                    <Box
+                      component="img"
+                      src={arrowHover}
+                      alt=""
+                      aria-hidden="true"
+                      className="arrow-icon-hover"
+                      sx={{ width: 18, height: 18, display: "none", transform: "rotate(180deg)" }}
+                    />
                   </IconButton>
                 </Box>
 
@@ -311,12 +361,20 @@ export default function HomePage() {
               <>
                 <Typography variant="subtitle2" sx={{ ...sectionHeaderSx, textAlign: "center", mb: 3 }}>Ежедневное заполнение данных</Typography>
                 <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 2 }}>
-                  <IconButton size="small" sx={{ color: "primary.main" }}>
-                    <ChevronLeftRoundedIcon fontSize="small" />
+                  <IconButton
+                    size="small"
+                    sx={{ "& .arrow-icon-hover": { display: "none" }, "&:hover .arrow-icon-default": { display: "none" }, "&:hover .arrow-icon-hover": { display: "block" } }}
+                  >
+                    <NavArrowIcon direction="left" />
+                    <Box component="img" src={arrowHover} alt="" aria-hidden="true" className="arrow-icon-hover" sx={{ width: 18, height: 18, display: "none" }} />
                   </IconButton>
                   <Typography variant="subtitle2" sx={{ ...sectionHeaderSx, textAlign: "center", textTransform: "capitalize" }}>{monthLabel}</Typography>
-                  <IconButton size="small" sx={{ color: "primary.main" }}>
-                    <ChevronRightRoundedIcon fontSize="small" />
+                  <IconButton
+                    size="small"
+                    sx={{ "& .arrow-icon-hover": { display: "none" }, "&:hover .arrow-icon-default": { display: "none" }, "&:hover .arrow-icon-hover": { display: "block" } }}
+                  >
+                    <NavArrowIcon direction="right" />
+                    <Box component="img" src={arrowHover} alt="" aria-hidden="true" className="arrow-icon-hover" sx={{ width: 18, height: 18, display: "none", transform: "rotate(180deg)" }} />
                   </IconButton>
                 </Stack>
                 <Box sx={{ display: "grid", gridTemplateColumns: "repeat(7, minmax(0, 1fr))", gap: 1 }}>
@@ -463,8 +521,11 @@ export default function HomePage() {
                   Системные рекомендации
                 </Typography>
                 <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", flex: 1, gap: 2 }}>
-                  <IconButton sx={{ color: "primary.main", width: 40, height: 40 }}>
-                    <ChevronLeftRoundedIcon />
+                  <IconButton
+                    sx={{ width: 40, height: 40, "& .arrow-icon-hover": { display: "none" }, "&:hover .arrow-icon-default": { display: "none" }, "&:hover .arrow-icon-hover": { display: "block" } }}
+                  >
+                    <NavArrowIcon direction="left" />
+                    <Box component="img" src={arrowHover} alt="" aria-hidden="true" className="arrow-icon-hover" sx={{ width: 18, height: 18, display: "none" }} />
                   </IconButton>
 
                   <Stack spacing={3} alignItems="center" justifyContent="center" sx={{ flex: 1 }}>
@@ -486,8 +547,11 @@ export default function HomePage() {
                     </Button>
                   </Stack>
 
-                  <IconButton sx={{ color: "primary.main", width: 40, height: 40 }}>
-                    <ChevronRightRoundedIcon />
+                  <IconButton
+                    sx={{ width: 40, height: 40, "& .arrow-icon-hover": { display: "none" }, "&:hover .arrow-icon-default": { display: "none" }, "&:hover .arrow-icon-hover": { display: "block" } }}
+                  >
+                    <NavArrowIcon direction="right" />
+                    <Box component="img" src={arrowHover} alt="" aria-hidden="true" className="arrow-icon-hover" sx={{ width: 18, height: 18, display: "none", transform: "rotate(180deg)" }} />
                   </IconButton>
                 </Box>
               </Stack>
