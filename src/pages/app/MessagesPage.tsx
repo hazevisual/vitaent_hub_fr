@@ -25,6 +25,8 @@ type Doctor = {
   name: string;
   specialty: string;
   avatar: string;
+  experienceYears: number;
+  credentials: string[];
   hasUnread?: boolean;
 };
 
@@ -39,10 +41,40 @@ type Message = {
 };
 
 const doctors: Doctor[] = [
-  { id: "d1", name: "Ирина Смирнова", specialty: "Гастроэнтеролог", avatar: "ИС", hasUnread: true },
-  { id: "d2", name: "Алексей Никифоров", specialty: "Кардиолог", avatar: "АН" },
-  { id: "d3", name: "Мария Левина", specialty: "Эндокринолог", avatar: "МЛ", hasUnread: true },
-  { id: "d4", name: "Дмитрий Орлов", specialty: "Невролог", avatar: "ДО" },
+  {
+    id: "d1",
+    name: "Ирина Смирнова",
+    specialty: "Гастроэнтеролог",
+    avatar: "ИС",
+    experienceYears: 12,
+    credentials: ["Доктор медицинских наук", "Высшая категория", "Член РГА"],
+    hasUnread: true,
+  },
+  {
+    id: "d2",
+    name: "Алексей Никифоров",
+    specialty: "Кардиолог",
+    avatar: "АН",
+    experienceYears: 9,
+    credentials: ["Кандидат медицинских наук", "Первая категория"],
+  },
+  {
+    id: "d3",
+    name: "Мария Левина",
+    specialty: "Эндокринолог",
+    avatar: "МЛ",
+    experienceYears: 14,
+    credentials: ["Доктор медицинских наук", "Высшая категория", "Член РАЭ"],
+    hasUnread: true,
+  },
+  {
+    id: "d4",
+    name: "Дмитрий Орлов",
+    specialty: "Невролог",
+    avatar: "ДО",
+    experienceYears: 11,
+    credentials: ["Кандидат медицинских наук", "Высшая категория"],
+  },
 ];
 
 const initialMessages: Message[] = [
@@ -205,16 +237,25 @@ export default function MessagesPage() {
 
               <Box sx={{ display: "flex", flexDirection: "column", minWidth: 0, minHeight: 0 }}>
                 <Box sx={{ px: { xs: 2, md: 3 }, py: 2, borderBottom: "1px solid #E5E5E7" }}>
-                  <Stack direction="row" alignItems="center" spacing={1.5} sx={{ minWidth: 0 }}>
-                    <Avatar sx={{ bgcolor: "#E8EEF9", color: "#3B4E6D" }}>{activeDoctor.avatar}</Avatar>
-                    <Typography variant="h6" sx={{ fontSize: "1rem", fontWeight: 600, minWidth: 0 }} noWrap>
-                      {activeDoctor.name}
-                    </Typography>
-                    <Box sx={{ ml: "auto", display: "flex", alignItems: "center", gap: 1.2, minWidth: 0 }}>
+                  <Box
+                    sx={{
+                      display: "grid",
+                      gridTemplateColumns: { xs: "minmax(0, 1fr)", lg: "minmax(0, 1fr) minmax(240px, 360px) 240px" },
+                      alignItems: "center",
+                      gap: 1.5,
+                    }}
+                  >
+                    <Stack direction="row" alignItems="center" spacing={1.5} sx={{ minWidth: 0 }}>
+                      <Avatar sx={{ bgcolor: "#E8EEF9", color: "#3B4E6D" }}>{activeDoctor.avatar}</Avatar>
+                      <Typography variant="h6" sx={{ fontSize: "1rem", fontWeight: 600, minWidth: 0, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                        {activeDoctor.name}
+                      </Typography>
+                    </Stack>
+                    <Box sx={{ width: "100%", minWidth: { xs: 0, lg: 240 }, maxWidth: 360, justifySelf: "center" }}>
                       <TextField
                         size="small"
                         placeholder="Поиск по истории сообщений"
-                        sx={{ width: { xs: 180, md: 260 } }}
+                        sx={{ width: "100%" }}
                         InputProps={{
                           startAdornment: (
                             <InputAdornment position="start">
@@ -223,11 +264,18 @@ export default function MessagesPage() {
                           ),
                         }}
                       />
-                      <Button size="small" variant="outlined" startIcon={<PushPinRoundedIcon sx={{ fontSize: 16 }} />}>
+                    </Box>
+                    <Box sx={{ justifySelf: { xs: "start", lg: "end" }, minWidth: { xs: 0, lg: 220 }, flexShrink: 0 }}>
+                      <Button
+                        size="small"
+                        variant="outlined"
+                        startIcon={<PushPinRoundedIcon sx={{ fontSize: 16 }} />}
+                        sx={{ minWidth: { xs: 0, lg: 220 }, whiteSpace: "nowrap", flexShrink: 0 }}
+                      >
                         Закрепленные сообщения
                       </Button>
                     </Box>
-                  </Stack>
+                  </Box>
                 </Box>
 
                 <Box sx={{ flex: 1, minHeight: 0, overflowY: "auto", px: { xs: 2, md: 3 }, py: 2.5 }}>
@@ -242,7 +290,7 @@ export default function MessagesPage() {
                     </Box>
 
                     {activeMessages.map((message) => (
-                      <Box key={message.id} sx={{ display: "flex", justifyContent: message.fromDoctor ? "flex-end" : "flex-start" }}>
+                      <Box key={message.id} sx={{ display: "flex", justifyContent: message.fromDoctor ? "flex-start" : "flex-end" }}>
                         <Box
                           sx={{
                             maxWidth: "78%",
@@ -302,6 +350,34 @@ export default function MessagesPage() {
                 </Typography>
                 <Typography variant="body2" sx={{ color: "text.secondary", mt: 0.5 }}>
                   {activeDoctor.specialty}
+                </Typography>
+                <Typography variant="body2" sx={{ color: "text.secondary", mt: 0.75 }}>
+                  Стаж: {activeDoctor.experienceYears} лет
+                </Typography>
+                <Stack spacing={0.45} sx={{ mt: 1.1 }}>
+                  {activeDoctor.credentials.map((credential) => (
+                    <Typography key={credential} variant="caption" sx={{ color: "text.secondary" }}>
+                      {credential}
+                    </Typography>
+                  ))}
+                </Stack>
+              </Box>
+              <Box
+                sx={{
+                  width: "100%",
+                  maxWidth: 300,
+                  aspectRatio: "16 / 10",
+                  borderRadius: "12px",
+                  border: "1px solid #C9C9CB",
+                  bgcolor: "#F5F5F7",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  px: 2,
+                }}
+              >
+                <Typography variant="body2" sx={{ color: "text.secondary" }}>
+                  Фото / сертификаты
                 </Typography>
               </Box>
             </Stack>
