@@ -28,7 +28,7 @@ import { useAuth } from "@/auth/AuthProvider";
 
 const drawerWidth = 248;
 const appBarOffset = { xs: 68, md: 74 };
-const contentColumnMaxWidth = 1560;
+const contentColumnMaxWidth = 1920;
 
 const navItems = [
   { label: "Главная", to: "/app", icon: <HomeRoundedIcon fontSize="small" /> },

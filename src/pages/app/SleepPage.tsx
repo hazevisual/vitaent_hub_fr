@@ -3,7 +3,7 @@ import PageContainer from "@/components/ui/PageContainer";
 import SoftCard from "@/components/ui/SoftCard";
 import WeekDayViewContent from "@/pages/app/WeekDayViewContent";
 
-const SLEEP_PAGE_MAX_WIDTH = 1560;
+const SLEEP_PAGE_MAX_WIDTH = 1920;
 
 export default function SleepPage() {
   return (

@@ -88,7 +88,7 @@ const emotionCatalog: EmotionOption[] = [
   },
 ];
 
-const contentMaxWidth = 1560;
+const contentMaxWidth = 1920;
 
 function LeftScheduleCard({ schedule }: { schedule: DayEmotionEntry[] }) {
   return (
