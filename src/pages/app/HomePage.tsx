@@ -120,6 +120,16 @@ const sectionHeaderSx = {
 };
 
 const HOME_CONTENT_MAX_WIDTH = 1560;
+const HOME_CARD_2K_MEDIA_QUERY = "@media (min-width:2000px)";
+const homeCardSx = {
+  minWidth: 0,
+  p: 3,
+  borderRadius: 4,
+  [HOME_CARD_2K_MEDIA_QUERY]: {
+    p: 3.75,
+    borderRadius: 5,
+  },
+};
 
 export default function HomePage() {
   const completionState = resolveState({
@@ -172,6 +182,9 @@ export default function HomePage() {
               display: "flex",
               flexDirection: "column",
               gap: { xs: 2, sm: 3, lg: 4 },
+              [HOME_CARD_2K_MEDIA_QUERY]: {
+                gap: 5,
+              },
               pb: { xs: 1, md: 2 },
             }}
           >
@@ -191,13 +204,18 @@ export default function HomePage() {
                 gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
               },
               gap: { xs: 2, sm: 3, lg: 4 },
+              [HOME_CARD_2K_MEDIA_QUERY]: {
+                gap: 5,
+              },
             }}
           >
         <SoftCard
           sx={{
             minHeight: { xs: 260, lg: 340 },
-            minWidth: 0,
-            p: 3,
+            [HOME_CARD_2K_MEDIA_QUERY]: {
+              minHeight: 425,
+            },
+            ...homeCardSx,
           }}
         >
           {renderStateBody({
@@ -268,8 +286,10 @@ export default function HomePage() {
         <SoftCard
           sx={{
             minHeight: { xs: 260, lg: 340 },
-            minWidth: 0,
-            p: 3,
+            [HOME_CARD_2K_MEDIA_QUERY]: {
+              minHeight: 425,
+            },
+            ...homeCardSx,
           }}
         >
           {renderStateBody({
@@ -334,9 +354,11 @@ export default function HomePage() {
         <SoftCard
           sx={{
             gridColumn: { xs: "auto", md: "1 / -1", lg: "auto" },
-            minWidth: 0,
             minHeight: { xs: 240, lg: 340 },
-            p: 3,
+            [HOME_CARD_2K_MEDIA_QUERY]: {
+              minHeight: 425,
+            },
+            ...homeCardSx,
           }}
         >
           {renderStateBody({
@@ -398,14 +420,19 @@ export default function HomePage() {
                 gridTemplateColumns: "minmax(0, 2fr) minmax(0, 1fr)",
               },
               gap: { xs: 2, sm: 3, lg: 4 },
+              [HOME_CARD_2K_MEDIA_QUERY]: {
+                gap: 5,
+              },
             }}
           >
 
         <SoftCard
           sx={{
             minHeight: { xs: 220, lg: 240 },
-            minWidth: 0,
-            p: 3,
+            [HOME_CARD_2K_MEDIA_QUERY]: {
+              minHeight: 300,
+            },
+            ...homeCardSx,
           }}
         >
           {renderStateBody({
@@ -468,8 +495,10 @@ export default function HomePage() {
         <SoftCard
           sx={{
             minHeight: { xs: 220, lg: 240 },
-            minWidth: 0,
-            p: 3,
+            [HOME_CARD_2K_MEDIA_QUERY]: {
+              minHeight: 300,
+            },
+            ...homeCardSx,
           }}
         >
           {renderStateBody({
