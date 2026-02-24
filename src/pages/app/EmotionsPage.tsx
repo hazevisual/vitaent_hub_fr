@@ -184,9 +184,13 @@ export default function EmotionsPage() {
 
     setEmotionValue(selectedEmotion.id, sliderValue);
 
+    const nextSequence = sequence.map((emotion) =>
+      emotion.id === selectedEmotion.id ? { ...emotion, value: sliderValue } : emotion
+    );
+
     const selectedIndex = fillableEmotionIds.findIndex((id) => id === selectedEmotion.id);
     const nextEmotionId = fillableEmotionIds.slice(selectedIndex + 1).find((id) => {
-      const target = sequence.find((emotion) => emotion.id === id);
+      const target = nextSequence.find((emotion) => emotion.id === id);
       if (!target) {
         return false;
       }
@@ -204,7 +208,7 @@ export default function EmotionsPage() {
     }
 
     setSelectedEmotionId(nextEmotionId);
-    const nextEmotion = sequence.find((emotion) => emotion.id === nextEmotionId);
+    const nextEmotion = nextSequence.find((emotion) => emotion.id === nextEmotionId);
     setSliderValue(nextEmotion?.value ?? 0);
   };
 
@@ -212,31 +216,40 @@ export default function EmotionsPage() {
     <PageContainer>
       <Box
         sx={{
+          display: "flex",
+          flexDirection: "column",
           width: "100%",
           maxWidth: EMOTIONS_CONTENT_MAX_WIDTH,
           mx: "auto",
           minWidth: 0,
-          flex: 1,
           height: "100%",
+          flex: 1,
           minHeight: 0,
-          display: "flex",
         }}
       >
         <Box
           sx={{
+            display: "flex",
             flex: 1,
-            height: "100%",
             minHeight: 0,
-            display: "grid",
-            gridTemplateColumns: "minmax(0, 1fr)",
-            alignItems: "stretch",
-            gap: { xs: 2, md: 3, lg: 4 },
-            [twoKMediaQuery]: { gap: 5 },
-            "@media (min-width:1200px)": {
-              gridTemplateColumns: "minmax(260px, 1fr) minmax(340px, 1.15fr) minmax(300px, 1fr)",
-            },
           }}
         >
+          <Box
+            sx={{
+              flex: 1,
+              minHeight: 0,
+              display: "grid",
+              gridTemplateColumns: "minmax(0, 1fr)",
+              alignItems: "stretch",
+              alignContent: "start",
+              justifyContent: "flex-start",
+              gap: { xs: 2, md: 3, lg: 4 },
+              [twoKMediaQuery]: { gap: 5 },
+              "@media (min-width:1200px)": {
+                gridTemplateColumns: "minmax(260px, 1fr) minmax(340px, 1.15fr) minmax(300px, 1fr)",
+              },
+            }}
+          >
           <SoftCard title="Расписание за день" sx={{ minHeight: 0 }} contentSx={{ minHeight: 0 }}>
             <Box sx={{ flex: 1, minHeight: 0, overflowY: "auto", pr: 0.5 }}>
               {groups.map((section) => (
@@ -403,20 +416,18 @@ export default function EmotionsPage() {
             </Stack>
           </SoftCard>
 
-          <Stack
-            spacing={{ xs: 2, md: 3, lg: 4 }}
+          <Box
             sx={{
               minWidth: 0,
               minHeight: 0,
               height: "100%",
+              display: "flex",
+              flexDirection: "column",
+              gap: { xs: 2, md: 3, lg: 4 },
               [twoKMediaQuery]: { gap: 5 },
-              "@media (min-width:1200px)": {
-                display: "grid",
-                gridTemplateRows: "minmax(240px, 42%) minmax(0, 1fr) auto",
-              },
             }}
           >
-            <SoftCard title="Информация" sx={{ minHeight: 0 }} contentSx={{ minHeight: 0 }}>
+            <SoftCard title="Информация" sx={{ minHeight: 0, flex: { xs: "0 0 auto", xl: "0 0 280px" } }} contentSx={{ minHeight: 0 }}>
               <Stack spacing={1.5} sx={{ flex: 1, minHeight: 0, overflowY: "auto", pr: 0.5 }}>
                 <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
                   {selectedEmotion?.title}
@@ -443,7 +454,7 @@ export default function EmotionsPage() {
 
             <SoftCard
               title="Общая статистика за день (Заполните расписание за день)"
-              sx={{ minHeight: 0 }}
+              sx={{ minHeight: 0, flex: 1 }}
               contentSx={{ minHeight: 0 }}
             >
               <Stack spacing={1.5} sx={{ flex: 1, minHeight: 0, overflowY: "auto", pr: 0.5 }}>
@@ -474,7 +485,7 @@ export default function EmotionsPage() {
               </Stack>
             </SoftCard>
 
-            <Box sx={{ mt: "auto", display: "flex", justifyContent: "flex-end", gap: 1.5, flexWrap: "wrap" }}>
+            <Box sx={{ mt: "auto", display: "flex", justifyContent: "flex-end", gap: 1.5, flexWrap: "wrap", flexShrink: 0 }}>
               <Button
                 variant="outlined"
                 onClick={() => {
@@ -501,7 +512,8 @@ export default function EmotionsPage() {
                 Завершить заполнение данных
               </Button>
             </Box>
-          </Stack>
+          </Box>
+          </Box>
         </Box>
       </Box>
 
