@@ -1,6 +1,29 @@
 import { createTheme } from "@mui/material/styles";
 
+const withUiScale = (sizeRem: number) => `calc(${sizeRem}rem * var(--ui-scale, 1))`;
+
+const uiSpacing = (...args: Array<number | string>) => {
+  if (args.length === 0) {
+    return "0px";
+  }
+
+  return args
+    .map((arg) => {
+      if (typeof arg === "string") {
+        return arg;
+      }
+
+      if (arg === 0) {
+        return "0px";
+      }
+
+      return `calc(${arg * 8}px * var(--ui-scale, 1))`;
+    })
+    .join(" ");
+};
+
 export const vitaentTheme = createTheme({
+  spacing: uiSpacing,
   palette: {
     mode: "light",
     primary: {
@@ -37,40 +60,47 @@ export const vitaentTheme = createTheme({
   typography: {
     fontFamily: '"Inter", "Segoe UI", "Roboto", sans-serif',
     h1: {
-      fontSize: "clamp(3rem, 8.5vw, 5rem)",
+      fontSize: withUiScale(4.2),
       fontWeight: 700,
       lineHeight: 1,
       letterSpacing: "-0.03em",
       color: "#1E1E20",
     },
     h2: {
-      fontSize: "clamp(2rem, 5.5vw, 3rem)",
+      fontSize: withUiScale(2.6),
       fontWeight: 700,
       lineHeight: 1.1,
       letterSpacing: "-0.02em",
       color: "#1E1E20",
     },
     h5: {
+      fontSize: withUiScale(1.5),
       fontWeight: 600,
       letterSpacing: "-0.01em",
     },
     body1: {
-      fontSize: "1rem",
+      fontSize: withUiScale(1),
       fontWeight: 500,
       color: "#1E1E20",
     },
     body2: {
-      fontSize: "0.95rem",
+      fontSize: withUiScale(0.95),
       color: "#7A869C",
     },
     caption: {
-      fontSize: "0.8rem",
+      fontSize: withUiScale(0.8),
       fontWeight: 500,
       color: "#8E98AB",
     },
     button: {
+      fontSize: withUiScale(1),
       textTransform: "none",
       fontWeight: 600,
+    },
+    subtitle2: {
+      fontSize: withUiScale(0.95),
+      fontWeight: 600,
+      color: "#7A869C",
     },
   },
   shadows: [
