@@ -99,7 +99,7 @@ export default function MedicinesHomePage() {
                         px: 1.25,
                         py: 1,
                         borderRadius: 0.75,
-                        bgcolor: (theme) => alpha(theme.palette.primary.main, 0.08),
+                        bgcolor: "background.paper",
                       }}
                     >
                       {slot.medications.map((name) => (

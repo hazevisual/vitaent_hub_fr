@@ -8,6 +8,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
+import { alpha } from "@mui/material/styles";
 import ChevronLeftRoundedIcon from "@mui/icons-material/ChevronLeftRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 import PageContainer from "@/components/ui/PageContainer";
@@ -155,6 +156,8 @@ export default function HomePage() {
       <Box
         sx={{
           width: "100%",
+          maxWidth: 1360,
+          mx: "auto",
           minWidth: 0,
           overflowX: "hidden",
         }}
@@ -194,7 +197,7 @@ export default function HomePage() {
             ready: (
                 <Stack sx={{ height: "100%" }}>
                   <Box sx={{ display: "grid", gridTemplateColumns: "40px 1fr 40px", alignItems: "center", mb: 2 }}>
-                  <IconButton size="small" sx={{ bgcolor: "rgba(140, 167, 220, 0.12)", justifySelf: "start" }}>
+                  <IconButton size="small" sx={{ color: "primary.main", justifySelf: "start" }}>
                     <ChevronLeftRoundedIcon fontSize="small" />
                   </IconButton>
                   <Box
@@ -203,14 +206,14 @@ export default function HomePage() {
                       px: 2.25,
                       py: 0.8,
                       borderRadius: 999,
-                      bgcolor: "rgba(140, 167, 220, 0.2)",
+                      bgcolor: (theme) => alpha(theme.palette.primary.main, 0.12),
                     }}
                   >
-                    <Typography sx={{ fontSize: "0.8125rem", lineHeight: 1.2, color: "#55627B", fontWeight: 500 }}>
+                    <Typography sx={{ fontSize: "0.8125rem", lineHeight: 1.2, color: "text.primary", fontWeight: 500 }}>
                       16.02.2026
                     </Typography>
                   </Box>
-                  <IconButton size="small" sx={{ bgcolor: "rgba(140, 167, 220, 0.12)", justifySelf: "end" }}>
+                  <IconButton size="small" sx={{ color: "primary.main", justifySelf: "end" }}>
                     <ChevronRightRoundedIcon fontSize="small" />
                   </IconButton>
                 </Box>
@@ -219,7 +222,7 @@ export default function HomePage() {
                   <Typography variant="h1" sx={{ fontSize: { xs: "3.3rem", md: "3.8rem" }, lineHeight: 1 }}>
                     {dashboardData.completion}%
                   </Typography>
-                  <Typography variant="body2" sx={{ textAlign: "center", color: "text.secondary" }}>
+                  <Typography variant="body2" sx={{ textAlign: "center", color: "primary.main" }}>
                     Данных заполнено за среду
                   </Typography>
                 </Stack>
@@ -267,11 +270,11 @@ export default function HomePage() {
               <>
                 <Typography sx={{ ...sectionHeaderSx, textAlign: "center", mb: 2.5 }}>Ежедневное заполнение данных</Typography>
                 <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 2.2 }}>
-                  <IconButton size="small" sx={{ bgcolor: "rgba(140, 167, 220, 0.14)" }}>
+                  <IconButton size="small" sx={{ color: "primary.main" }}>
                     <ChevronLeftRoundedIcon fontSize="small" />
                   </IconButton>
                   <Typography sx={{ ...sectionHeaderSx, textAlign: "center", textTransform: "capitalize" }}>{monthLabel}</Typography>
-                  <IconButton size="small" sx={{ bgcolor: "rgba(140, 167, 220, 0.14)" }}>
+                  <IconButton size="small" sx={{ color: "primary.main" }}>
                     <ChevronRightRoundedIcon fontSize="small" />
                   </IconButton>
                 </Stack>
@@ -292,7 +295,8 @@ export default function HomePage() {
                         sx={{
                           height: 34,
                           borderRadius: 2,
-                          bgcolor: isSelected ? "rgba(140, 167, 220, 0.8)" : "rgba(140, 167, 220, 0.1)",
+                          bgcolor: (theme) =>
+                            isSelected ? theme.palette.primary.main : alpha(theme.palette.primary.main, 0.1),
                           color: isSelected ? "#fff" : "text.primary",
                           display: "grid",
                           placeItems: "center",
@@ -395,21 +399,15 @@ export default function HomePage() {
                     mb: 2,
                   }}
                 >
-                  Системная рекомендация
+                  Системные рекомендации
                 </Typography>
                 <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", flex: 1, gap: 2 }}>
-                  <IconButton
-                    sx={{
-                      bgcolor: "rgba(122, 134, 156, 0.14)",
-                      width: 40,
-                      height: 40,
-                    }}
-                  >
+                  <IconButton sx={{ color: "primary.main", width: 40, height: 40 }}>
                     <ChevronLeftRoundedIcon />
                   </IconButton>
 
                   <Stack spacing={2.5} alignItems="center" justifyContent="center" sx={{ flex: 1 }}>
-                    <Typography sx={{ textAlign: "center", color: "rgba(105, 132, 180, 0.9)", fontSize: { xs: "1.2rem", md: "1.55rem" }, lineHeight: 1.4, fontWeight: 500, maxWidth: 620 }}>
+                    <Typography sx={{ textAlign: "center", color: "primary.main", fontSize: { xs: "1.2rem", md: "1.55rem" }, lineHeight: 1.4, fontWeight: 500, maxWidth: 620 }}>
                       {dashboardData.recommendation}
                     </Typography>
                     <Button variant="outlined" sx={{ borderRadius: 999, minWidth: 132 }}>
@@ -417,13 +415,7 @@ export default function HomePage() {
                     </Button>
                   </Stack>
 
-                  <IconButton
-                    sx={{
-                      bgcolor: "rgba(122, 134, 156, 0.14)",
-                      width: 40,
-                      height: 40,
-                    }}
-                  >
+                  <IconButton sx={{ color: "primary.main", width: 40, height: 40 }}>
                     <ChevronRightRoundedIcon />
                   </IconButton>
                 </Box>
@@ -454,11 +446,11 @@ export default function HomePage() {
               <Stack sx={{ height: "100%" }}>
                 <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", textAlign: "center", height: "100%" }}>
                   <Stack spacing={1.4}>
-                    <Typography sx={{ fontSize: { xs: "1.35rem", md: "1.6rem" }, color: "rgba(95, 120, 164, 0.9)", maxWidth: 320, fontWeight: 500 }}>
+                    <Typography sx={{ fontSize: { xs: "1.35rem", md: "1.6rem" }, color: "primary.main", maxWidth: 320, fontWeight: 500 }}>
                       Ваш следующий прием назначен
                     </Typography>
                     <Box sx={{ textAlign: "center" }}>
-                      <Typography variant="h5" sx={{ fontWeight: 600, color: "rgba(95, 120, 164, 0.9)" }}>
+                      <Typography variant="h5" sx={{ fontWeight: 600, color: "primary.main" }}>
                         {dashboardData.appointment?.replace(/^На\s+/, "").split(" ")[0]}
                       </Typography>
                       <Typography variant="body2" sx={{ color: "text.secondary" }}>
