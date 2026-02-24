@@ -42,12 +42,8 @@ const router = createBrowserRouter([
           { path: "medicines", element: <MedicinesHomePage /> },
           { path: "medicines/add", element: <MedicationUpsertPage /> },
           { path: "medicines/:id/edit", element: <MedicationUpsertPage /> },
+          { path: "diseases/:id", element: <DiseasePage /> },
         ],
-      },
-      {
-        path: Paths.diseaseDetails,
-        element: <AppLayout />,
-        children: [{ index: true, element: <DiseasePage /> }],
       },
     ],
   },
