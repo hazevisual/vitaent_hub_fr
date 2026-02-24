@@ -4,9 +4,15 @@ export const vitaentTheme = createTheme({
   palette: {
     mode: "light",
     primary: {
-      main: "#7D9ED8",
-      light: "#AFC5E9",
-      dark: "#6488C5",
+      main: "#336FEE",
+      light: "#5C8AF2",
+      dark: "#2558C2",
+      contrastText: "#FFFFFF",
+    },
+    error: {
+      main: "#FF4163",
+      light: "#FF6A84",
+      dark: "#D73552",
       contrastText: "#FFFFFF",
     },
     secondary: {
@@ -142,25 +148,25 @@ export const vitaentTheme = createTheme({
           paddingLeft: 18,
           paddingRight: 18,
           "&:focus-visible": {
-            outline: "2px solid #5F7FB8",
+            outline: "2px solid #336FEE",
             outlineOffset: 2,
           },
         },
         containedPrimary: {
-          backgroundColor: "#8CA7DC",
+          backgroundColor: "#336FEE",
           color: "#FFFFFF",
           boxShadow: "none",
           "&:hover": {
-            backgroundColor: "#7F9CD4",
+            backgroundColor: "#2558C2",
             boxShadow: "none",
           },
         },
         outlinedPrimary: {
-          borderColor: "#B7C7E6",
-          color: "#556FA5",
+          borderColor: "#9BB8F6",
+          color: "#2558C2",
           "&:hover": {
-            borderColor: "#AFC1E2",
-            backgroundColor: "rgba(140, 167, 220, 0.08)",
+            borderColor: "#7EA4F3",
+            backgroundColor: "rgba(51, 111, 238, 0.08)",
           },
         },
       },
@@ -169,7 +175,7 @@ export const vitaentTheme = createTheme({
       styleOverrides: {
         root: {
           "&:focus-visible": {
-            outline: "2px solid #5F7FB8",
+            outline: "2px solid #336FEE",
             outlineOffset: 1,
           },
         },
@@ -181,14 +187,14 @@ export const vitaentTheme = createTheme({
           borderRadius: 12,
           marginBottom: 4,
           "&.Mui-selected": {
-            backgroundColor: "#E7EEFA",
+            backgroundColor: "#E5EDFF",
             color: "#2F3B54",
           },
           "&.Mui-selected:hover": {
-            backgroundColor: "#DFE8F8",
+            backgroundColor: "#DCE7FF",
           },
           "&:focus-visible": {
-            outline: "2px solid #5F7FB8",
+            outline: "2px solid #336FEE",
             outlineOffset: -1,
           },
         },
