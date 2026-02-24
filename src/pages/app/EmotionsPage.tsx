@@ -31,7 +31,6 @@ type EmotionGroup = {
 };
 
 const EMOTIONS_CONTENT_MAX_WIDTH = 1560;
-const twoKMediaQuery = "@media (min-width:2000px)";
 
 const initialGroups: EmotionGroup[] = [
   {
@@ -149,8 +148,8 @@ function DailyStatsCard({ emotions }: { emotions: FlatEmotion[] }) {
       }}
     >
       {!hasStatsData ? (
-        <Box sx={{ flex: 1, display: "grid", placeItems: "center", minHeight: 0 }}>
-          <Typography variant="body2" sx={{ color: "text.secondary", textAlign: "center" }}>
+        <Box sx={{ flex: 1, minHeight: 0 }}>
+          <Typography variant="body2" sx={{ color: "text.secondary" }}>
             Заполните расписание за день
           </Typography>
         </Box>
@@ -287,34 +286,29 @@ export default function EmotionsPage() {
           maxWidth: EMOTIONS_CONTENT_MAX_WIDTH,
           mx: "auto",
           minWidth: 0,
-          overflowX: "clip",
+          overflowX: "hidden",
           flex: 1,
           minHeight: 0,
         }}
       >
         <Box
           sx={{
-            flex: 1,
-            minHeight: 0,
             display: "grid",
             gridTemplateColumns: "minmax(0, 1fr)",
             alignItems: "stretch",
-            alignContent: "start",
-            justifyContent: "flex-start",
             gap: gridGapSx,
-            [twoKMediaQuery]: { gap: 2.5 },
             "& > *": {
               minWidth: 0,
               minHeight: 0,
             },
-            "@media (min-width:1200px)": {
+            "@media (min-width:1280px)": {
               gridTemplateColumns: "minmax(0, 0.95fr) minmax(0, 1.1fr) minmax(0, 0.95fr)",
             },
           }}
         >
           <SoftCard
             title="Расписание за день"
-            sx={{ minHeight: 0 }}
+            sx={{ minHeight: 0, height: "100%" }}
             contentSx={{ minHeight: 0, p: { xs: 2, sm: 2, md: 2 }, "&:last-child": { pb: { xs: 2, sm: 2, md: 2 } } }}
           >
             <Box sx={{ flex: 1, minHeight: 0 }}>
@@ -379,12 +373,12 @@ export default function EmotionsPage() {
 
           <SoftCard
             title={selectedEmotion?.title ?? "Эмоция"}
-            sx={{ minHeight: 0 }}
+            sx={{ minHeight: 0, height: "100%" }}
             contentSx={{ minHeight: 0, p: { xs: 2, sm: 2, md: 2 }, "&:last-child": { pb: { xs: 2, sm: 2, md: 2 } } }}
           >
             <Stack
               spacing={{ xs: 1, md: 1.5 }}
-              sx={{ minHeight: 0, minWidth: 0, overflowX: "clip" }}
+              sx={{ minHeight: 0, minWidth: 0 }}
             >
               <Box sx={{ display: "flex", justifyContent: "center", width: "100%", flexShrink: 0, py: 0.25 }}>
                 <Box
@@ -412,15 +406,13 @@ export default function EmotionsPage() {
                   gap: 1,
                   flexShrink: 0,
                   minWidth: 0,
-                  overflowX: "hidden",
-                  py: 0,
-                  px: 0,
+                  py: 0.25,
                 }}
               >
                 <Typography variant="body2" sx={{ color: "text.secondary", flexShrink: 0 }}>
                   Интенсивность
                 </Typography>
-                <Box sx={{ flex: 1, minWidth: 0, px: 0.5, overflow: "hidden" }}>
+                <Box sx={{ flex: 1, minWidth: 0, px: 1 }}>
                   <Slider
                     aria-label="Интенсивность эмоции"
                     min={0}
@@ -497,7 +489,6 @@ export default function EmotionsPage() {
             sx={{
               minWidth: 0,
               minHeight: 0,
-              flex: 1,
               height: "100%",
               display: "flex",
               flexDirection: "column",
@@ -505,8 +496,6 @@ export default function EmotionsPage() {
               width: "100%",
               boxSizing: "border-box",
               gap: gridGapSx,
-              overflow: "hidden",
-              [twoKMediaQuery]: { gap: 2.5 },
               "& > *": {
                 width: "100%",
                 boxSizing: "border-box",
@@ -549,7 +538,6 @@ export default function EmotionsPage() {
             </SoftCard>
 
             <DailyStatsCard emotions={sequence} />
-
           </Box>
         </Box>
 
