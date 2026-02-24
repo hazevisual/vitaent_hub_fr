@@ -82,7 +82,7 @@ export default function AppLayout() {
   );
 
   return (
-    <Box sx={{ display: "flex", minHeight: "100vh", bgcolor: "background.default", overflowX: "hidden" }}>
+    <Box sx={{ display: "flex", alignItems: "stretch", width: "100%", minWidth: 0, minHeight: "100vh", bgcolor: "background.default", overflowX: "hidden" }}>
       <CssBaseline />
 
       <AppBar
@@ -173,6 +173,10 @@ export default function AppLayout() {
       <Box
         component="main"
         sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "stretch",
+          justifyContent: "flex-start",
           flex: 1,
           minWidth: 0,
           width: "100%",
@@ -181,7 +185,19 @@ export default function AppLayout() {
         }}
       >
         <Toolbar sx={{ minHeight: { xs: 68, md: 74 } }} />
-        <Outlet />
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "stretch",
+            justifyContent: "flex-start",
+            width: "100%",
+            flex: 1,
+            minWidth: 0,
+          }}
+        >
+          <Outlet />
+        </Box>
       </Box>
     </Box>
   );

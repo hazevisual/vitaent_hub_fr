@@ -133,7 +133,7 @@ export default function HomePage() {
   });
 
   return (
-    <PageContainer>
+    <PageContainer sx={{ display: "flex", flexDirection: "column", alignItems: "stretch", justifyContent: "flex-start", width: "100%", minWidth: 0 }}>
       <Box
         sx={{
           width: "100%",
@@ -149,7 +149,7 @@ export default function HomePage() {
             minWidth: 0,
             display: "grid",
             gap: { xs: "16px", sm: "24px", lg: "32px" },
-            gridTemplateColumns: { xs: "1fr", md: "repeat(2, minmax(0, 1fr))" },
+            gridTemplateColumns: { xs: "minmax(0, 1fr)", md: "repeat(2, minmax(0, 1fr))" },
           }}
         >
           <SoftCard
