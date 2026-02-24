@@ -23,7 +23,6 @@ export default function SoftCard({
       sx={{
         display: "flex",
         flexDirection: "column",
-        height: "100%",
         backgroundColor: "#FFFFFF",
         border: "1px solid #E5E5E7",
         borderRadius: "16px",

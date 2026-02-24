@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { Box, Button, Chip, Divider, Grid, Skeleton, Stack, Typography } from "@mui/material";
+import { Box, Button, Chip, Divider, Skeleton, Stack, Typography } from "@mui/material";
 import PageContainer from "@/components/ui/PageContainer";
 import SoftCard from "@/components/ui/SoftCard";
 import { getDiseaseById, getDiseaseStatsById } from "@/api/diseases";
@@ -108,8 +108,17 @@ export default function DiseasePage() {
         sx={{ width: "100%", minWidth: 0, boxSizing: "border-box", overflow: "hidden" }}
         contentSx={{ p: { xs: 2, sm: 3, md: 4 }, "&:last-child": { pb: { xs: 2, sm: 3, md: 4 } } }}
       >
-        <Grid container spacing={{ xs: 3, md: 4 }} sx={{ width: "100%", m: 0, minWidth: 0 }}>
-          <Grid item xs={12} md={8} sx={{ minWidth: 0 }}>
+        <Box
+          sx={{
+            display: "grid",
+            gridTemplateColumns: { xs: "1fr", md: "minmax(0, 1fr) 360px" },
+            gap: { xs: 3, md: 4 },
+            width: "100%",
+            minWidth: 0,
+            alignItems: "start",
+          }}
+        >
+          <Box sx={{ minWidth: 0 }}>
             <Stack spacing={3.5} sx={{ minWidth: 0 }}>
               <Stack
                 direction={{ xs: "column", sm: "row" }}
@@ -129,7 +138,11 @@ export default function DiseasePage() {
                       <Typography variant="h5" sx={{ fontWeight: 700, overflowWrap: "anywhere" }}>
                         {diseaseQuery.data?.name ?? "Карточка заболевания"}
                       </Typography>
-                      <Typography variant="body2" color="text.secondary" sx={{ mt: 0.75, overflowWrap: "anywhere" }}>
+                      <Typography
+                        variant="body2"
+                        color="text.secondary"
+                        sx={{ mt: 0.75, overflowWrap: "anywhere", wordBreak: "break-word" }}
+                      >
                         {diseaseQuery.data?.code ?? "Код не указан"}
                       </Typography>
                     </>
@@ -154,7 +167,7 @@ export default function DiseasePage() {
                     <Skeleton variant="text" width="70%" />
                   </Stack>
                 ) : (
-                  <Typography variant="body1" color="text.secondary" sx={{ overflowWrap: "anywhere" }}>
+                  <Typography variant="body1" color="text.secondary" sx={{ overflowWrap: "anywhere", wordBreak: "break-word" }}>
                     {diseaseQuery.data?.description}
                   </Typography>
                 )}
@@ -171,7 +184,7 @@ export default function DiseasePage() {
                     <Skeleton variant="text" width="65%" />
                   </Stack>
                 ) : (
-                  <Typography variant="body1" color="text.secondary" sx={{ overflowWrap: "anywhere" }}>
+                  <Typography variant="body1" color="text.secondary" sx={{ overflowWrap: "anywhere", wordBreak: "break-word" }}>
                     {diseaseQuery.data?.clinicalCourse}
                   </Typography>
                 )}
@@ -185,15 +198,13 @@ export default function DiseasePage() {
                 isLoading={diseaseQuery.isLoading}
               />
             </Stack>
-          </Grid>
+          </Box>
 
-          <Grid item xs={12} md={4} sx={{ minWidth: 0, maxWidth: "100%" }}>
+          <Box sx={{ minWidth: 0, width: "100%", maxWidth: { md: 360 }, justifySelf: { md: "end" } }}>
             <Box
               sx={{
                 minWidth: 0,
                 width: "100%",
-                maxWidth: { md: 380 },
-                ml: { md: "auto" },
                 alignSelf: "flex-start",
                 border: "1px solid #E5E5E7",
                 borderRadius: "14px",
@@ -223,7 +234,10 @@ export default function DiseasePage() {
                     {statsQuery.isLoading ? (
                       <Skeleton variant="text" width="45%" sx={{ mt: 0.5 }} />
                     ) : (
-                      <Typography variant="body1" sx={{ fontWeight: 600, mt: 0.5, overflowWrap: "anywhere" }}>
+                      <Typography
+                        variant="body1"
+                        sx={{ fontWeight: 600, mt: 0.5, overflowWrap: "anywhere", wordBreak: "break-word" }}
+                      >
                         {item.value}
                       </Typography>
                     )}
@@ -239,8 +253,8 @@ export default function DiseasePage() {
                 )}
               </Stack>
             </Box>
-          </Grid>
-        </Grid>
+          </Box>
+        </Box>
       </SoftCard>
     </PageContainer>
   );
