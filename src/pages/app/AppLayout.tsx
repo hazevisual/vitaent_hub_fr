@@ -25,34 +25,14 @@ import ChatBubbleOutlineRoundedIcon from "@mui/icons-material/ChatBubbleOutlineR
 import { useTheme } from "@mui/material/styles";
 import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/auth/AuthProvider";
+import logoVitaentFull from "@/assets/LogoVitaentFull.svg";
 
 const drawerWidth = 248;
 const appBarOffset = { xs: 68, md: 74 };
 const contentColumnMaxWidth = 1920;
 
-function VitaentLogo() {
-  return (
-    <Box sx={{ display: "inline-flex", alignItems: "center", minWidth: 0 }} aria-label="Vitaent logo">
-      <Box
-        component="svg"
-        viewBox="0 0 124 24"
-        role="img"
-        aria-hidden="true"
-        sx={{ height: 24, width: "auto", display: "block" }}
-      >
-        <rect x="1" y="1" width="22" height="22" rx="7" fill="none" stroke="currentColor" strokeWidth="2" />
-        <path d="M7 13h4l2-4 2 8 2-4h3" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-        <text x="30" y="16" fontFamily="Inter, Segoe UI, Roboto, sans-serif" fontSize="13" fontWeight="600" fill="currentColor">
-          Vitaent
-        </text>
-      </Box>
-    </Box>
-  );
-}
-
 const navItems = [
   { label: "Главная", to: "/app", icon: <HomeRoundedIcon fontSize="small" /> },
-  { label: "Профиль", to: "/app/profile", icon: <PersonRoundedIcon fontSize="small" /> },
   { label: "Режим дня / Сон", to: "/app/sleep", icon: <BedtimeRoundedIcon fontSize="small" /> },
   { label: "Эмоции", to: "/app/emotions", icon: <MoodRoundedIcon fontSize="small" /> },
   { label: "Сообщения", to: "/app/messages", icon: <ChatBubbleOutlineRoundedIcon fontSize="small" /> },
@@ -83,9 +63,29 @@ export default function AppLayout() {
     }
   };
 
+
+  const isRouteActive = (itemTo: string) => {
+    if (itemTo === "/app") {
+      return location.pathname === "/app" || location.pathname === "/app/home";
+    }
+
+    return location.pathname === itemTo || location.pathname.startsWith(`${itemTo}/`);
+  };
+
   const drawerContent = (
     <>
-      <Toolbar sx={{ minHeight: appBarOffset }} />
+      <Box
+        sx={{
+          height: { xs: 68, md: 74 },
+          px: 1,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "flex-start",
+          flexShrink: 0,
+        }}
+      >
+        <Box component="img" src={logoVitaentFull} alt="Vitaent" sx={{ display: "block", width: 148, height: 32 }} />
+      </Box>
       <Divider sx={{ mb: 1.5 }} />
       <List disablePadding>
         {navItems.map((item) => (
@@ -93,7 +93,7 @@ export default function AppLayout() {
             key={item.to}
             component={NavLink}
             to={item.to}
-            selected={location.pathname === item.to || location.pathname.startsWith(`${item.to}/`)}
+            selected={isRouteActive(item.to)}
             onClick={handleNavClick}
             sx={{
               gap: 1.4,
@@ -107,6 +107,9 @@ export default function AppLayout() {
                 color: "text.secondary",
               },
               "&.Mui-selected .MuiListItemText-primary, &.Mui-selected .nav-icon": {
+                color: "primary.main",
+              },
+              "&.Mui-selected:hover .MuiListItemText-primary, &.Mui-selected:hover .nav-icon": {
                 color: "primary.main",
               },
             }}
@@ -147,21 +150,23 @@ export default function AppLayout() {
                 <MenuRoundedIcon />
               </IconButton>
             )}
-
-            <Box sx={{ color: "primary.main" }}>
-              <VitaentLogo />
-            </Box>
-
             <Box sx={{ display: "flex", alignItems: "center", gap: { xs: 0.75, sm: 1.5 }, ml: "auto" }}>
-              <IconButton aria-label="Profile" size="small">
+              <IconButton
+                aria-label="Profile"
+                size="small"
+                sx={{ color: "text.secondary", "&:hover": { color: "primary.main", bgcolor: "transparent" } }}
+              >
                 <PersonRoundedIcon fontSize="small" />
               </IconButton>
-              <IconButton aria-label="Settings" size="small">
+              <IconButton
+                aria-label="Settings"
+                size="small"
+                sx={{ color: "text.secondary", "&:hover": { color: "primary.main", bgcolor: "transparent" } }}
+              >
                 <SettingsRoundedIcon fontSize="small" />
               </IconButton>
               <Button
                 variant="outlined"
-                color="primary"
                 onClick={handleSignOut}
                 sx={{
                   minWidth: 0,
@@ -169,7 +174,7 @@ export default function AppLayout() {
                   height: 34,
                   borderWidth: 1,
                   borderColor: "primary.main",
-                  color: "primary.main",
+                  color: "text.secondary",
                   "&:hover": {
                     borderColor: "primary.main",
                     bgcolor: "primary.main",
