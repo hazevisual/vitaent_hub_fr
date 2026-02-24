@@ -13,6 +13,10 @@ import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import SentimentDissatisfiedRoundedIcon from "@mui/icons-material/SentimentDissatisfiedRounded";
 import SentimentNeutralRoundedIcon from "@mui/icons-material/SentimentNeutralRounded";
 import SentimentSatisfiedAltRoundedIcon from "@mui/icons-material/SentimentSatisfiedAltRounded";
+import PsychologyAltRoundedIcon from "@mui/icons-material/PsychologyAltRounded";
+import ReportGmailerrorredRoundedIcon from "@mui/icons-material/ReportGmailerrorredRounded";
+import MoodBadRoundedIcon from "@mui/icons-material/MoodBadRounded";
+import WhatshotRoundedIcon from "@mui/icons-material/WhatshotRounded";
 import { useNavigate } from "react-router-dom";
 import PageContainer from "@/components/ui/PageContainer";
 import SoftCard from "@/components/ui/SoftCard";
@@ -54,6 +58,34 @@ const emotionCatalog: EmotionOption[] = [
     info: "Нейтральные состояния помогают формировать объективную картину эмоционального фона.",
     icon: <SentimentNeutralRoundedIcon fontSize="small" />,
   },
+  {
+    id: "suppression",
+    name: "Подавленность",
+    description: "Эмоциональный спад, ощущение опустошенности и сниженной вовлеченности.",
+    info: "Отмечайте подавленность, чтобы отслеживать периоды сниженного эмоционального ресурса.",
+    icon: <PsychologyAltRoundedIcon fontSize="small" />,
+  },
+  {
+    id: "stress",
+    name: "Стресс",
+    description: "Состояние перегрузки, внутреннего давления и сложности расслабиться.",
+    info: "Регулярная фиксация стресса помогает увидеть триггеры и динамику нагрузки в течение дня.",
+    icon: <ReportGmailerrorredRoundedIcon fontSize="small" />,
+  },
+  {
+    id: "irritability",
+    name: "Раздражительность",
+    description: "Повышенная чувствительность к внешним факторам и быстрая эмоциональная реакция.",
+    info: "Используйте этот пункт, чтобы оценивать частоту эмоционального напряжения в повседневных ситуациях.",
+    icon: <MoodBadRoundedIcon fontSize="small" />,
+  },
+  {
+    id: "aggression",
+    name: "Агрессия",
+    description: "Выраженная острота реакции, вспышки злости и конфликтность.",
+    info: "Фиксация агрессии помогает сопоставлять её с контекстом дня и корректировать поведенческие стратегии.",
+    icon: <WhatshotRoundedIcon fontSize="small" />,
+  },
 ];
 
 const contentMaxWidth = 1560;
@@ -66,7 +98,7 @@ function LeftScheduleCard({ schedule }: { schedule: DayEmotionEntry[] }) {
           Добавьте эмоции, чтобы сформировать последовательность дня.
         </Typography>
       ) : (
-        <Stack spacing={1.25} sx={{ minWidth: 0 }}>
+        <Stack spacing={1.25} sx={{ minWidth: 0, maxHeight: 420, overflowY: "auto", pr: 0.5 }}>
           {schedule.map((entry, index) => (
             <Box
               key={entry.id}
