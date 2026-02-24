@@ -26,7 +26,7 @@ export const vitaentTheme = createTheme({
       paper: "#FBFBFD",
     },
     text: {
-      primary: "#2F3B54",
+      primary: "#1E1E20",
       secondary: "#7A869C",
     },
     divider: "#E6EAF3",
@@ -41,14 +41,14 @@ export const vitaentTheme = createTheme({
       fontWeight: 700,
       lineHeight: 1,
       letterSpacing: "-0.03em",
-      color: "#2D3A56",
+      color: "#1E1E20",
     },
     h2: {
       fontSize: "clamp(2rem, 5.5vw, 3rem)",
       fontWeight: 700,
       lineHeight: 1.1,
       letterSpacing: "-0.02em",
-      color: "#2D3A56",
+      color: "#1E1E20",
     },
     h5: {
       fontWeight: 600,
@@ -57,7 +57,7 @@ export const vitaentTheme = createTheme({
     body1: {
       fontSize: "1rem",
       fontWeight: 500,
-      color: "#55627B",
+      color: "#1E1E20",
     },
     body2: {
       fontSize: "0.95rem",

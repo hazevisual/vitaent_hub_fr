@@ -117,7 +117,7 @@ const sectionHeaderSx = {
   fontSize: "0.95rem",
   lineHeight: 1.2,
   fontWeight: 600,
-  color: "rgba(74, 88, 118, 0.95)",
+  color: "text.secondary",
 };
 
 export default function HomePage() {
@@ -161,24 +161,35 @@ export default function HomePage() {
           px: { xs: 2, sm: 3 },
           minWidth: 0,
           overflowX: "hidden",
+          "@media (min-width:2560px)": {
+            maxWidth: 1728,
+            px: 4,
+          },
         }}
       >
         <Box
-          sx={{
-            width: "100%",
-            minWidth: 0,
-            display: "flex",
-            flexDirection: "column",
-            gap: { xs: 2, sm: 3, lg: 4 },
-            pb: { xs: 1, md: 2 },
-          }}
-        >
+            sx={{
+              width: "100%",
+              minWidth: 0,
+              display: "flex",
+              flexDirection: "column",
+              gap: { xs: 2, sm: 3, lg: 4 },
+              pb: { xs: 1, md: 2 },
+              "@media (min-width:2560px)": {
+                gap: 5,
+                pb: 3,
+              },
+            }}
+          >
           <Box
             sx={{
               display: "grid",
               alignContent: "start",
               gridTemplateColumns: { xs: "minmax(0, 1fr)", md: "repeat(2, minmax(0, 1fr))", lg: "repeat(3, minmax(0, 1fr))" },
               gap: { xs: 2, sm: 3, lg: 4 },
+              "@media (min-width:2560px)": {
+                gap: 5,
+              },
             }}
           >
         <SoftCard
@@ -186,6 +197,10 @@ export default function HomePage() {
             minHeight: { xs: 260, lg: 340 },
             minWidth: 0,
             p: 3,
+            "@media (min-width:2560px)": {
+              minHeight: 390,
+              p: 3.5,
+            },
           }}
         >
           {renderStateBody({
@@ -228,7 +243,7 @@ export default function HomePage() {
                   <Typography variant="h1" sx={{ fontSize: { xs: "3.3rem", md: "3.8rem" }, lineHeight: 1 }}>
                     {dashboardData.completion}%
                   </Typography>
-                  <Typography variant="body2" sx={{ textAlign: "center", color: "primary.main" }}>
+                  <Typography variant="body2" sx={{ textAlign: "center", color: "text.secondary" }}>
                     Данных заполнено за среду
                   </Typography>
                 </Stack>
@@ -258,6 +273,10 @@ export default function HomePage() {
             minHeight: { xs: 260, lg: 340 },
             minWidth: 0,
             p: 3,
+            "@media (min-width:2560px)": {
+              minHeight: 390,
+              p: 3.5,
+            },
           }}
         >
           {renderStateBody({
@@ -325,6 +344,10 @@ export default function HomePage() {
             minWidth: 0,
             minHeight: { xs: 240, lg: 340 },
             p: 3,
+            "@media (min-width:2560px)": {
+              minHeight: 390,
+              p: 3.5,
+            },
           }}
         >
           {renderStateBody({
@@ -382,6 +405,9 @@ export default function HomePage() {
               alignContent: "start",
               gridTemplateColumns: { xs: "minmax(0, 1fr)", lg: "minmax(0, 2fr) minmax(0, 1fr)" },
               gap: { xs: 2, sm: 3, lg: 4 },
+              "@media (min-width:2560px)": {
+                gap: 5,
+              },
             }}
           >
 
@@ -390,6 +416,10 @@ export default function HomePage() {
             minHeight: { xs: 220, lg: 240 },
             minWidth: 0,
             p: 3,
+            "@media (min-width:2560px)": {
+              minHeight: 275,
+              p: 3.5,
+            },
           }}
         >
           {renderStateBody({
@@ -422,7 +452,7 @@ export default function HomePage() {
                   </IconButton>
 
                   <Stack spacing={2.5} alignItems="center" justifyContent="center" sx={{ flex: 1 }}>
-                    <Typography sx={{ textAlign: "center", color: "primary.main", fontSize: { xs: "1.2rem", md: "1.55rem" }, lineHeight: 1.4, fontWeight: 500, maxWidth: 620 }}>
+                    <Typography sx={{ textAlign: "center", color: "text.primary", fontSize: { xs: "1.2rem", md: "1.55rem" }, lineHeight: 1.4, fontWeight: 500, maxWidth: 620 }}>
                       {dashboardData.recommendation}
                     </Typography>
                     <Button variant="outlined" sx={{ borderRadius: 999, minWidth: 132 }}>
@@ -444,6 +474,10 @@ export default function HomePage() {
             minHeight: { xs: 220, lg: 240 },
             minWidth: 0,
             p: 3,
+            "@media (min-width:2560px)": {
+              minHeight: 275,
+              p: 3.5,
+            },
           }}
         >
           {renderStateBody({
@@ -460,7 +494,7 @@ export default function HomePage() {
               <Stack sx={{ height: "100%" }}>
                 <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", textAlign: "center", height: "100%" }}>
                   <Stack spacing={1.4}>
-                    <Typography sx={{ fontSize: { xs: "1.35rem", md: "1.6rem" }, color: "primary.main", maxWidth: 320, fontWeight: 500 }}>
+                    <Typography sx={{ fontSize: { xs: "1.35rem", md: "1.6rem" }, color: "text.primary", maxWidth: 320, fontWeight: 500 }}>
                       Ваш следующий прием назначен
                     </Typography>
                     <Box sx={{ textAlign: "center" }}>
