@@ -129,6 +129,63 @@ const initialGroups: EmotionGroup[] = [
 const getFlatSequence = (groups: EmotionGroup[]) =>
   groups.flatMap((group) => group.emotions.map((emotion) => ({ ...emotion, groupId: group.id, fillable: group.fillable })));
 
+type FlatEmotion = ReturnType<typeof getFlatSequence>[number];
+
+function DailyStatsCard({ emotions }: { emotions: FlatEmotion[] }) {
+  const fillableStats = emotions.filter((item) => item.fillable);
+  const statsRows = fillableStats.length
+    ? fillableStats
+    : [
+        { id: "placeholder-1", title: "Эмоция 1", value: null },
+        { id: "placeholder-2", title: "Эмоция 2", value: null },
+        { id: "placeholder-3", title: "Эмоция 3", value: null },
+      ];
+
+  return (
+    <SoftCard
+      title="Общая статистика за день (Заполните расписание за день)"
+      sx={{ minHeight: 0, flex: 1, display: "flex", flexDirection: "column", width: "100%" }}
+      contentSx={{
+        minHeight: 0,
+        flex: 1,
+        display: "flex",
+        flexDirection: "column",
+        p: { xs: 2, sm: 2, md: 2 },
+        "&:last-child": { pb: { xs: 2, sm: 2, md: 2 } },
+      }}
+    >
+      <Stack spacing={0.75} sx={{ minHeight: 0, alignContent: "flex-start" }}>
+        {statsRows.map((item) => {
+          const safeValue = item.value ?? 0;
+          const isPlaceholder = item.value === null;
+
+          return (
+            <Box key={item.id}>
+              <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", mb: 0 }}>
+                <Typography variant="body2" sx={{ color: isPlaceholder ? "text.secondary" : "text.primary" }}>
+                  {item.title}
+                </Typography>
+                <Typography variant="caption" sx={{ color: "text.secondary" }}>
+                  {safeValue} из 10
+                </Typography>
+              </Box>
+              <Box sx={{ width: "100%", height: 6, borderRadius: 99, bgcolor: "#E5E5E7", overflow: "hidden" }}>
+                <Box
+                  sx={{
+                    width: `${(safeValue / 10) * 100}%`,
+                    height: "100%",
+                    bgcolor: isPlaceholder ? "#C9CCD4" : "primary.main",
+                  }}
+                />
+              </Box>
+            </Box>
+          );
+        })}
+      </Stack>
+    </SoftCard>
+  );
+}
+
 export default function EmotionsPage() {
   const navigate = useNavigate();
   const [groups, setGroups] = React.useState<EmotionGroup[]>(initialGroups);
@@ -484,45 +541,7 @@ export default function EmotionsPage() {
               </Stack>
             </SoftCard>
 
-            <SoftCard
-              title="Общая статистика за день (Заполните расписание за день)"
-              sx={{ minHeight: 0, flex: 1, display: "flex", flexDirection: "column" }}
-              contentSx={{
-                minHeight: 0,
-                flex: 1,
-                display: "flex",
-                flexDirection: "column",
-                p: { xs: 2, sm: 2, md: 2 },
-                "&:last-child": { pb: { xs: 2, sm: 2, md: 2 } },
-              }}
-            >
-              <Stack spacing={0.75} sx={{ minHeight: 0, alignContent: "flex-start" }}>
-                {sequence
-                  .filter((item) => item.fillable)
-                  .map((item) => {
-                    const safeValue = item.value ?? 0;
-                    return (
-                      <Box key={item.id}>
-                        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", mb: 0 }}>
-                          <Typography variant="body2">{item.title}</Typography>
-                          <Typography variant="caption" sx={{ color: "text.secondary" }}>
-                            {safeValue} из 10
-                          </Typography>
-                        </Box>
-                        <Box sx={{ width: "100%", height: 6, borderRadius: 99, bgcolor: "#E5E5E7", overflow: "hidden" }}>
-                          <Box
-                            sx={{
-                              width: `${(safeValue / 10) * 100}%`,
-                              height: "100%",
-                              bgcolor: "primary.main",
-                            }}
-                          />
-                        </Box>
-                      </Box>
-                    );
-                  })}
-              </Stack>
-            </SoftCard>
+            <DailyStatsCard emotions={sequence} />
 
           </Box>
         </Box>
