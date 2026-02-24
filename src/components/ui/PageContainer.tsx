@@ -1,6 +1,8 @@
 import { Box } from "@mui/material";
 import type { BoxProps } from "@mui/material";
 
+const contentMaxWidth = 1560;
+
 export default function PageContainer({ children, sx, ...rest }: BoxProps) {
   return (
     <Box
@@ -11,18 +13,17 @@ export default function PageContainer({ children, sx, ...rest }: BoxProps) {
         flexDirection: "column",
         alignSelf: "stretch",
         flex: 1,
-        minHeight: { xs: "calc(100vh - 68px)", md: "calc(100vh - 74px)" },
         minWidth: 0,
         width: "100%",
-        maxWidth: "none",
-        px: { xs: "16px", sm: "24px", md: "32px", lg: "48px", xl: "80px" },
+        maxWidth: contentMaxWidth,
+        mx: "auto",
+        px: { xs: "16px", sm: "24px", md: "32px", lg: "48px", xl: "48px" },
         pt: { xs: 2, sm: 3, lg: 4 },
         pb: { xs: 4, md: 5, lg: 6 },
-        overflowX: "hidden",
         ...sx,
       }}
     >
-      <Box sx={{ width: "100%", maxWidth: "100%", minWidth: 0 }}>{children}</Box>
+      {children}
     </Box>
   );
 }
