@@ -213,7 +213,16 @@ export default function EmotionsPage() {
   };
 
   return (
-    <PageContainer>
+    <PageContainer
+      sx={{
+        pt: { xs: 1.5, sm: 2, lg: 2.5 },
+        pb: { xs: 2.5, md: 3, lg: 3.5 },
+        minHeight: 0,
+        height: "100%",
+        maxHeight: "100%",
+        overflow: "hidden",
+      }}
+    >
       <Box
         sx={{
           display: "flex",
@@ -222,9 +231,11 @@ export default function EmotionsPage() {
           maxWidth: EMOTIONS_CONTENT_MAX_WIDTH,
           mx: "auto",
           minWidth: 0,
-          height: "100%",
           flex: 1,
           minHeight: 0,
+          height: "100%",
+          maxHeight: "100%",
+          overflow: "hidden",
         }}
       >
         <Box
@@ -243,25 +254,25 @@ export default function EmotionsPage() {
               alignItems: "stretch",
               alignContent: "start",
               justifyContent: "flex-start",
-              gap: { xs: 2, md: 3, lg: 4 },
-              [twoKMediaQuery]: { gap: 5 },
+              gap: { xs: 1.5, md: 2, lg: 2.5 },
+              [twoKMediaQuery]: { gap: 3 },
               "@media (min-width:1200px)": {
                 gridTemplateColumns: "minmax(260px, 1fr) minmax(340px, 1.15fr) minmax(300px, 1fr)",
               },
             }}
           >
-          <SoftCard title="Расписание за день" sx={{ minHeight: 0 }} contentSx={{ minHeight: 0 }}>
+          <SoftCard title="Расписание за день" sx={{ minHeight: 0, height: "100%" }} contentSx={{ minHeight: 0 }}>
             <Box sx={{ flex: 1, minHeight: 0, overflowY: "auto", pr: 0.5 }}>
               {groups.map((section) => (
-                <Box key={section.id} sx={{ mb: 3 }}>
-                  <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1.5 }}>
+                <Box key={section.id} sx={{ mb: 2.25 }}>
+                  <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
                     <AccessTimeRoundedIcon sx={{ fontSize: 18, color: section.fillable ? "primary.main" : "#C9C9CB" }} />
                     <Typography variant="subtitle2" sx={{ color: "text.secondary" }}>
                       {section.title}
                     </Typography>
                   </Box>
 
-                  <List disablePadding sx={{ display: "grid", gap: 1 }}>
+                  <List disablePadding sx={{ display: "grid", gap: 0.75 }}>
                     {section.emotions.map((emotion) => {
                       const isSelected = emotion.id === selectedEmotionId;
                       const isDisabled = !section.fillable;
@@ -311,14 +322,14 @@ export default function EmotionsPage() {
             </Box>
           </SoftCard>
 
-          <SoftCard title={selectedEmotion?.title ?? "Эмоция"} sx={{ minHeight: 0 }} contentSx={{ minHeight: 0 }}>
-            <Stack spacing={{ xs: 2.5, md: 3 }} sx={{ height: "100%", minHeight: 0, overflowY: "auto" }}>
+          <SoftCard title={selectedEmotion?.title ?? "Эмоция"} sx={{ minHeight: 0, height: "100%" }} contentSx={{ minHeight: 0 }}>
+            <Stack spacing={{ xs: 2, md: 2.25 }} sx={{ height: "100%", minHeight: 0, overflowY: "auto" }}>
               <Box sx={{ display: "flex", justifyContent: "center", width: "100%", flexShrink: 0 }}>
                 <Box
                   aria-hidden
                   sx={{
-                    width: { xs: 170, md: 200, xl: 220 },
-                    height: { xs: 170, md: 200, xl: 220 },
+                    width: { xs: 154, md: 180, xl: 198 },
+                    height: { xs: 154, md: 180, xl: 198 },
                     borderRadius: "50%",
                     border: "1px solid #C9C9CB",
                     bgcolor: "#F5F5F7",
@@ -332,7 +343,7 @@ export default function EmotionsPage() {
                 </Box>
               </Box>
 
-              <Box sx={{ display: "flex", flexDirection: "column", gap: 1.25, px: { xs: 0.5, md: 1 }, flexShrink: 0 }}>
+              <Box sx={{ display: "flex", flexDirection: "column", gap: 1, px: { xs: 0.5, md: 0.75 }, py: 0.5, flexShrink: 0 }}>
                 <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 1.5 }}>
                   <Typography variant="body2" sx={{ color: "text.secondary" }}>
                     Интенсивность
@@ -423,11 +434,11 @@ export default function EmotionsPage() {
               height: "100%",
               display: "flex",
               flexDirection: "column",
-              gap: { xs: 2, md: 3, lg: 4 },
-              [twoKMediaQuery]: { gap: 5 },
+              gap: { xs: 1.5, md: 2, lg: 2.5 },
+              [twoKMediaQuery]: { gap: 3 },
             }}
           >
-            <SoftCard title="Информация" sx={{ minHeight: 0, flex: { xs: "0 0 auto", xl: "0 0 280px" } }} contentSx={{ minHeight: 0 }}>
+            <SoftCard title="Информация" sx={{ minHeight: 0, flex: "0 0 250px" }} contentSx={{ minHeight: 0 }}>
               <Stack spacing={1.5} sx={{ flex: 1, minHeight: 0, overflowY: "auto", pr: 0.5 }}>
                 <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
                   {selectedEmotion?.title}
