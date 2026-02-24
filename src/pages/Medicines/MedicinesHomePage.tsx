@@ -84,7 +84,7 @@ export default function MedicinesHomePage() {
                       px: 3,
                       py: 1.75,
                       borderRadius: 1,
-                      bgcolor: (theme) => alpha(theme.palette.primary.main, 0.1),
+                      bgcolor: "background.paper",
                     }}
                   >
                     <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 1.1 }}>
@@ -99,7 +99,7 @@ export default function MedicinesHomePage() {
                         px: 1.25,
                         py: 1,
                         borderRadius: 0.75,
-                        bgcolor: (theme) => alpha(theme.palette.common.white, 0.72),
+                        bgcolor: (theme) => alpha(theme.palette.primary.main, 0.08),
                       }}
                     >
                       {slot.medications.map((name) => (
