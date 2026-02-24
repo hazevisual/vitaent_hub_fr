@@ -217,10 +217,7 @@ export default function EmotionsPage() {
       sx={{
         pt: { xs: 1.5, sm: 2, lg: 2.5 },
         pb: { xs: 2.5, md: 3, lg: 3.5 },
-        position: "relative",
         minHeight: 0,
-        height: "100%",
-        overflow: "hidden",
       }}
     >
       <Box
@@ -233,9 +230,6 @@ export default function EmotionsPage() {
           minWidth: 0,
           flex: 1,
           minHeight: 0,
-          height: "100%",
-          maxHeight: "100%",
-          overflow: "hidden",
         }}
       >
         <Box
@@ -243,6 +237,7 @@ export default function EmotionsPage() {
             display: "flex",
             flex: 1,
             minHeight: 0,
+            alignItems: "stretch",
           }}
         >
           <Box
@@ -349,40 +344,18 @@ export default function EmotionsPage() {
               <Box
                 sx={{
                   display: "flex",
-                  flexDirection: "column",
-                  alignItems: "stretch",
-                  gap: 1,
-                  py: 0.5,
+                  alignItems: "center",
+                  gap: 1.5,
                   flexShrink: 0,
                   minWidth: 0,
-                  overflowX: "hidden",
+                  py: 0.5,
                 }}
               >
-                <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 1.5, minWidth: 0 }}>
-                  <Typography variant="body2" sx={{ color: "text.secondary" }}>
-                    Интенсивность
-                  </Typography>
-                  <Box
-                    sx={{
-                      minWidth: 40,
-                      py: 0.375,
-                      px: 1.2,
-                      borderRadius: "999px",
-                      border: "1px solid #C9C9CB",
-                      bgcolor: "#FFFFFF",
-                      textAlign: "center",
-                      flexShrink: 0,
-                      maxWidth: 72,
-                    }}
-                  >
-                    <Typography variant="body2" sx={{ fontWeight: 600, lineHeight: 1.1, color: "text.primary" }}>
-                      {sliderValue}
-                    </Typography>
-                  </Box>
-                </Box>
+                <Typography variant="body2" sx={{ color: "text.secondary", flexShrink: 0 }}>
+                  Интенсивность
+                </Typography>
                 <Slider
                   aria-label="Интенсивность эмоции"
-                  orientation="horizontal"
                   min={0}
                   max={10}
                   step={1}
@@ -392,10 +365,10 @@ export default function EmotionsPage() {
                   disabled={!selectedEmotion?.fillable}
                   onChange={(_event, value) => setSliderValue(value as number)}
                   sx={{
-                    width: "100%",
+                    flex: 1,
+                    minWidth: 0,
                     boxSizing: "border-box",
-                    p: "2px 0 !important",
-                    mx: 0,
+                    py: "2px",
                     "& .MuiSlider-rail": {
                       height: 4,
                       bgcolor: "#E5E5E7",
@@ -425,6 +398,23 @@ export default function EmotionsPage() {
                     },
                   }}
                 />
+                <Box
+                  sx={{
+                    minWidth: 40,
+                    py: 0.375,
+                    px: 1.2,
+                    borderRadius: "999px",
+                    border: "1px solid #C9C9CB",
+                    bgcolor: "#FFFFFF",
+                    textAlign: "center",
+                    flexShrink: 0,
+                    maxWidth: 72,
+                  }}
+                >
+                  <Typography variant="body2" sx={{ fontWeight: 600, lineHeight: 1.1, color: "text.primary" }}>
+                    {sliderValue}
+                  </Typography>
+                </Box>
               </Box>
 
               <Button
