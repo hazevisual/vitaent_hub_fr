@@ -16,7 +16,7 @@ export default function PageContainer({ children, sx, ...rest }: BoxProps) {
         width: "100%",
         maxWidth: "none",
         px: { xs: "16px", sm: "24px", md: "32px", lg: "48px", xl: "80px" },
-        pt: { xs: 0.75, sm: 1, md: 1.5 },
+        pt: { xs: 2, sm: 3, lg: 4 },
         pb: { xs: 4, md: 5, lg: 6 },
         overflowX: "clip",
         ...sx,
