@@ -438,7 +438,17 @@ export default function HomePage() {
                   </IconButton>
 
                   <Stack spacing={2.5} alignItems="center" justifyContent="center" sx={{ flex: 1 }}>
-                    <Typography variant="h2" sx={{ textAlign: "center", color: "text.primary", lineHeight: 1.2, fontWeight: 500, maxWidth: 620 }}>
+                    <Typography
+                      variant="h2"
+                      sx={{
+                        textAlign: "center",
+                        color: "text.primary",
+                        lineHeight: 1.2,
+                        fontWeight: 500,
+                        maxWidth: 620,
+                        fontSize: { xs: "1.5rem", md: "1.75rem" },
+                      }}
+                    >
                       {dashboardData.recommendation}
                     </Typography>
                     <Button variant="outlined" sx={{ borderRadius: 999, minWidth: 132 }}>
