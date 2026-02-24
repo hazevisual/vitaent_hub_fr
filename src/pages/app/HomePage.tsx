@@ -156,14 +156,22 @@ export default function HomePage() {
         sx={{
           width: "100%",
           minWidth: 0,
-          display: "grid",
-          alignContent: "start",
-          gridTemplateColumns: { xs: "minmax(0, 1fr)", md: "repeat(12, minmax(0, 1fr))" },
-          rowGap: { xs: 2, sm: 3, lg: 4 },
-          columnGap: { xs: 2, sm: 3, lg: 4 },
-          pb: { xs: 1, md: 2 },
+          overflowX: "hidden",
+          zoom: { xs: 1, md: 1, lg: 1.15, xl: 1.33 },
         }}
       >
+        <Box
+          sx={{
+            width: "100%",
+            minWidth: 0,
+            display: "grid",
+            alignContent: "start",
+            gridTemplateColumns: { xs: "minmax(0, 1fr)", md: "repeat(12, minmax(0, 1fr))" },
+            rowGap: { xs: 2, sm: 3, lg: 4 },
+            columnGap: { xs: 2, sm: 3, lg: 4 },
+            pb: { xs: 1, md: 2 },
+          }}
+        >
         <SoftCard
           sx={{
             gridColumn: { xs: "1 / -1", md: "1 / span 6", lg: "1 / span 4" },
@@ -379,7 +387,17 @@ export default function HomePage() {
             ),
             ready: (
               <Stack sx={{ height: "100%" }}>
-                <Typography sx={{ ...sectionHeaderSx, mb: 1.5 }}>Системная рекомендация</Typography>
+                <Typography
+                  variant="subtitle2"
+                  sx={{
+                    textAlign: "center",
+                    fontWeight: 500,
+                    color: "text.secondary",
+                    mb: 2,
+                  }}
+                >
+                  Системная рекомендация
+                </Typography>
                 <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", flex: 1, gap: 2 }}>
                   <IconButton
                     sx={{
@@ -440,15 +458,21 @@ export default function HomePage() {
                     <Typography sx={{ fontSize: { xs: "1.35rem", md: "1.6rem" }, color: "rgba(95, 120, 164, 0.9)", maxWidth: 320, fontWeight: 500 }}>
                       Ваш следующий прием назначен
                     </Typography>
-                    <Typography sx={{ fontSize: { xs: "1.2rem", md: "1.45rem" }, color: "rgba(95, 120, 164, 0.9)", fontWeight: 600 }}>
-                      {dashboardData.appointment}
-                    </Typography>
+                    <Box sx={{ textAlign: "center" }}>
+                      <Typography variant="h5" sx={{ fontWeight: 600, color: "rgba(95, 120, 164, 0.9)" }}>
+                        {dashboardData.appointment?.replace(/^На\s+/, "").split(" ")[0]}
+                      </Typography>
+                      <Typography variant="body2" sx={{ color: "text.secondary" }}>
+                        {dashboardData.appointment?.replace(/^На\s+/, "").split(" ")[1]}
+                      </Typography>
+                    </Box>
                   </Stack>
                 </Box>
               </Stack>
             ),
           })}
         </SoftCard>
+        </Box>
       </Box>
     </PageContainer>
   );
