@@ -1,5 +1,6 @@
 import { Alert, Box, CircularProgress, Divider, Stack, Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
+import { useLayoutEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getDiseaseById, getDiseaseStatsById } from "@/api/diseases";
 import PageContainer from "@/components/ui/PageContainer";
@@ -24,6 +25,29 @@ function SectionList({ title, items }: { title: string; items: string[] }) {
 
 export default function DiseasePage() {
   const { id = "1" } = useParams<{ id: string }>();
+  const pageTopSentinelRef = useRef<HTMLDivElement | null>(null);
+  const contentBottomPadding = 16;
+  const [contentMaxHeight, setContentMaxHeight] = useState<number>(0);
+
+  useLayoutEffect(() => {
+    const updateContentMaxHeight = () => {
+      const sentinelTop = pageTopSentinelRef.current?.getBoundingClientRect().top;
+
+      if (typeof sentinelTop !== "number") {
+        return;
+      }
+
+      const availableHeight = window.innerHeight - sentinelTop - contentBottomPadding;
+      setContentMaxHeight(Math.max(0, Math.floor(availableHeight)));
+    };
+
+    updateContentMaxHeight();
+    window.addEventListener("resize", updateContentMaxHeight);
+
+    return () => {
+      window.removeEventListener("resize", updateContentMaxHeight);
+    };
+  }, [contentBottomPadding]);
 
   const diseaseQuery = useQuery({
     queryKey: ["disease", id],
@@ -74,10 +98,12 @@ export default function DiseasePage() {
           width: "100%",
           maxWidth: 1560,
           mx: "auto",
+          pb: `${contentBottomPadding}px`,
           minWidth: 0,
           overflowX: "hidden",
         }}
       >
+        <Box ref={pageTopSentinelRef} sx={{ height: 0, minHeight: 0 }} />
         <Box
           sx={{
             width: "100%",
@@ -85,13 +111,16 @@ export default function DiseasePage() {
             gridTemplateColumns: { xs: "1fr", lg: "minmax(0, 1fr) 320px" },
             gap: { xs: 2, md: 3 },
             alignItems: "stretch",
+            height: contentMaxHeight ? `${contentMaxHeight}px` : undefined,
+            maxHeight: contentMaxHeight ? `${contentMaxHeight}px` : undefined,
             minWidth: 0,
             minHeight: 0,
+            overflow: "hidden",
           }}
         >
         <SoftCard
-          sx={{ minWidth: 0, minHeight: 0 }}
-          contentSx={{ display: "flex", flexDirection: "column", gap: 3, minWidth: 0, minHeight: 0, overflow: "hidden" }}
+          sx={{ minWidth: 0, minHeight: 0, height: "100%", overflow: "hidden" }}
+          contentSx={{ display: "flex", flexDirection: "column", gap: 3, minWidth: 0, minHeight: 0, height: "100%", overflow: "hidden" }}
         >
           <Box sx={{ minWidth: 0 }}>
             <Typography variant="h4" sx={{ fontSize: { xs: "1.5rem", md: "1.8rem" }, fontWeight: 600, mb: 0.75 }}>
@@ -102,13 +131,14 @@ export default function DiseasePage() {
             </Typography>
           </Box>
 
-          <Box sx={{ display: "flex", flexDirection: "column", minHeight: 0, overflow: "hidden", gap: 1.5 }}>
+          <Box sx={{ display: "flex", flexDirection: "column", flex: 1, minHeight: 0, overflow: "hidden", gap: 1.5 }}>
             <Typography variant="h6" sx={{ fontSize: "1rem", fontWeight: 600 }}>
               Описание
             </Typography>
             <Box
               sx={{
-                maxHeight: "clamp(160px, 28vh, 320px)",
+                flex: 1,
+                minHeight: 0,
                 overflowY: "auto",
                 overflowX: "hidden",
                 pr: 1,
@@ -123,7 +153,7 @@ export default function DiseasePage() {
 
           <Divider sx={{ flexShrink: 0 }} />
 
-          <Stack spacing={3} sx={{ minWidth: 0 }}>
+          <Stack spacing={3} sx={{ minWidth: 0, flexShrink: 0 }}>
             <Box>
               <Typography variant="h6" sx={{ fontSize: "1rem", fontWeight: 600, mb: 1.5 }}>
                 Клиническое течение
@@ -137,7 +167,11 @@ export default function DiseasePage() {
           </Stack>
         </SoftCard>
 
-        <SoftCard title="Статистика" sx={{ alignSelf: "start", minWidth: 0 }} contentSx={{ gap: 2.5, minWidth: 0 }}>
+        <SoftCard
+          title="Статистика"
+          sx={{ alignSelf: "stretch", minWidth: 0, minHeight: 0, maxHeight: "100%", overflow: "hidden" }}
+          contentSx={{ gap: 2.5, minWidth: 0, minHeight: 0, overflowY: "auto" }}
+        >
           <Box
             sx={{
               display: "grid",
