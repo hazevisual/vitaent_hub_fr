@@ -4,7 +4,6 @@ import {
   Box,
   Button,
   Chip,
-  Divider,
   Grid,
   IconButton,
   List,
@@ -14,7 +13,6 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { alpha } from "@mui/material/styles";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import RemoveRoundedIcon from "@mui/icons-material/RemoveRounded";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
@@ -59,12 +57,26 @@ export default function MedicinesHomePage() {
   }, [query]);
 
   const selectedMedication = medications.find((item) => item.id === selectedId) ?? medications[0];
+  const cardSx = {
+    minHeight: { xs: "auto", lg: 520 },
+    width: "100%",
+    border: "1px solid #E5E5E7",
+    borderRadius: "16px",
+    bgcolor: "#FFFFFF",
+    boxShadow: "none",
+    "@media (min-width:2000px)": {
+      "& .MuiCardContent-root": {
+        p: 3.75,
+        "&:last-child": { pb: 3.75 },
+      },
+    },
+  };
 
   return (
     <PageContainer sx={{ width: "100%", maxWidth: "100%" }}>
       <Stack spacing={4} sx={{ width: "100%", maxWidth: "100%", minWidth: 0 }}>
-        <Box sx={{ mb: { xs: 1, md: 1 } }}>
-          <Typography variant="h4" sx={{ fontSize: { xs: "1.5rem", md: "1.75rem" }, fontWeight: 600 }}>
+        <Box sx={{ mb: 2 }}>
+          <Typography variant="h4" sx={{ fontSize: { xs: "1.5rem", md: "1.75rem" }, fontWeight: 600, lineHeight: 1.2 }}>
             Лекарства
           </Typography>
           <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
@@ -75,18 +87,17 @@ export default function MedicinesHomePage() {
         <Box sx={{ width: "100%", maxWidth: "100%", minWidth: 0 }}>
           <Grid container spacing={{ xs: 2, md: 3 }} alignItems="stretch" sx={{ width: "100%", maxWidth: "100%", m: 0, minWidth: 0 }}>
             <Grid item xs={12} md={4} sx={{ minWidth: 0, maxWidth: "100%", display: "flex" }}>
-              <SoftCard title="Расписание приёма" sx={{ minHeight: { xs: "auto", lg: 520 }, width: "100%", border: "1px solid #E5E5E7", boxShadow: "none", "@media (min-width:2000px)": { "& .MuiCardContent-root": { p: 3.75, "&:last-child": { pb: 3.75 } } } }}>
+              <SoftCard title="Расписание приёма" sx={cardSx}>
               <Stack spacing={2}>
                 {slots.map((slot) => (
                   <Box
                     key={slot.id}
                     sx={{
-                      px: 2.5,
+                      px: 3,
                       py: 2,
                       borderRadius: "12px",
                       bgcolor: "#F5F5F7",
                       border: "1px solid #C9C9CB",
-                      mb: 2,
                     }}
                   >
                     <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 1 }}>
@@ -98,7 +109,7 @@ export default function MedicinesHomePage() {
                     <Stack
                       spacing={1}
                       sx={{
-                        px: 1.5,
+                        px: 2,
                         py: 1,
                       }}
                     >
@@ -110,7 +121,7 @@ export default function MedicinesHomePage() {
                     </Stack>
                   </Box>
                 ))}
-                <Stack direction={{ xs: "column", sm: "row" }} spacing={1.5} sx={{ pt: 1.5, mt: "auto" }}>
+                <Stack direction={{ xs: "column", sm: "row" }} spacing={2} sx={{ pt: 2, mt: "auto" }}>
                   <Button variant="contained" sx={{ borderRadius: "12px", boxShadow: "none" }}>Добавить лекарства</Button>
                   <Button variant="outlined" sx={{ borderRadius: "12px", boxShadow: "none" }}>Добавить временной слот</Button>
                 </Stack>
@@ -121,19 +132,14 @@ export default function MedicinesHomePage() {
             <Grid item xs={12} md={4} sx={{ minWidth: 0, maxWidth: "100%", display: "flex" }}>
               <SoftCard
                 title="Лекарства"
-                sx={{
-                  minHeight: { xs: "auto", lg: 520 },
-                  width: "100%",
-                  border: "1px solid #E5E5E7",
-                  boxShadow: "none",
-                  "@media (min-width:2000px)": { "& .MuiCardContent-root": { p: 3.75, "&:last-child": { pb: 3.75 } } },
-                }}
+                sx={cardSx}
               >
               <Stack spacing={2} sx={{ minHeight: 0, flex: 1 }}>
                 <TextField
                   value={query}
                   onChange={(event) => setQuery(event.target.value)}
                   placeholder="Найти препарат"
+                  sx={{ "& .MuiOutlinedInput-root": { borderRadius: "8px" } }}
                   InputProps={{
                     startAdornment: <SearchRoundedIcon sx={{ color: "text.secondary", mr: 1 }} fontSize="small" />,
                   }}
@@ -149,7 +155,7 @@ export default function MedicinesHomePage() {
                       sx={{
                         mb: 1,
                         px: 2,
-                        py: 1.5,
+                        py: 2,
                         borderRadius: "12px",
                         border: "1px solid transparent",
                         "&.Mui-selected": {
@@ -168,9 +174,11 @@ export default function MedicinesHomePage() {
                         sx={{
                           width: 32,
                           height: 32,
-                          mr: 1.5,
-                          bgcolor: (theme) => alpha(theme.palette.primary.main, 0.24),
-                          color: "primary.dark",
+                          mr: 2,
+                          borderRadius: "8px",
+                          bgcolor: "#F5F5F7",
+                          color: "text.primary",
+                          border: "1px solid #E5E5E7",
                         }}
                       >
                         {item.name.slice(0, 1)}
@@ -188,10 +196,10 @@ export default function MedicinesHomePage() {
             </Grid>
 
             <Grid item xs={12} md={4} sx={{ minWidth: 0, maxWidth: "100%", display: "flex" }}>
-              <SoftCard title="Карточка препарата" sx={{ minHeight: { xs: "auto", lg: 520 }, width: "100%", border: "1px solid #E5E5E7", boxShadow: "none", "@media (min-width:2000px)": { "& .MuiCardContent-root": { p: 3.75, "&:last-child": { pb: 3.75 } } } }}>
+              <SoftCard title="Карточка препарата" sx={cardSx}>
               <Stack spacing={3}>
-                <Box>
-                  <Typography variant="h5" sx={{ fontSize: "1.1rem", fontWeight: 600 }}>
+                <Box sx={{ p: 2, borderRadius: "12px", border: "1px solid #E5E5E7", bgcolor: "#FFFFFF" }}>
+                  <Typography variant="h5" sx={{ fontSize: "1.125rem", fontWeight: 600 }}>
                     {selectedMedication.name}
                   </Typography>
                   <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
@@ -199,9 +207,7 @@ export default function MedicinesHomePage() {
                   </Typography>
                 </Box>
 
-                <Divider />
-
-                <Box sx={{ pt: 1 }}>
+                <Box sx={{ p: 2, borderRadius: "12px", border: "1px solid #E5E5E7", bgcolor: "#FFFFFF" }}>
                   <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 2 }}>
                     Примечание
                   </Typography>
@@ -210,16 +216,16 @@ export default function MedicinesHomePage() {
                   </Typography>
                 </Box>
 
-                <Box sx={{ pt: 1 }}>
+                <Box sx={{ p: 2, borderRadius: "12px", border: "1px solid #E5E5E7", bgcolor: "#FFFFFF" }}>
                   <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 2 }}>
                     Количество
                   </Typography>
                   <Stack direction="row" alignItems="center" spacing={1.5}>
-                    <IconButton onClick={() => setQuantity((prev) => Math.max(1, prev - 1))}>
+                    <IconButton sx={{ border: "1px solid #E5E5E7", borderRadius: "8px" }} onClick={() => setQuantity((prev) => Math.max(1, prev - 1))}>
                       <RemoveRoundedIcon fontSize="small" />
                     </IconButton>
-                    <Chip label={quantity} sx={{ minWidth: 54, fontWeight: 600 }} />
-                    <IconButton onClick={() => setQuantity((prev) => prev + 1)}>
+                    <Chip label={quantity} sx={{ minWidth: 56, fontWeight: 600, borderRadius: "8px", bgcolor: "#F5F5F7", border: "1px solid #E5E5E7" }} />
+                    <IconButton sx={{ border: "1px solid #E5E5E7", borderRadius: "8px" }} onClick={() => setQuantity((prev) => prev + 1)}>
                       <AddRoundedIcon fontSize="small" />
                     </IconButton>
                   </Stack>
