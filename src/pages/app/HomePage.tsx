@@ -156,8 +156,9 @@ export default function HomePage() {
       <Box
         sx={{
           width: "100%",
-          maxWidth: 1360,
+          maxWidth: 1440,
           mx: "auto",
+          px: { xs: 2, sm: 3 },
           minWidth: 0,
           overflowX: "hidden",
         }}
@@ -166,17 +167,22 @@ export default function HomePage() {
           sx={{
             width: "100%",
             minWidth: 0,
-            display: "grid",
-            alignContent: "start",
-            gridTemplateColumns: { xs: "minmax(0, 1fr)", md: "repeat(12, minmax(0, 1fr))" },
-            rowGap: { xs: 2, sm: 3, lg: 4 },
-            columnGap: { xs: 2, sm: 3, lg: 4 },
+            display: "flex",
+            flexDirection: "column",
+            gap: { xs: 2, sm: 3, lg: 4 },
             pb: { xs: 1, md: 2 },
           }}
         >
+          <Box
+            sx={{
+              display: "grid",
+              alignContent: "start",
+              gridTemplateColumns: { xs: "minmax(0, 1fr)", md: "repeat(2, minmax(0, 1fr))", lg: "repeat(3, minmax(0, 1fr))" },
+              gap: { xs: 2, sm: 3, lg: 4 },
+            }}
+          >
         <SoftCard
           sx={{
-            gridColumn: { xs: "1 / -1", md: "1 / span 6", lg: "1 / span 4" },
             minHeight: { xs: 260, lg: 340 },
             minWidth: 0,
             p: 3,
@@ -249,7 +255,6 @@ export default function HomePage() {
 
         <SoftCard
           sx={{
-            gridColumn: { xs: "1 / -1", md: "7 / span 6", lg: "5 / span 4" },
             minHeight: { xs: 260, lg: 340 },
             minWidth: 0,
             p: 3,
@@ -316,7 +321,7 @@ export default function HomePage() {
 
         <SoftCard
           sx={{
-            gridColumn: { xs: "1 / -1", md: "1 / -1", lg: "9 / span 4" },
+            gridColumn: { xs: "auto", md: "1 / -1", lg: "auto" },
             minWidth: 0,
             minHeight: { xs: 240, lg: 340 },
             p: 3,
@@ -369,9 +374,19 @@ export default function HomePage() {
           })}
         </SoftCard>
 
+          </Box>
+
+          <Box
+            sx={{
+              display: "grid",
+              alignContent: "start",
+              gridTemplateColumns: { xs: "minmax(0, 1fr)", lg: "minmax(0, 2fr) minmax(0, 1fr)" },
+              gap: { xs: 2, sm: 3, lg: 4 },
+            }}
+          >
+
         <SoftCard
           sx={{
-            gridColumn: { xs: "1 / -1", md: "1 / span 8", lg: "1 / span 8" },
             minHeight: { xs: 220, lg: 240 },
             minWidth: 0,
             p: 3,
@@ -426,7 +441,6 @@ export default function HomePage() {
 
         <SoftCard
           sx={{
-            gridColumn: { xs: "1 / -1", md: "9 / span 4", lg: "9 / span 4" },
             minHeight: { xs: 220, lg: 240 },
             minWidth: 0,
             p: 3,
@@ -463,6 +477,8 @@ export default function HomePage() {
             ),
           })}
         </SoftCard>
+
+          </Box>
         </Box>
       </Box>
     </PageContainer>
