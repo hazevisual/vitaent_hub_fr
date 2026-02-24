@@ -55,7 +55,7 @@ export const vitaentTheme = createTheme({
     divider: "#E6EAF3",
   },
   shape: {
-    borderRadius: 20,
+    borderRadius: 8,
   },
   typography: {
     fontFamily: '"Inter", "Segoe UI", "Roboto", sans-serif',
@@ -166,7 +166,6 @@ export const vitaentTheme = createTheme({
     MuiCard: {
       styleOverrides: {
         root: {
-          borderRadius: 24,
           boxShadow: "0 12px 32px rgba(62, 78, 114, 0.08)",
         },
       },
