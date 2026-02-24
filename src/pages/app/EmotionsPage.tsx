@@ -440,8 +440,14 @@ export default function EmotionsPage() {
               minHeight: 0,
               display: "flex",
               flexDirection: "column",
-              gap: { xs: 1, md: 1.5, lg: 2 },
+              width: "100%",
+              boxSizing: "border-box",
+              gap: { xs: 2, md: 2, lg: 2 },
               [twoKMediaQuery]: { gap: 2 },
+              "& > *": {
+                width: "100%",
+                boxSizing: "border-box",
+              },
             }}
           >
             <SoftCard
@@ -449,21 +455,26 @@ export default function EmotionsPage() {
               sx={{ minHeight: 0 }}
               contentSx={{ minHeight: 0, p: { xs: 2, sm: 2, md: 2 }, "&:last-child": { pb: { xs: 2, sm: 2, md: 2 } } }}
             >
-              <Stack spacing={0.75} sx={{ flex: 1, minHeight: 0 }}>
-                <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+              <Stack spacing={1} sx={{ flex: 1, minHeight: 0, minWidth: 0 }}>
+                <Typography variant="subtitle1" sx={{ fontWeight: 600, lineHeight: 1.35 }}>
                   {selectedEmotion?.title}
                 </Typography>
-                <Typography variant="body2" sx={{ color: "text.secondary", lineHeight: 1.5 }}>
+                <Typography variant="body2" sx={{ color: "text.secondary", lineHeight: 1.55 }}>
                   {selectedEmotion?.description}
                 </Typography>
                 {!!selectedEmotion?.symptoms?.length && (
                   <Box>
-                    <Typography variant="caption" sx={{ color: "text.secondary", display: "block", mb: 0.5 }}>
+                    <Typography variant="caption" sx={{ color: "text.secondary", display: "block", mb: 0.75 }}>
                       Возможные симптомы:
                     </Typography>
-                    <Box component="ul" sx={{ m: 0, pl: 2.5, color: "#6B6B6B" }}>
+                    <Box component="ul" sx={{ m: 0, pl: 2.5, color: "#6B6B6B", maxWidth: "none" }}>
                       {selectedEmotion.symptoms.map((symptom) => (
-                        <Typography key={symptom} component="li" variant="body2" sx={{ color: "text.secondary", mb: 0.25 }}>
+                        <Typography
+                          key={symptom}
+                          component="li"
+                          variant="body2"
+                          sx={{ color: "text.secondary", lineHeight: 1.5, mb: 0.5, pr: 0 }}
+                        >
                           {symptom}
                         </Typography>
                       ))}
@@ -506,7 +517,7 @@ export default function EmotionsPage() {
               </Stack>
             </SoftCard>
 
-            <Box sx={{ mt: "auto", display: "flex", justifyContent: "flex-end", gap: 1.5, flexWrap: "wrap", flexShrink: 0 }}>
+            <Box sx={{ mt: 0, pt: 0, display: "flex", justifyContent: "flex-end", gap: 1.5, flexWrap: "wrap", flexShrink: 0 }}>
               <Button
                 variant="outlined"
                 onClick={() => {
