@@ -238,13 +238,13 @@ export default function EmotionsPage() {
             alignItems: "flex-start",
           }}
         >
-          <Box
-            sx={{
+        <Box
+          sx={{
               flex: 1,
               minHeight: 0,
               display: "grid",
               gridTemplateColumns: "minmax(0, 1fr)",
-              alignItems: "start",
+              alignItems: "stretch",
               alignContent: "start",
               justifyContent: "flex-start",
               gap: { xs: 1.5, md: 1.75, lg: 2 },
@@ -437,9 +437,10 @@ export default function EmotionsPage() {
           <Box
             sx={{
               minWidth: 0,
-              minHeight: 0,
+              minHeight: "100%",
               display: "flex",
               flexDirection: "column",
+              alignSelf: "stretch",
               width: "100%",
               boxSizing: "border-box",
               gap: { xs: 2, md: 2, lg: 2 },
@@ -486,10 +487,10 @@ export default function EmotionsPage() {
 
             <SoftCard
               title="Общая статистика за день (Заполните расписание за день)"
-              sx={{ minHeight: 0 }}
+              sx={{ minHeight: 0, flex: 1, display: "flex", flexDirection: "column" }}
               contentSx={{ minHeight: 0, p: { xs: 2, sm: 2, md: 2 }, "&:last-child": { pb: { xs: 2, sm: 2, md: 2 } } }}
             >
-              <Stack spacing={0.75} sx={{ flex: 1, minHeight: 0 }}>
+              <Stack spacing={0.75} sx={{ minHeight: 0 }}>
                 {sequence
                   .filter((item) => item.fillable)
                   .map((item) => {
@@ -517,35 +518,46 @@ export default function EmotionsPage() {
               </Stack>
             </SoftCard>
 
-            <Box sx={{ mt: 0, pt: 0, display: "flex", justifyContent: "flex-end", gap: 1.5, flexWrap: "wrap", flexShrink: 0 }}>
-              <Button
-                variant="outlined"
-                onClick={() => {
-                  if (window.history.length > 1) {
-                    navigate(-1);
-                    return;
-                  }
-                  navigate("/app", { replace: true });
-                }}
-                sx={{ textTransform: "none", borderRadius: "12px" }}
-              >
-                Назад
-              </Button>
-              <Button
-                variant="contained"
-                disabled={!allRequiredFilled}
-                onClick={() => setIsFinishMessageOpen(true)}
-                sx={{
-                  textTransform: "none",
-                  borderRadius: "12px",
-                  boxShadow: "none",
-                }}
-              >
-                Завершить заполнение данных
-              </Button>
-            </Box>
           </Box>
           </Box>
+        </Box>
+
+        <Box
+          sx={{
+            mt: { xs: 2, md: 2 },
+            pt: 0,
+            display: "flex",
+            justifyContent: "flex-end",
+            gap: 1.5,
+            flexWrap: "wrap",
+            flexShrink: 0,
+          }}
+        >
+          <Button
+            variant="outlined"
+            onClick={() => {
+              if (window.history.length > 1) {
+                navigate(-1);
+                return;
+              }
+              navigate("/app", { replace: true });
+            }}
+            sx={{ textTransform: "none", borderRadius: "12px" }}
+          >
+            Назад
+          </Button>
+          <Button
+            variant="contained"
+            disabled={!allRequiredFilled}
+            onClick={() => setIsFinishMessageOpen(true)}
+            sx={{
+              textTransform: "none",
+              borderRadius: "12px",
+              boxShadow: "none",
+            }}
+          >
+            Завершить заполнение данных
+          </Button>
         </Box>
       </Box>
 
