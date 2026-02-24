@@ -1,148 +1,150 @@
-import * as React from "react";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Divider, Typography } from "@mui/material";
+import SoftCard from "@/components/ui/SoftCard";
+import AccessTimeRoundedIcon from "@mui/icons-material/AccessTimeRounded";
+import ArrowBackIosNewRoundedIcon from "@mui/icons-material/ArrowBackIosNewRounded";
 
-const weekDays = [
-  { shortLabel: "Пн", fullLabel: "Понедельник" },
-  { shortLabel: "Вт", fullLabel: "Вторник" },
-  { shortLabel: "Ср", fullLabel: "Среда" },
-  { shortLabel: "Чт", fullLabel: "Четверг" },
-  { shortLabel: "Пт", fullLabel: "Пятница" },
-  { shortLabel: "Сб", fullLabel: "Суббота" },
-  { shortLabel: "Вс", fullLabel: "Воскресенье" },
+const sleepIntervals = [
+  { title: "1-ый интервал сна", start: "01:15", end: "8:00" },
+  { title: "2-ой интервал сна", start: "15:00", end: "16:00" },
 ] as const;
 
-const dayCompletion = {
-  Пн: 48,
-  Вт: 54,
-  Ср: 62,
-  Чт: 58,
-  Пт: 66,
-  Сб: 71,
-  Вс: 63,
-} as const;
+const attributes = [
+  { label: "Сон", status: "Заполненно", active: true },
+  { label: "Прием Пищи", status: "Не заполненно", active: false },
+  { label: "Соц. Активность", status: "Не заполненно", active: false },
+  { label: "Подвижность", status: "Не заполненно", active: false },
+] as const;
 
 export default function WeekDayViewContent() {
-  const today = React.useMemo(() => new Date(), []);
-  const weekStart = React.useMemo(() => {
-    const currentDate = new Date(today);
-    const dayOfWeek = currentDate.getDay();
-    const offsetToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
-    currentDate.setDate(currentDate.getDate() + offsetToMonday);
-    return currentDate;
-  }, [today]);
-
-  const [selectedWeekDay, setSelectedWeekDay] = React.useState("Вс");
-
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        gap: 3,
-      }}
-    >
-      <Typography variant="subtitle2" sx={{ fontWeight: 600, color: "text.primary", lineHeight: 1.2 }}>
-        Просмотр по неделе и дням
-      </Typography>
-
+    <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
       <Box
         sx={{
           display: "grid",
-          gridTemplateColumns: "repeat(7, minmax(92px, 1fr))",
-          gap: 2,
+          gridTemplateColumns: "minmax(0, 1fr)",
+          gap: 3,
+          "@media (min-width:1280px)": {
+            gridTemplateColumns: "minmax(320px, 1fr) minmax(380px, 1.25fr) minmax(320px, 1fr)",
+          },
         }}
       >
-        {weekDays.map((day, index) => {
-          const cardDate = new Date(weekStart);
-          cardDate.setDate(weekStart.getDate() + index);
-          const isCurrentDay = cardDate.toDateString() === today.toDateString();
-          const isSelected = selectedWeekDay === day.shortLabel;
-          const completion = dayCompletion[day.shortLabel as keyof typeof dayCompletion];
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 3, minWidth: 0 }}>
+          <Typography sx={{ textAlign: "center", fontSize: "1.05rem", fontWeight: 500, color: "#6B6B6B" }}>Расписание сна</Typography>
+          <SoftCard sx={{ minHeight: 380 }}>
+            <Box sx={{ display: "flex", flexDirection: "column", gap: 2.5 }}>
+              {sleepIntervals.map((interval, index) => (
+                <Box key={interval.title}>
+                  <Typography sx={{ fontSize: "1.06rem", fontWeight: 500, color: "#000", mb: 1.5 }} variant="body1">
+                    {interval.title}
+                  </Typography>
+                  <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, color: "#2D6AE3", mb: 1.5 }}>
+                    <AccessTimeRoundedIcon sx={{ fontSize: 22 }} />
+                    <Typography sx={{ color: "#2D6AE3", fontWeight: 500 }}>{interval.start}</Typography>
+                    <Typography sx={{ color: "#C9C9CB" }}>—</Typography>
+                    <AccessTimeRoundedIcon sx={{ fontSize: 22 }} />
+                    <Typography sx={{ color: "#2D6AE3", fontWeight: 500 }}>{interval.end}</Typography>
+                  </Box>
+                  {index < sleepIntervals.length - 1 && <Divider sx={{ borderColor: "#E5E5E7" }} />}
+                </Box>
+              ))}
+              <Button
+                variant="outlined"
+                sx={{
+                  alignSelf: "flex-start",
+                  borderRadius: "12px",
+                  textTransform: "none",
+                  borderColor: "#2D6AE3",
+                  color: "#2D6AE3",
+                  px: 2,
+                  py: 0.9,
+                }}
+              >
+                Добавить временной слот
+              </Button>
+            </Box>
+          </SoftCard>
 
-          return (
-            <Button
-              key={day.shortLabel}
-              variant="text"
-              onClick={() => setSelectedWeekDay(day.shortLabel)}
+          <SoftCard title="Качество сна" sx={{ minHeight: 220 }}>
+            <Box
               sx={{
-                minWidth: 0,
-                minHeight: 240,
-                px: 2,
-                py: 2.5,
+                p: 2,
                 borderRadius: "12px",
-                border: isCurrentDay || isSelected ? "1px solid #C9C9CB" : "1px solid #E5E5E7",
-                bgcolor: isCurrentDay ? "primary.main" : isSelected ? "#F5F5F7" : "#FFFFFF",
-                color: isCurrentDay ? "#FFFFFF" : "text.primary",
-                boxShadow: isCurrentDay ? "0 8px 20px rgba(116, 142, 198, 0.18)" : "none",
+                border: "1px solid #C9C9CB",
+                bgcolor: "#F5F5F7",
                 display: "flex",
                 flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "space-between",
-                gap: 1.5,
-                textTransform: "none",
-                transition: "transform 200ms ease, box-shadow 200ms ease",
-                cursor: "pointer",
-                "&:hover": {
-                  transform: "translateY(-10px)",
-                  bgcolor: isCurrentDay ? "primary.dark" : isSelected ? "#F0F0F2" : "#F8F8FA",
-                  boxShadow: isCurrentDay ? "0 12px 24px rgba(116, 142, 198, 0.24)" : "0 10px 18px rgba(62, 78, 114, 0.1)",
-                },
-                "&:active": {
-                  transform: "translateY(-4px)",
-                },
+                gap: 1,
               }}
             >
-              <Box sx={{ minHeight: 56, display: "flex", flexDirection: "column", alignItems: "center", gap: 0.5 }}>
-                {isCurrentDay && (
-                  <Typography variant="caption" sx={{ color: "rgba(255, 255, 255, 0.8)", fontWeight: 500, lineHeight: 1.2 }}>
-                    Текущий день
-                  </Typography>
-                )}
-                <Typography variant="h6" sx={{ fontWeight: 600, lineHeight: 1, color: "inherit" }}>
-                  {cardDate.getDate()}
-                </Typography>
-                <Typography variant="caption" sx={{ color: isCurrentDay ? "rgba(255, 255, 255, 0.8)" : "text.secondary", lineHeight: 1.2 }}>
-                  {`${String(cardDate.getMonth() + 1).padStart(2, "0")}.${cardDate.getFullYear()}`}
-                </Typography>
-              </Box>
+              <Typography sx={{ color: "#000", fontWeight: 500 }}>Оценка за ночь</Typography>
+              <Typography sx={{ color: "#6B6B6B" }}>Плейсхолдер: 7 ч 20 мин сна, 1 пробуждение</Typography>
+              <Typography sx={{ color: "#6B6B6B" }}>Плейсхолдер: стабильный режим, рекомендуем сохранить время отхода ко сну.</Typography>
+            </Box>
+          </SoftCard>
+        </Box>
 
-              <Typography variant="body2" sx={{ fontWeight: 600, color: "inherit", textAlign: "center" }}>
-                {day.fullLabel}
-              </Typography>
-
-              <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 1, width: "100%" }}>
-                <Typography
-                  variant="caption"
-                  sx={{
-                    color: isCurrentDay ? "#FFFFFF" : "text.secondary",
-                    fontWeight: 400,
-                    textAlign: "center",
-                  }}
-                >
-                  Заполнено {completion}%
-                </Typography>
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 3, minWidth: 0 }}>
+          <Typography sx={{ textAlign: "center", fontSize: "1.05rem", fontWeight: 500, color: "#6B6B6B" }}>Атрибуты</Typography>
+          <SoftCard>
+            <Box sx={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: 2.5 }}>
+              {attributes.map((item) => (
                 <Box
+                  key={item.label}
                   sx={{
-                    width: "100%",
-                    height: 4,
-                    borderRadius: "8px",
-                    bgcolor: isCurrentDay ? "rgba(255, 255, 255, 0.3)" : "#E5E5E7",
-                    overflow: "hidden",
+                    borderRadius: "16px",
+                    border: "1px solid #C9C9CB",
+                    p: 2,
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 1,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    minHeight: 220,
                   }}
                 >
-                  <Box
-                    sx={{
-                      width: `${completion}%`,
-                      height: "100%",
-                      borderRadius: "8px",
-                      bgcolor: isCurrentDay ? "#FFFFFF" : "primary.main",
-                    }}
-                  />
+                  <Box sx={{ width: 96, height: 96, borderRadius: "16px", border: "1px solid #C9C9CB", bgcolor: item.active ? "#000" : "#F5F5F7" }} />
+                  <Typography sx={{ color: "#000", fontWeight: 500, textAlign: "center" }}>{item.label}</Typography>
+                  <Typography sx={{ color: "#2D6AE3", textAlign: "center" }}>{item.status}</Typography>
                 </Box>
-              </Box>
-            </Button>
-          );
-        })}
+              ))}
+            </Box>
+          </SoftCard>
+        </Box>
+
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 3, minWidth: 0 }}>
+          <Typography sx={{ textAlign: "center", fontSize: "1.05rem", fontWeight: 500, color: "#6B6B6B" }}>Информация</Typography>
+          <SoftCard>
+            <Typography sx={{ color: "#6B6B6B", lineHeight: 1.6 }}>
+              <Box component="span" sx={{ color: "#2D6AE3" }}>
+                Сон
+              </Box>{" "}
+              - это физиологическое состояние, которое повторяется регулярно, каждый день. Он помогает организму отдохнуть, набраться сил, восстановить иммунитет.
+            </Typography>
+            <Typography sx={{ color: "#6B6B6B", lineHeight: 1.6, mt: 2.5 }}>
+              Ухудшение качества сна всегда сказывается на самочувствии. Хронические нарушения сна отражаются на здоровье центральной нервной системы.
+            </Typography>
+            <Box sx={{ mt: "auto", pt: 4, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 2 }}>
+              <Button startIcon={<ArrowBackIosNewRoundedIcon />} variant="text" sx={{ textTransform: "none", color: "#2D6AE3" }}>
+                Назад
+              </Button>
+              <Button
+                variant="contained"
+                sx={{
+                  bgcolor: "#000",
+                  color: "#fff",
+                  borderRadius: "12px",
+                  textTransform: "none",
+                  boxShadow: "none",
+                  px: 2.5,
+                  py: 1,
+                  "&:hover": { bgcolor: "#161616", boxShadow: "none" },
+                }}
+              >
+                Завершить заполнение данных
+              </Button>
+            </Box>
+          </SoftCard>
+        </Box>
       </Box>
     </Box>
   );
