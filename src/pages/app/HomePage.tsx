@@ -20,6 +20,16 @@ type SummaryRow = {
   value: number;
 };
 
+const symptomLabels = [
+  "Ажитация",
+  "Депрессия",
+  "Тревога",
+  "Раздражительность",
+  "Усталость",
+  "Импульсивные решения, поступки",
+  "Короткий сон",
+];
+
 const calendarDays = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
 
 const monthFormatter = new Intl.DateTimeFormat("ru-RU", { month: "long", year: "numeric" });
@@ -38,8 +48,8 @@ const dashboardData: {
     { label: "Давление", value: 57 },
     { label: "Сон", value: 39 },
   ],
-  recommendation: "Следуйте рекомендациям врача",
-  appointment: "Ваш следующий приём назначен на 31 октября в 10:30",
+  recommendation: "В последнюю неделю вы спите меньше, чем за последние 3 месяца. Обратите внимание!",
+  appointment: "На 11:30 27.01.2023",
 };
 
 const mockErrors = {
@@ -102,11 +112,11 @@ function renderStateBody({
 }
 
 const sectionHeaderSx = {
-  textAlign: "center",
-  fontSize: "0.8125rem",
+  textAlign: "left",
+  fontSize: "0.95rem",
   lineHeight: 1.2,
-  fontWeight: 500,
-  color: "rgba(122, 134, 156, 0.95)",
+  fontWeight: 600,
+  color: "rgba(74, 88, 118, 0.95)",
 };
 
 export default function HomePage() {
@@ -156,9 +166,10 @@ export default function HomePage() {
       >
         <SoftCard
           sx={{
-            gridColumn: { xs: "1 / -1", md: "1 / span 4", lg: "1 / span 3" },
-            minHeight: { xs: 260, lg: 320 },
+            gridColumn: { xs: "1 / -1", md: "1 / span 6", lg: "1 / span 4" },
+            minHeight: { xs: 260, lg: 340 },
             minWidth: 0,
+            p: 3,
           }}
         >
           {renderStateBody({
@@ -174,8 +185,8 @@ export default function HomePage() {
               </Stack>
             ),
             ready: (
-              <Stack sx={{ height: "100%" }}>
-                <Box sx={{ display: "grid", gridTemplateColumns: "40px 1fr 40px", alignItems: "center", mb: 2 }}>
+                <Stack sx={{ height: "100%" }}>
+                  <Box sx={{ display: "grid", gridTemplateColumns: "40px 1fr 40px", alignItems: "center", mb: 2 }}>
                   <IconButton size="small" sx={{ bgcolor: "rgba(140, 167, 220, 0.12)", justifySelf: "start" }}>
                     <ChevronLeftRoundedIcon fontSize="small" />
                   </IconButton>
@@ -202,7 +213,7 @@ export default function HomePage() {
                     {dashboardData.completion}%
                   </Typography>
                   <Typography variant="body2" sx={{ textAlign: "center", color: "text.secondary" }}>
-                    Данных заполнено за сегодня
+                    Данных заполнено за среду
                   </Typography>
                 </Stack>
 
@@ -228,9 +239,10 @@ export default function HomePage() {
 
         <SoftCard
           sx={{
-            gridColumn: { xs: "1 / -1", md: "5 / span 8", lg: "4 / span 5" },
-            minHeight: { xs: 260, lg: 320 },
+            gridColumn: { xs: "1 / -1", md: "7 / span 6", lg: "5 / span 4" },
+            minHeight: { xs: 260, lg: 340 },
             minWidth: 0,
+            p: 3,
           }}
         >
           {renderStateBody({
@@ -246,11 +258,12 @@ export default function HomePage() {
             ),
             ready: (
               <>
-                <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 2 }}>
+                <Typography sx={{ ...sectionHeaderSx, textAlign: "center", mb: 2.5 }}>Ежедневное заполнение данных</Typography>
+                <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 2.2 }}>
                   <IconButton size="small" sx={{ bgcolor: "rgba(140, 167, 220, 0.14)" }}>
                     <ChevronLeftRoundedIcon fontSize="small" />
                   </IconButton>
-                  <Typography sx={{ ...sectionHeaderSx, textAlign: "center" }}>{monthLabel}</Typography>
+                  <Typography sx={{ ...sectionHeaderSx, textAlign: "center", textTransform: "capitalize" }}>{monthLabel}</Typography>
                   <IconButton size="small" sx={{ bgcolor: "rgba(140, 167, 220, 0.14)" }}>
                     <ChevronRightRoundedIcon fontSize="small" />
                   </IconButton>
@@ -294,7 +307,8 @@ export default function HomePage() {
           sx={{
             gridColumn: { xs: "1 / -1", md: "1 / -1", lg: "9 / span 4" },
             minWidth: 0,
-            minHeight: { xs: 240, lg: 320 },
+            minHeight: { xs: 240, lg: 340 },
+            p: 3,
           }}
         >
           {renderStateBody({
@@ -313,28 +327,31 @@ export default function HomePage() {
             ),
             ready: (
               <Stack sx={{ height: "100%" }}>
-                <Typography sx={{ ...sectionHeaderSx, mb: 2.5 }}>Сводка по болезни за выбранное число</Typography>
-                <Stack spacing={2.2}>
-                  {dashboardData.summaryRows.map((row) => (
-                    <Box key={row.label}>
-                      <Stack direction="row" justifyContent="space-between" sx={{ mb: 0.8 }}>
-                        <Typography variant="body2" sx={{ color: "text.primary", fontWeight: 600 }}>
-                          {row.label}
+                <Typography sx={{ ...sectionHeaderSx, mb: 0.75 }}>Сводка по Болезни за выбранное число</Typography>
+                <Typography variant="caption" sx={{ color: "text.secondary", mb: 2.5 }}>
+                  16.02.2026
+                </Typography>
+                <Stack spacing={1.8}>
+                  {symptomLabels.map((label, index) => {
+                    const score = dashboardData.summaryRows[index % dashboardData.summaryRows.length]?.value ?? 0;
+                    return (
+                      <Box key={label}>
+                        <Typography variant="body2" sx={{ color: "text.primary", fontWeight: 500, mb: 0.6 }}>
+                          {label}
                         </Typography>
-                        <Typography variant="caption">{row.value}%</Typography>
-                      </Stack>
-                      <Box sx={{ height: 5, borderRadius: 999, bgcolor: "rgba(240, 137, 152, 0.2)", overflow: "hidden" }}>
-                        <Box
-                          sx={{
-                            width: `${row.value}%`,
-                            height: "100%",
-                            borderRadius: 999,
-                            bgcolor: "#E78B9B",
-                          }}
-                        />
+                        <Box sx={{ height: 4, borderRadius: 999, bgcolor: "rgba(240, 137, 152, 0.2)", overflow: "hidden" }}>
+                          <Box
+                            sx={{
+                              width: `${score}%`,
+                              height: "100%",
+                              borderRadius: 999,
+                              bgcolor: "#E78B9B",
+                            }}
+                          />
+                        </Box>
                       </Box>
-                    </Box>
-                  ))}
+                    );
+                  })}
                 </Stack>
               </Stack>
             ),
@@ -346,6 +363,7 @@ export default function HomePage() {
             gridColumn: { xs: "1 / -1", md: "1 / span 8", lg: "1 / span 8" },
             minHeight: { xs: 220, lg: 240 },
             minWidth: 0,
+            p: 3,
           }}
         >
           {renderStateBody({
@@ -374,7 +392,7 @@ export default function HomePage() {
                   </IconButton>
 
                   <Stack spacing={2.5} alignItems="center" justifyContent="center" sx={{ flex: 1 }}>
-                    <Typography sx={{ textAlign: "center", color: "rgba(95, 120, 164, 0.85)", fontSize: { xs: "1.1rem", md: "1.35rem" }, fontWeight: 500 }}>
+                    <Typography sx={{ textAlign: "center", color: "rgba(105, 132, 180, 0.9)", fontSize: { xs: "1.2rem", md: "1.55rem" }, lineHeight: 1.4, fontWeight: 500, maxWidth: 620 }}>
                       {dashboardData.recommendation}
                     </Typography>
                     <Button variant="outlined" sx={{ borderRadius: 999, minWidth: 132 }}>
@@ -402,6 +420,7 @@ export default function HomePage() {
             gridColumn: { xs: "1 / -1", md: "9 / span 4", lg: "9 / span 4" },
             minHeight: { xs: 220, lg: 240 },
             minWidth: 0,
+            p: 3,
           }}
         >
           {renderStateBody({
@@ -416,11 +435,15 @@ export default function HomePage() {
             ),
             ready: (
               <Stack sx={{ height: "100%" }}>
-                <Typography sx={{ ...sectionHeaderSx, mb: 1.5 }}>Следующий приём</Typography>
                 <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", textAlign: "center", height: "100%" }}>
-                  <Typography sx={{ fontSize: { xs: "1.15rem", md: "1.35rem" }, color: "rgba(95, 120, 164, 0.8)", maxWidth: 320 }}>
-                    {dashboardData.appointment}
-                  </Typography>
+                  <Stack spacing={1.4}>
+                    <Typography sx={{ fontSize: { xs: "1.35rem", md: "1.6rem" }, color: "rgba(95, 120, 164, 0.9)", maxWidth: 320, fontWeight: 500 }}>
+                      Ваш следующий прием назначен
+                    </Typography>
+                    <Typography sx={{ fontSize: { xs: "1.2rem", md: "1.45rem" }, color: "rgba(95, 120, 164, 0.9)", fontWeight: 600 }}>
+                      {dashboardData.appointment}
+                    </Typography>
+                  </Stack>
                 </Box>
               </Stack>
             ),
