@@ -119,6 +119,8 @@ const sectionHeaderSx = {
   color: "text.secondary",
 };
 
+const HOME_CONTENT_MAX_WIDTH = 1560;
+
 export default function HomePage() {
   const completionState = resolveState({
     isBlockLoading: isLoading,
@@ -154,16 +156,17 @@ export default function HomePage() {
     <PageContainer>
       <Box
         sx={{
+          boxSizing: "border-box",
           width: "100%",
-          maxWidth: 1440,
+          maxWidth: HOME_CONTENT_MAX_WIDTH,
           mx: "auto",
-          px: { xs: 2, sm: 3 },
           minWidth: 0,
           overflowX: "hidden",
         }}
       >
         <Box
             sx={{
+              boxSizing: "border-box",
               width: "100%",
               minWidth: 0,
               display: "flex",
@@ -174,9 +177,19 @@ export default function HomePage() {
           >
           <Box
             sx={{
+              boxSizing: "border-box",
               display: "grid",
               alignContent: "start",
-              gridTemplateColumns: { xs: "minmax(0, 1fr)", md: "repeat(2, minmax(0, 1fr))", lg: "repeat(3, minmax(0, 1fr))" },
+              gridTemplateColumns: "minmax(0, 1fr)",
+              "@media (min-width:900px)": {
+                gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+              },
+              "@media (min-width:1200px)": {
+                gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
+              },
+              "@media (min-width:1600px)": {
+                gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
+              },
               gap: { xs: 2, sm: 3, lg: 4 },
             }}
           >
@@ -377,9 +390,13 @@ export default function HomePage() {
 
           <Box
             sx={{
+              boxSizing: "border-box",
               display: "grid",
               alignContent: "start",
-              gridTemplateColumns: { xs: "minmax(0, 1fr)", lg: "minmax(0, 2fr) minmax(0, 1fr)" },
+              gridTemplateColumns: "minmax(0, 1fr)",
+              "@media (min-width:1200px)": {
+                gridTemplateColumns: "minmax(0, 2fr) minmax(0, 1fr)",
+              },
               gap: { xs: 2, sm: 3, lg: 4 },
             }}
           >

@@ -25,6 +25,7 @@ import { useAuth } from "@/auth/AuthProvider";
 
 const drawerWidth = 248;
 const appBarOffset = { xs: 68, md: 74 };
+const contentMaxWidth = 1560;
 
 const navItems = [
   { label: "Главная", to: "/app", icon: <HomeRoundedIcon fontSize="small" /> },
@@ -98,41 +99,43 @@ export default function AppLayout() {
         }}
       >
         <Toolbar sx={{ minHeight: appBarOffset, px: { xs: 1.25, sm: 2.5, md: 3 } }}>
-          {!isDesktop && (
-            <IconButton onClick={handleDrawerToggle} sx={{ mr: 1 }} aria-label="open navigation menu">
-              <MenuRoundedIcon />
-            </IconButton>
-          )}
+          <Box sx={{ width: "100%", maxWidth: contentMaxWidth, mx: "auto", minWidth: 0, display: "flex", alignItems: "center" }}>
+            {!isDesktop && (
+              <IconButton onClick={handleDrawerToggle} sx={{ mr: 1 }} aria-label="open navigation menu">
+                <MenuRoundedIcon />
+              </IconButton>
+            )}
 
-          <Box sx={{ display: "flex", alignItems: "center", gap: 1.2 }}>
-            <Box
-              sx={{
-                width: 32,
-                height: 32,
-                borderRadius: "50%",
-                bgcolor: "rgba(140, 167, 220, 0.18)",
-                color: "primary.dark",
-                display: "grid",
-                placeItems: "center",
-              }}
-            >
-              <FavoriteBorderRoundedIcon sx={{ fontSize: 18 }} />
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1.2 }}>
+              <Box
+                sx={{
+                  width: 32,
+                  height: 32,
+                  borderRadius: "50%",
+                  bgcolor: "rgba(140, 167, 220, 0.18)",
+                  color: "primary.dark",
+                  display: "grid",
+                  placeItems: "center",
+                }}
+              >
+                <FavoriteBorderRoundedIcon sx={{ fontSize: 18 }} />
+              </Box>
+              <Typography variant="h6" sx={{ fontWeight: 700, fontSize: { xs: "1rem", sm: "1.1rem" } }}>
+                Vitaent
+              </Typography>
             </Box>
-            <Typography variant="h6" sx={{ fontWeight: 700, fontSize: { xs: "1rem", sm: "1.1rem" } }}>
-              Vitaent
-            </Typography>
-          </Box>
 
-          <Box sx={{ display: "flex", alignItems: "center", gap: { xs: 0.75, sm: 1.5 }, ml: "auto" }}>
-            <Typography
-              variant="body2"
-              sx={{ color: "text.secondary", maxWidth: { xs: 110, sm: 200 }, textOverflow: "ellipsis", overflow: "hidden" }}
-            >
-              {user?.userName ?? "vitaent"}
-            </Typography>
-            <Button variant="text" color="inherit" onClick={handleSignOut} sx={{ color: "text.secondary", minWidth: 0, px: 1 }}>
-              Выйти
-            </Button>
+            <Box sx={{ display: "flex", alignItems: "center", gap: { xs: 0.75, sm: 1.5 }, ml: "auto" }}>
+              <Typography
+                variant="body2"
+                sx={{ color: "text.secondary", maxWidth: { xs: 110, sm: 200 }, textOverflow: "ellipsis", overflow: "hidden" }}
+              >
+                {user?.userName ?? "vitaent"}
+              </Typography>
+              <Button variant="text" color="inherit" onClick={handleSignOut} sx={{ color: "text.secondary", minWidth: 0, px: 1 }}>
+                Выйти
+              </Button>
+            </Box>
           </Box>
         </Toolbar>
       </AppBar>
