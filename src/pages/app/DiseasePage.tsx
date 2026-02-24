@@ -57,22 +57,24 @@ function SectionList({ title, items, isLoading }: SectionListProps) {
   );
 }
 
-function ScrollableText({ children }: { children?: string }) {
-  return (
-    <Box
-      sx={{
-        maxHeight: 180,
-        overflowY: "auto",
-        pr: 0.5,
-        minWidth: 0,
-      }}
-    >
-      <Typography variant="body1" color="text.secondary" sx={{ overflowWrap: "anywhere", wordBreak: "break-word" }}>
-        {children ?? "—"}
-      </Typography>
-    </Box>
-  );
-}
+const textOverflowScrollSx = {
+  minWidth: 0,
+  maxHeight: { xs: "none", md: "calc(100vh - 260px)" },
+  overflowY: { xs: "visible", md: "auto" },
+  pr: { md: 0.75 },
+  scrollbarWidth: "thin",
+  scrollbarColor: "rgba(23, 23, 23, 0.25) transparent",
+  "&::-webkit-scrollbar": {
+    width: 6,
+  },
+  "&::-webkit-scrollbar-thumb": {
+    backgroundColor: "rgba(23, 23, 23, 0.25)",
+    borderRadius: "999px",
+  },
+  "&::-webkit-scrollbar-track": {
+    backgroundColor: "transparent",
+  },
+} as const;
 
 export default function DiseasePage() {
   const { id = "1" } = useParams<{ id: string }>();
@@ -136,7 +138,7 @@ export default function DiseasePage() {
           }}
         >
           <Box sx={{ minWidth: 0 }}>
-            <Stack spacing={3.5} sx={{ minWidth: 0 }}>
+            <Stack spacing={3.5} sx={textOverflowScrollSx}>
               <Stack
                 direction={{ xs: "column", sm: "row" }}
                 spacing={1.5}
@@ -184,7 +186,9 @@ export default function DiseasePage() {
                     <Skeleton variant="text" width="70%" />
                   </Stack>
                 ) : (
-                  <ScrollableText>{diseaseQuery.data?.description}</ScrollableText>
+                  <Typography variant="body1" color="text.secondary" sx={{ overflowWrap: "anywhere", wordBreak: "break-word" }}>
+                    {diseaseQuery.data?.description ?? "—"}
+                  </Typography>
                 )}
               </Stack>
 
@@ -199,7 +203,9 @@ export default function DiseasePage() {
                     <Skeleton variant="text" width="65%" />
                   </Stack>
                 ) : (
-                  <ScrollableText>{diseaseQuery.data?.clinicalCourse}</ScrollableText>
+                  <Typography variant="body1" color="text.secondary" sx={{ overflowWrap: "anywhere", wordBreak: "break-word" }}>
+                    {diseaseQuery.data?.clinicalCourse ?? "—"}
+                  </Typography>
                 )}
               </Stack>
 
