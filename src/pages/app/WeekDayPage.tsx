@@ -3,7 +3,7 @@ import { useMemo, useState } from "react";
 import PageContainer from "@/components/ui/PageContainer";
 import SoftCard from "@/components/ui/SoftCard";
 
-const WEEK_DAY_PAGE_MAX_WIDTH = 1560;
+const WEEK_DAY_PAGE_MAX_WIDTH = 1920;
 const DAY_LABELS = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"];
 
 const completionByDay = [84, 76, 100, 63, 91, 58, 72] as const;

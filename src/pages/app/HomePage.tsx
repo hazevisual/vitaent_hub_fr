@@ -120,7 +120,7 @@ const sectionHeaderSx = {
   color: "text.secondary",
 };
 
-const HOME_CONTENT_MAX_WIDTH = 1560;
+const HOME_CONTENT_MAX_WIDTH = 1920;
 const HOME_CARD_2K_MEDIA_QUERY = "@media (min-width:2000px)";
 const homeCardSx = {
   minWidth: 0,

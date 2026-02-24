@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import type { BoxProps } from "@mui/material";
 
-const contentMaxWidth = 1560;
+const contentMaxWidth = 1920;
 
 export default function PageContainer({ children, sx, ...rest }: BoxProps) {
   return (

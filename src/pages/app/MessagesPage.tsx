@@ -126,7 +126,7 @@ const initialMessages: Message[] = [
   },
 ];
 
-const CONTENT_MAX_WIDTH = 1560;
+const CONTENT_MAX_WIDTH = 1920;
 
 export default function MessagesPage() {
   const [activeDoctorId, setActiveDoctorId] = React.useState(doctors[0].id);
