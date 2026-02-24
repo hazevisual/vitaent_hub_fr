@@ -68,25 +68,30 @@ export default function DiseasePage() {
   const descriptionText = disease.description?.trim() ? disease.description : fallbackDescription;
 
   return (
-    <PageContainer sx={{ minHeight: 0 }}>
+    <PageContainer>
       <Box
         sx={{
-          flex: 1,
           width: "100%",
           maxWidth: 1560,
           mx: "auto",
-          display: "grid",
-          gridTemplateColumns: { xs: "1fr", lg: "minmax(0, 1fr) 320px" },
-          gap: { xs: 2, md: 3 },
-          alignItems: "stretch",
           minWidth: 0,
-          minHeight: 0,
           overflowX: "hidden",
         }}
       >
+        <Box
+          sx={{
+            width: "100%",
+            display: "grid",
+            gridTemplateColumns: { xs: "1fr", lg: "minmax(0, 1fr) 320px" },
+            gap: { xs: 2, md: 3 },
+            alignItems: "stretch",
+            minWidth: 0,
+            minHeight: 0,
+          }}
+        >
         <SoftCard
           sx={{ minWidth: 0, minHeight: 0 }}
-          contentSx={{ gap: 3, minWidth: 0, minHeight: 0, overflow: "hidden" }}
+          contentSx={{ display: "flex", flexDirection: "column", gap: 3, minWidth: 0, minHeight: 0, overflow: "hidden" }}
         >
           <Box sx={{ minWidth: 0 }}>
             <Typography variant="h4" sx={{ fontSize: { xs: "1.5rem", md: "1.8rem" }, fontWeight: 600, mb: 0.75 }}>
@@ -103,10 +108,9 @@ export default function DiseasePage() {
             </Typography>
             <Box
               sx={{
-                flex: 1,
-                minHeight: 0,
-                maxHeight: { xs: 260, md: 360, xl: 420 },
-                overflow: "auto",
+                maxHeight: "clamp(160px, 28vh, 320px)",
+                overflowY: "auto",
+                overflowX: "hidden",
                 pr: 1,
                 minWidth: 0,
               }}
@@ -162,6 +166,7 @@ export default function DiseasePage() {
             Последнее обновление: {new Date(updatedAt).toLocaleDateString("ru-RU")}
           </Typography>
         </SoftCard>
+        </Box>
       </Box>
     </PageContainer>
   );
