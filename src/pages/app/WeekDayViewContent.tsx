@@ -28,9 +28,24 @@ export default function WeekDayViewContent() {
           },
         }}
       >
-        <Box sx={{ display: "flex", flexDirection: "column", gap: 3, minWidth: 0 }}>
-          <Typography sx={{ textAlign: "center", fontSize: "1.05rem", fontWeight: 500, color: "#6B6B6B" }}>Расписание сна</Typography>
-          <SoftCard sx={{ minHeight: 380 }}>
+        <Box sx={{ display: "flex", flexDirection: "column", minWidth: 0 }}>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              flex: 1,
+              minHeight: "100%",
+              bgcolor: "#FFFFFF",
+              border: "1px solid #E5E5E7",
+              borderRadius: "16px",
+              p: 3,
+              gap: 3,
+              "@media (min-width:2000px)": {
+                p: 3.75,
+              },
+            }}
+          >
+            <Typography sx={{ textAlign: "left", fontSize: "1.05rem", fontWeight: 500, color: "#000000" }}>Расписание сна</Typography>
             <Box sx={{ display: "flex", flexDirection: "column", gap: 2.5 }}>
               {sleepIntervals.map((interval, index) => (
                 <Box key={interval.title}>
@@ -62,9 +77,7 @@ export default function WeekDayViewContent() {
                 Добавить временной слот
               </Button>
             </Box>
-          </SoftCard>
 
-          <SoftCard title="Качество сна" sx={{ minHeight: 220 }}>
             <Box
               sx={{
                 p: 2,
@@ -76,11 +89,12 @@ export default function WeekDayViewContent() {
                 gap: 1,
               }}
             >
+              <Typography sx={{ color: "#000", fontWeight: 500 }}>Качество сна</Typography>
               <Typography sx={{ color: "#000", fontWeight: 500 }}>Оценка за ночь</Typography>
               <Typography sx={{ color: "#6B6B6B" }}>Плейсхолдер: 7 ч 20 мин сна, 1 пробуждение</Typography>
               <Typography sx={{ color: "#6B6B6B" }}>Плейсхолдер: стабильный режим, рекомендуем сохранить время отхода ко сну.</Typography>
             </Box>
-          </SoftCard>
+          </Box>
         </Box>
 
         <Box sx={{ display: "flex", flexDirection: "column", gap: 3, minWidth: 0 }}>
