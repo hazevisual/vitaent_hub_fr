@@ -321,7 +321,6 @@ export default function HomePage() {
                     mt: "auto",
                     alignSelf: "center",
                     width: 160,
-                    bgcolor: "#111111",
                     bgcolor: "primary.main",
                     color: "#FFFFFF",
                     borderRadius: "12px",

@@ -12,7 +12,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/auth/AuthProvider";
 import { Eye, EyeOff } from "lucide-react";
-import signinLogo from "@/assets/sigin.png";
+import signinLogo from "@/assets/LogoVitaentFull.svg";
 import { ClinicInfoDto } from "types/Clinic/ClinicInfoDto";
 
 const Card = styled(MuiCard)(({ theme }) => ({
