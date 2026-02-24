@@ -11,7 +11,7 @@ export default function PageContainer({ children, sx, ...rest }: BoxProps) {
         flexDirection: "column",
         alignSelf: "stretch",
         flex: 1,
-        minHeight: "calc(100vh - 64px)",
+        minHeight: { xs: "calc(100vh - 68px)", md: "calc(100vh - 74px)" },
         minWidth: 0,
         width: "100%",
         maxWidth: "none",

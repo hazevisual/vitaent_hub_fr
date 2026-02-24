@@ -3,5 +3,6 @@ export const Paths = {
     register: "/register",
     app: "/app",
     profile: "/app/profile",
+    medicines: "/app/medicines",
     medicinesAdd: "/app/medicines/add",
 } as const;
