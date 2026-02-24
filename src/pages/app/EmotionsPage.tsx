@@ -150,7 +150,16 @@ function CenterSelectedEmotionCard({
 }) {
   return (
     <SoftCard title="Выбранная эмоция" sx={{ minWidth: 0 }} contentSx={{ minWidth: 0, gap: 2 }}>
-      <Stack direction="row" spacing={1} sx={{ flexWrap: "wrap", minWidth: 0 }}>
+      <Stack
+        direction="row"
+        sx={{
+          flexWrap: "wrap",
+          justifyContent: "flex-start",
+          alignContent: "flex-start",
+          gap: 1,
+          minWidth: 0,
+        }}
+      >
         {emotionCatalog.map((emotion) => {
           const active = emotion.id === selectedEmotion.id;
           return (
@@ -167,6 +176,9 @@ function CenterSelectedEmotionCard({
                 borderColor: active ? "#C9C9CB" : "#E5E5E7",
                 bgcolor: active ? "#F5F5F7" : "#FFFFFF",
                 textTransform: "none",
+                whiteSpace: "nowrap",
+                flex: "0 0 auto",
+                maxWidth: "100%",
               }}
             >
               {emotion.name}
