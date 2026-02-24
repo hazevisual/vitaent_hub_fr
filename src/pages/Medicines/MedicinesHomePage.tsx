@@ -1,0 +1,187 @@
+import * as React from "react";
+import {
+  Avatar,
+  Box,
+  Button,
+  Chip,
+  Divider,
+  IconButton,
+  List,
+  ListItemButton,
+  ListItemText,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
+import AddRoundedIcon from "@mui/icons-material/AddRounded";
+import RemoveRoundedIcon from "@mui/icons-material/RemoveRounded";
+import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
+import PageContainer from "@/components/ui/PageContainer";
+import SoftCard from "@/components/ui/SoftCard";
+
+type Medication = {
+  id: string;
+  name: string;
+  dosage: string;
+  stock: string;
+  note: string;
+};
+
+type Slot = {
+  id: string;
+  time: string;
+  medications: string[];
+};
+
+const medications: Medication[] = [
+  { id: "1", name: "Парацетамол", dosage: "500 мг", stock: "26 таб", note: "После еды" },
+  { id: "2", name: "Омепразол", dosage: "20 мг", stock: "11 капс", note: "За 30 минут до еды" },
+  { id: "3", name: "Аторвастатин", dosage: "10 мг", stock: "18 таб", note: "Вечерний приём" },
+  { id: "4", name: "Витамин D", dosage: "2000 МЕ", stock: "42 капс", note: "Один раз в день" },
+];
+
+const slots: Slot[] = [
+  { id: "morning", time: "08:00", medications: ["Парацетамол", "Омепразол"] },
+  { id: "evening", time: "20:00", medications: ["Аторвастатин"] },
+];
+
+export default function MedicinesHomePage() {
+  const [query, setQuery] = React.useState("");
+  const [selectedId, setSelectedId] = React.useState(medications[0].id);
+  const [quantity, setQuantity] = React.useState(1);
+
+  const filtered = React.useMemo(() => {
+    const normalized = query.trim().toLowerCase();
+    if (!normalized) return medications;
+    return medications.filter((item) => item.name.toLowerCase().includes(normalized));
+  }, [query]);
+
+  const selectedMedication = medications.find((item) => item.id === selectedId) ?? medications[0];
+
+  return (
+    <PageContainer>
+      <Stack spacing={3} sx={{ width: "100%" }}>
+        <Box>
+          <Typography variant="h4" sx={{ fontSize: { xs: "1.4rem", md: "1.7rem" }, fontWeight: 700 }}>
+            Лекарства
+          </Typography>
+          <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
+            Настройте расписание и добавляйте препараты в нужные временные слоты.
+          </Typography>
+        </Box>
+
+        <Box
+          sx={{
+            display: "grid",
+            gridTemplateColumns: { xs: "1fr", md: "1.2fr 1fr", xl: "1.1fr 1fr 1fr" },
+            gap: 3,
+            alignItems: "start",
+          }}
+        >
+          <SoftCard title="Расписание приёма" sx={{ minHeight: 500 }}>
+            <Stack spacing={2}>
+              {slots.map((slot) => (
+                <Box key={slot.id} sx={{ p: 1.5, borderRadius: 3, bgcolor: "rgba(140, 167, 220, 0.1)" }}>
+                  <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 1 }}>
+                    <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
+                      {slot.time}
+                    </Typography>
+                    <Chip size="small" label={`${slot.medications.length} шт`} />
+                  </Stack>
+                  <Stack spacing={0.75}>
+                    {slot.medications.map((name) => (
+                      <Typography key={`${slot.id}-${name}`} variant="body2" color="text.secondary">
+                        • {name}
+                      </Typography>
+                    ))}
+                  </Stack>
+                </Box>
+              ))}
+              <Stack direction={{ xs: "column", sm: "row" }} spacing={1.25} sx={{ pt: 1 }}>
+                <Button variant="contained">Добавить лекарства</Button>
+                <Button variant="outlined">Добавить временной слот</Button>
+              </Stack>
+            </Stack>
+          </SoftCard>
+
+          <SoftCard title="Лекарства" sx={{ minHeight: 500 }}>
+            <Stack spacing={2} sx={{ minHeight: 0, flex: 1 }}>
+              <TextField
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+                placeholder="Найти препарат"
+                InputProps={{
+                  startAdornment: <SearchRoundedIcon sx={{ color: "text.secondary", mr: 1 }} fontSize="small" />,
+                }}
+                fullWidth
+              />
+
+              <List disablePadding sx={{ overflowY: "auto", flex: 1, minHeight: 260 }}>
+                {filtered.map((item) => (
+                  <ListItemButton
+                    key={item.id}
+                    selected={item.id === selectedMedication.id}
+                    onClick={() => setSelectedId(item.id)}
+                    sx={{ mb: 0.8, px: 1.2, py: 1.1 }}
+                  >
+                    <Avatar sx={{ width: 34, height: 34, mr: 1.2, bgcolor: "rgba(140, 167, 220, 0.24)", color: "primary.dark" }}>
+                      {item.name.slice(0, 1)}
+                    </Avatar>
+                    <ListItemText
+                      primary={item.name}
+                      secondary={`${item.dosage} • ${item.stock}`}
+                      primaryTypographyProps={{ fontWeight: 600, fontSize: 14 }}
+                    />
+                  </ListItemButton>
+                ))}
+              </List>
+            </Stack>
+          </SoftCard>
+
+          <SoftCard title="Карточка препарата" sx={{ minHeight: 500, gridColumn: { xs: "1 / -1", xl: "auto" } }}>
+            <Stack spacing={2.2}>
+              <Box>
+                <Typography variant="h5" sx={{ fontSize: "1.05rem" }}>
+                  {selectedMedication.name}
+                </Typography>
+                <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
+                  {selectedMedication.dosage}
+                </Typography>
+              </Box>
+
+              <Divider />
+
+              <Box>
+                <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 1 }}>
+                  Примечание
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {selectedMedication.note}
+                </Typography>
+              </Box>
+
+              <Box>
+                <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 1 }}>
+                  Количество
+                </Typography>
+                <Stack direction="row" alignItems="center" spacing={1.1}>
+                  <IconButton onClick={() => setQuantity((prev) => Math.max(1, prev - 1))}>
+                    <RemoveRoundedIcon fontSize="small" />
+                  </IconButton>
+                  <Chip label={quantity} sx={{ minWidth: 54, fontWeight: 600 }} />
+                  <IconButton onClick={() => setQuantity((prev) => prev + 1)}>
+                    <AddRoundedIcon fontSize="small" />
+                  </IconButton>
+                </Stack>
+              </Box>
+
+              <Button variant="contained" sx={{ mt: "auto" }}>
+                Добавить в расписание приёма
+              </Button>
+            </Stack>
+          </SoftCard>
+        </Box>
+      </Stack>
+    </PageContainer>
+  );
+}

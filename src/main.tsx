@@ -13,6 +13,7 @@ import AppLayout from "@/pages/app/AppLayout";
 import HomePage from "@/pages/app/HomePage";
 import ProfilePage from "@/pages/app/ProfilePage";
 import MedicationUpsertPage from "@/pages/Medicines/MedicationUpsertPage";
+import MedicinesHomePage from "@/pages/Medicines/MedicinesHomePage";
 import { vitaentTheme } from "@/theme/vitaentTheme";
 import "./index.css";
 
@@ -29,7 +30,9 @@ const router = createBrowserRouter([
         children: [
           { index: true, element: <HomePage /> },
           { path: "profile", element: <ProfilePage /> },
+          { path: "medicines", element: <MedicinesHomePage /> },
           { path: "medicines/add", element: <MedicationUpsertPage /> },
+          { path: "medicines/:id/edit", element: <MedicationUpsertPage /> },
         ],
       },
     ],

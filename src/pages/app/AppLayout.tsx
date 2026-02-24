@@ -24,11 +24,12 @@ import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/auth/AuthProvider";
 
 const drawerWidth = 248;
+const appBarOffset = { xs: 68, md: 74 };
 
 const navItems = [
   { label: "Главная", to: "/app", icon: <HomeRoundedIcon fontSize="small" /> },
   { label: "Профиль", to: "/app/profile", icon: <PersonRoundedIcon fontSize="small" /> },
-  { label: "Лекарства", to: "/app/medicines/add", icon: <MedicationRoundedIcon fontSize="small" /> },
+  { label: "Лекарства", to: "/app/medicines", icon: <MedicationRoundedIcon fontSize="small" /> },
 ];
 
 export default function AppLayout() {
@@ -56,7 +57,7 @@ export default function AppLayout() {
 
   const drawerContent = (
     <>
-      <Toolbar sx={{ minHeight: { xs: 68, md: 74 } }} />
+      <Toolbar sx={{ minHeight: appBarOffset }} />
       <Divider sx={{ mb: 1.5 }} />
       <List disablePadding>
         {navItems.map((item) => (
@@ -64,7 +65,7 @@ export default function AppLayout() {
             key={item.to}
             component={NavLink}
             to={item.to}
-            selected={location.pathname === item.to}
+            selected={location.pathname === item.to || location.pathname.startsWith(`${item.to}/`)}
             onClick={handleNavClick}
             sx={{ gap: 1.4, py: 1.1, px: 1.4, color: "text.secondary" }}
           >
@@ -74,7 +75,7 @@ export default function AppLayout() {
               primaryTypographyProps={{
                 fontSize: 14,
                 fontWeight: 600,
-                color: location.pathname === item.to ? "text.primary" : "text.secondary",
+                color: location.pathname === item.to || location.pathname.startsWith(`${item.to}/`) ? "text.primary" : "text.secondary",
               }}
             />
           </ListItemButton>
@@ -96,7 +97,7 @@ export default function AppLayout() {
           ml: { md: `${drawerWidth}px` },
         }}
       >
-        <Toolbar sx={{ minHeight: { xs: 68, md: 74 }, px: { xs: 1.25, sm: 2.5, md: 3 } }}>
+        <Toolbar sx={{ minHeight: appBarOffset, px: { xs: 1.25, sm: 2.5, md: 3 } }}>
           {!isDesktop && (
             <IconButton onClick={handleDrawerToggle} sx={{ mr: 1 }} aria-label="open navigation menu">
               <MenuRoundedIcon />
@@ -186,7 +187,7 @@ export default function AppLayout() {
           overflowX: "clip",
         }}
       >
-        <Toolbar sx={{ minHeight: { xs: 68, md: 74 } }} />
+        <Toolbar sx={{ minHeight: appBarOffset }} />
         <Box
           sx={{
             display: "flex",

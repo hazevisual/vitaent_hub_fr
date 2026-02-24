@@ -101,7 +101,13 @@ export default function MedicationUpsertPage() {
         return;
       }
 
-      if (error.response?.status === 404 || error.response?.status === 409) {
+      if (error.response?.status === 404) {
+        const problem = error.response.data as ProblemDetails;
+        setPageError(problem.detail ?? problem.title ?? "Эндпоинт создания лекарства не реализован на сервере.");
+        return;
+      }
+
+      if (error.response?.status === 409) {
         const problem = error.response.data as ProblemDetails;
         setPageError(problem.detail ?? problem.title ?? "Операция недоступна.");
         return;
