@@ -20,7 +20,10 @@ type SummaryRow = {
   value: number;
 };
 
-const calendarDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+const calendarDays = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
+
+const monthFormatter = new Intl.DateTimeFormat("ru-RU", { month: "long", year: "numeric" });
+const monthLabel = monthFormatter.format(new Date(2026, 1, 1)).replace(/^./, (letter) => letter.toUpperCase());
 
 const dashboardData: {
   completion: number | null;
@@ -35,8 +38,8 @@ const dashboardData: {
     { label: "Давление", value: 57 },
     { label: "Сон", value: 39 },
   ],
-  recommendation: "Следуйте рекомендации врача",
-  appointment: "Ваш следующий прием назначен на 31 октября, в 10:30",
+  recommendation: "Следуйте рекомендациям врача",
+  appointment: "Ваш следующий приём назначен на 31 октября в 10:30",
 };
 
 const mockErrors = {
@@ -133,6 +136,8 @@ export default function HomePage() {
     <PageContainer>
       <Box
         sx={{
+          width: "100%",
+          minWidth: 0,
           display: "grid",
           gridTemplateColumns: "repeat(12, minmax(0, 1fr))",
           gap: { xs: "16px", sm: "24px", lg: "32px" },
@@ -141,16 +146,21 @@ export default function HomePage() {
         <Box
           sx={{
             gridColumn: { xs: "1 / -1", lg: "1 / span 8" },
+            minWidth: 0,
             display: "grid",
             gap: { xs: "16px", sm: "24px", lg: "32px" },
             gridTemplateColumns: { xs: "1fr", md: "repeat(2, minmax(0, 1fr))" },
           }}
         >
-          <SoftCard title="Daily completion" sx={{ minHeight: { xs: 250, sm: 265, md: 280 } }}>
+          <SoftCard
+            title="Выполнение за день"
+            subtitle="Сегодня выполнено"
+            sx={{ minHeight: { xs: 250, sm: 265, md: 280 }, minWidth: 0 }}
+          >
             {renderStateBody({
               state: completionState,
-              emptyText: "No data for selected day",
-              errorText: "Unable to load daily completion.",
+              emptyText: "Нет данных за выбранный день",
+              errorText: "Не удалось загрузить данные. Попробуйте обновить страницу.",
               skeleton: (
                 <Stack spacing={1.8}>
                   <Skeleton width="38%" height={24} />
@@ -166,10 +176,10 @@ export default function HomePage() {
                     {dashboardData.completion}%
                   </Typography>
                   <Typography variant="body2" sx={{ mb: 3, maxWidth: 420 }}>
-                    Great work! You completed all planned activities for today.
+                    Отличный результат! Вы выполнили все запланированные активности за сегодня.
                   </Typography>
                   <Button variant="contained" size="medium">
-                    View details
+                    Открыть
                   </Button>
                 </>
               ),
@@ -177,8 +187,9 @@ export default function HomePage() {
           </SoftCard>
 
           <SoftCard
-            title="September 2026"
-            sx={{ minHeight: { xs: 290, sm: 305, md: 320 } }}
+            title="Календарь"
+            subtitle={monthLabel}
+            sx={{ minHeight: { xs: 290, sm: 305, md: 320 }, minWidth: 0 }}
             headerAction={
               <Stack direction="row" spacing={0.5}>
                 <IconButton size="small" sx={{ bgcolor: "rgba(140, 167, 220, 0.14)" }}>
@@ -192,8 +203,8 @@ export default function HomePage() {
           >
             {renderStateBody({
               state: calendarState,
-              emptyText: "No calendar data available",
-              errorText: "Unable to load calendar.",
+              emptyText: "Нет данных календаря",
+              errorText: "Не удалось загрузить данные. Попробуйте обновить страницу.",
               skeleton: (
                 <Box sx={{ display: "grid", gridTemplateColumns: "repeat(7, minmax(0, 1fr))", gap: 1 }}>
                   {Array.from({ length: 42 }).map((_, idx) => (
@@ -238,16 +249,18 @@ export default function HomePage() {
         </Box>
 
         <SoftCard
-          title="Summary"
+          title="Сводка по состоянию"
+          subtitle="Показатели и симптомы"
           sx={{
-            gridColumn: { xs: "1 / -1", lg: "9 / span 4" },
+            gridColumn: { xs: "1 / -1", md: "1 / -1", lg: "9 / span 4" },
+            minWidth: 0,
             minHeight: { xs: 255, sm: 270, md: 280 },
           }}
         >
           {renderStateBody({
             state: summaryState,
-            emptyText: "No symptoms recorded",
-            errorText: "Unable to load summary indicators.",
+            emptyText: "Симптомы не отмечены",
+            errorText: "Не удалось загрузить данные. Попробуйте обновить страницу.",
             skeleton: (
               <Stack spacing={2.1}>
                 {Array.from({ length: 4 }).map((_, idx) => (
@@ -288,6 +301,8 @@ export default function HomePage() {
 
       <Box
         sx={{
+          width: "100%",
+          minWidth: 0,
           mt: { xs: "16px", sm: "24px", lg: "32px" },
           display: "grid",
           gridTemplateColumns: "repeat(12, minmax(0, 1fr))",
@@ -295,19 +310,22 @@ export default function HomePage() {
         }}
       >
         <SoftCard
+          title="Рекомендации"
+          subtitle="На основе вашей сводки"
           sx={{
-            gridColumn: { xs: "1 / -1", md: "1 / span 7" },
+            gridColumn: { xs: "1 / -1", md: "1 / span 8", lg: "1 / span 8" },
             minHeight: { xs: 235, sm: 250, md: 255 },
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             position: "relative",
+            minWidth: 0,
           }}
         >
           {renderStateBody({
             state: recommendationState,
-            emptyText: "No recommendations yet",
-            errorText: "Unable to load recommendations.",
+            emptyText: "Рекомендаций пока нет",
+            errorText: "Не удалось загрузить данные. Попробуйте обновить страницу.",
             skeleton: (
               <Stack alignItems="center" spacing={2.4} width="100%">
                 <Skeleton width="76%" height={44} />
@@ -342,17 +360,19 @@ export default function HomePage() {
         </SoftCard>
 
         <SoftCard
+          title="Следующий приём"
           sx={{
-            gridColumn: { xs: "1 / -1", md: "8 / span 5" },
+            gridColumn: { xs: "1 / -1", md: "9 / span 4", lg: "9 / span 4" },
             minHeight: { xs: 235, sm: 250, md: 255 },
             display: "grid",
             placeItems: "center",
+            minWidth: 0,
           }}
         >
           {renderStateBody({
             state: appointmentState,
-            emptyText: "No upcoming appointments",
-            errorText: "Unable to load appointment information.",
+            emptyText: "Нет предстоящих приёмов",
+            errorText: "Не удалось загрузить данные. Попробуйте обновить страницу.",
             skeleton: (
               <Stack alignItems="center" spacing={1.3} width="100%">
                 <Skeleton width="80%" height={42} />
