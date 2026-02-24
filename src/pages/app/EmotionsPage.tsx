@@ -210,9 +210,21 @@ export default function EmotionsPage() {
 
   return (
     <PageContainer>
-      <Box sx={{ width: "100%", maxWidth: EMOTIONS_CONTENT_MAX_WIDTH, mx: "auto", minWidth: 0 }}>
+      <Box
+        sx={{
+          width: "100%",
+          maxWidth: EMOTIONS_CONTENT_MAX_WIDTH,
+          mx: "auto",
+          minWidth: 0,
+          flex: 1,
+          minHeight: 0,
+          display: "flex",
+        }}
+      >
         <Box
           sx={{
+            flex: 1,
+            minHeight: 0,
             display: "grid",
             gridTemplateColumns: "minmax(0, 1fr)",
             alignItems: "stretch",
@@ -223,8 +235,8 @@ export default function EmotionsPage() {
             },
           }}
         >
-          <SoftCard title="Расписание за день">
-            <Box sx={{ maxHeight: { xs: 320, md: 540, xl: 620 }, overflowY: "auto", pr: 0.5 }}>
+          <SoftCard title="Расписание за день" sx={{ minHeight: 0 }} contentSx={{ minHeight: 0 }}>
+            <Box sx={{ flex: 1, minHeight: 0, overflowY: "auto", pr: 0.5 }}>
               {groups.map((section) => (
                 <Box key={section.id} sx={{ mb: 3 }}>
                   <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1.5 }}>
@@ -284,7 +296,7 @@ export default function EmotionsPage() {
             </Box>
           </SoftCard>
 
-          <SoftCard title={selectedEmotion?.title ?? "Эмоция"}>
+          <SoftCard title={selectedEmotion?.title ?? "Эмоция"} sx={{ minHeight: 0 }} contentSx={{ minHeight: 0 }}>
             <Stack spacing={{ xs: 2.5, md: 3 }} sx={{ height: "100%" }}>
               <Box
                 aria-hidden
@@ -304,36 +316,70 @@ export default function EmotionsPage() {
                 </Typography>
               </Box>
 
-              <Box>
-                <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 1 }}>
-                  <Typography variant="body2" sx={{ color: "text.secondary" }}>
-                    Интенсивность
+              <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 1.5 }}>
+                <Typography variant="body2" sx={{ color: "text.secondary" }}>
+                  Интенсивность
+                </Typography>
+                <Box
+                  sx={{
+                    minWidth: 64,
+                    py: 0.5,
+                    px: 2,
+                    borderRadius: "999px",
+                    border: "1px solid #2A6AF0",
+                    bgcolor: "primary.main",
+                    textAlign: "center",
+                  }}
+                >
+                  <Typography variant="h6" sx={{ fontWeight: 600, lineHeight: 1.1, color: "#FFFFFF" }}>
+                    {sliderValue}
                   </Typography>
-                  <Box
-                    sx={{
-                      minWidth: 56,
-                      py: 0.5,
-                      px: 1.5,
-                      borderRadius: "999px",
-                      border: "1px solid #C9C9CB",
-                      bgcolor: "#F5F5F7",
-                      textAlign: "center",
-                    }}
-                  >
-                    <Typography variant="h6" sx={{ fontWeight: 600, lineHeight: 1.1 }}>
-                      {sliderValue}
-                    </Typography>
-                  </Box>
                 </Box>
                 <Slider
                   aria-label="Интенсивность эмоции"
+                  orientation="vertical"
                   min={0}
                   max={10}
                   step={1}
                   marks
+                  valueLabelDisplay="off"
                   value={sliderValue}
                   disabled={!selectedEmotion?.fillable}
                   onChange={(_event, value) => setSliderValue(value as number)}
+                  sx={{
+                    height: { xs: 220, md: 260 },
+                    p: "0 !important",
+                    mx: 0,
+                    "& .MuiSlider-rail": {
+                      width: 6,
+                      bgcolor: "#E5E5E7",
+                      opacity: 1,
+                    },
+                    "& .MuiSlider-track": {
+                      width: 6,
+                      border: 0,
+                    },
+                    "& .MuiSlider-thumb": {
+                      width: 18,
+                      height: 30,
+                      borderRadius: "999px",
+                      boxShadow: "none",
+                      border: "1px solid #C9C9CB",
+                      "&:hover, &.Mui-focusVisible, &.Mui-active": {
+                        boxShadow: "0 0 0 6px rgba(42,106,240,0.14)",
+                      },
+                    },
+                    "& .MuiSlider-mark": {
+                      width: 2,
+                      height: 8,
+                      borderRadius: 999,
+                      bgcolor: "#C9C9CB",
+                      ml: "-1px",
+                    },
+                    "& .MuiSlider-markActive": {
+                      bgcolor: "primary.main",
+                    },
+                  }}
                 />
               </Box>
 
@@ -354,9 +400,9 @@ export default function EmotionsPage() {
             </Stack>
           </SoftCard>
 
-          <Stack spacing={{ xs: 2, md: 3, lg: 4 }} sx={{ minWidth: 0, [twoKMediaQuery]: { gap: 5 } }}>
-            <SoftCard title="Информация">
-              <Stack spacing={1.5}>
+          <Stack spacing={{ xs: 2, md: 3, lg: 4 }} sx={{ minWidth: 0, minHeight: 0, height: "100%", [twoKMediaQuery]: { gap: 5 } }}>
+            <SoftCard title="Информация" sx={{ minHeight: 0, flex: "0 0 46%" }} contentSx={{ minHeight: 0 }}>
+              <Stack spacing={1.5} sx={{ flex: 1, minHeight: 0, overflowY: "auto", pr: 0.5 }}>
                 <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
                   {selectedEmotion?.title}
                 </Typography>
@@ -380,8 +426,12 @@ export default function EmotionsPage() {
               </Stack>
             </SoftCard>
 
-            <SoftCard title="Общая статистика за день (Заполните расписание за день)">
-              <Stack spacing={1.5} sx={{ maxHeight: { xs: 280, md: 360 }, overflowY: "auto", pr: 0.5 }}>
+            <SoftCard
+              title="Общая статистика за день (Заполните расписание за день)"
+              sx={{ minHeight: 0, flex: 1 }}
+              contentSx={{ minHeight: 0 }}
+            >
+              <Stack spacing={1.5} sx={{ flex: 1, minHeight: 0, overflowY: "auto", pr: 0.5 }}>
                 {sequence
                   .filter((item) => item.fillable)
                   .map((item) => {
