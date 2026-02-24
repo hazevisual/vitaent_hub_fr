@@ -72,14 +72,8 @@ export default function MedicinesHomePage() {
         </Box>
 
         <Box sx={{ width: "100%", maxWidth: "100%", minWidth: 0 }}>
-          <Grid
-            container
-            columns={12}
-            spacing={{ xs: 2.5, md: 3 }}
-            alignItems="stretch"
-            sx={{ width: "100%", maxWidth: "100%", m: 0 }}
-          >
-            <Grid size={{ xs: 12, md: 4 }} sx={{ minWidth: 0, maxWidth: "100%", display: "flex" }}>
+          <Grid container spacing={{ xs: 2.5, md: 3 }} alignItems="stretch" sx={{ width: "100%", maxWidth: "100%", m: 0, minWidth: 0 }}>
+            <Grid item xs={12} md={4} sx={{ minWidth: 0, maxWidth: "100%", display: "flex" }}>
               <SoftCard title="Расписание приёма" sx={{ minHeight: { xs: "auto", lg: 520 }, width: "100%" }}>
               <Stack spacing={2.25}>
                 {slots.map((slot) => (
@@ -107,7 +101,7 @@ export default function MedicinesHomePage() {
             </SoftCard>
             </Grid>
 
-            <Grid size={{ xs: 12, md: 4 }} sx={{ minWidth: 0, maxWidth: "100%", display: "flex" }}>
+            <Grid item xs={12} md={4} sx={{ minWidth: 0, maxWidth: "100%", display: "flex" }}>
               <SoftCard title="Лекарства" sx={{ minHeight: { xs: "auto", lg: 520 }, width: "100%" }}>
               <Stack spacing={2.25} sx={{ minHeight: 0, flex: 1 }}>
                 <TextField
@@ -161,7 +155,7 @@ export default function MedicinesHomePage() {
             </SoftCard>
             </Grid>
 
-            <Grid size={{ xs: 12, md: 4 }} sx={{ minWidth: 0, maxWidth: "100%", display: "flex" }}>
+            <Grid item xs={12} md={4} sx={{ minWidth: 0, maxWidth: "100%", display: "flex" }}>
               <SoftCard title="Карточка препарата" sx={{ minHeight: { xs: "auto", lg: 520 }, width: "100%" }}>
               <Stack spacing={2.5}>
                 <Box>
