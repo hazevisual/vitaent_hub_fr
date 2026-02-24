@@ -98,7 +98,28 @@ function LeftScheduleCard({ schedule }: { schedule: DayEmotionEntry[] }) {
           Добавьте эмоции, чтобы сформировать последовательность дня.
         </Typography>
       ) : (
-        <Stack spacing={1.25} sx={{ minWidth: 0, maxHeight: 420, overflowY: "auto", pr: 0.5 }}>
+        <Stack
+          spacing={1.25}
+          sx={{
+            minWidth: 0,
+            width: "100%",
+            maxHeight: 420,
+            overflowY: "auto",
+            scrollbarGutter: "stable",
+            scrollbarWidth: "thin",
+            scrollbarColor: "rgba(23, 23, 23, 0.25) transparent",
+            "&::-webkit-scrollbar": {
+              width: 6,
+            },
+            "&::-webkit-scrollbar-thumb": {
+              backgroundColor: "rgba(23, 23, 23, 0.25)",
+              borderRadius: "999px",
+            },
+            "&::-webkit-scrollbar-track": {
+              backgroundColor: "transparent",
+            },
+          }}
+        >
           {schedule.map((entry, index) => (
             <Box
               key={entry.id}
