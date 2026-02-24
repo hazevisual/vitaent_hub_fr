@@ -3,8 +3,6 @@ import {
   Alert,
   Box,
   Button,
-  Dialog,
-  DialogContent,
   IconButton,
   Skeleton,
   Stack,
@@ -12,7 +10,6 @@ import {
 } from "@mui/material";
 import ChevronLeftRoundedIcon from "@mui/icons-material/ChevronLeftRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
-import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import PageContainer from "@/components/ui/PageContainer";
 import SoftCard from "@/components/ui/SoftCard";
 import WeekDayViewContent from "@/pages/app/WeekDayViewContent";
@@ -133,8 +130,6 @@ const homeCardSx = {
 };
 
 export default function HomePage() {
-  const [isWeekDayDialogOpen, setIsWeekDayDialogOpen] = React.useState(false);
-
   const completionState = resolveState({
     isBlockLoading: isLoading,
     hasError: mockErrors.completion,
@@ -269,7 +264,6 @@ export default function HomePage() {
 
                 <Button
                   variant="contained"
-                  onClick={() => setIsWeekDayDialogOpen(true)}
                   sx={{
                     mt: "auto",
                     alignSelf: "center",
@@ -283,7 +277,7 @@ export default function HomePage() {
                     "&:hover": { bgcolor: "primary.dark", boxShadow: "none" },
                   }}
                 >
-                  Открыть
+                  Обновить
                 </Button>
               </Stack>
             ),
@@ -417,6 +411,8 @@ export default function HomePage() {
 
           </Box>
 
+          <WeekDayViewContent />
+
           <Box
             sx={{
               boxSizing: "border-box",
@@ -543,51 +539,6 @@ export default function HomePage() {
           </Box>
         </Box>
       </Box>
-      <Dialog
-        open={isWeekDayDialogOpen}
-        onClose={() => setIsWeekDayDialogOpen(false)}
-        fullWidth
-        maxWidth="lg"
-        aria-labelledby="week-day-dialog-title"
-        PaperProps={{
-          sx: {
-            width: "100%",
-            maxWidth: { lg: "1560px" },
-            borderRadius: "16px",
-            border: "1px solid #E5E5E7",
-            boxShadow: 3,
-            maxHeight: "85vh",
-            m: { xs: 2, md: 3 },
-            bgcolor: "#FFFFFF",
-          },
-        }}
-      >
-        <DialogContent
-          sx={{
-            p: { xs: 3, xl: 4 },
-            overflowY: "auto",
-            bgcolor: "#FFFFFF",
-          }}
-        >
-          <Stack spacing={3}>
-            <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 2 }}>
-              <Typography id="week-day-dialog-title" variant="subtitle2" sx={{ ...sectionHeaderSx, color: "text.primary" }}>
-                Просмотр по неделе и дням
-              </Typography>
-              <IconButton
-                aria-label="Закрыть окно просмотра по неделе и дням"
-                size="small"
-                onClick={() => setIsWeekDayDialogOpen(false)}
-                sx={{ color: "text.secondary" }}
-              >
-                <CloseRoundedIcon fontSize="small" />
-              </IconButton>
-            </Box>
-
-            <WeekDayViewContent />
-          </Stack>
-        </DialogContent>
-      </Dialog>
     </PageContainer>
   );
 }
