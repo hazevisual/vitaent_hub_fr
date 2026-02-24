@@ -18,6 +18,7 @@ import EmotionsPage from "@/pages/app/EmotionsPage";
 import MessagesPage from "@/pages/app/MessagesPage";
 import MedicationUpsertPage from "@/pages/Medicines/MedicationUpsertPage";
 import MedicinesHomePage from "@/pages/Medicines/MedicinesHomePage";
+import DiseasePage from "@/pages/app/DiseasePage";
 import { vitaentTheme } from "@/theme/vitaentTheme";
 import "./index.css";
 
@@ -42,6 +43,11 @@ const router = createBrowserRouter([
           { path: "medicines/add", element: <MedicationUpsertPage /> },
           { path: "medicines/:id/edit", element: <MedicationUpsertPage /> },
         ],
+      },
+      {
+        path: Paths.diseaseDetails,
+        element: <AppLayout />,
+        children: [{ index: true, element: <DiseasePage /> }],
       },
     ],
   },
