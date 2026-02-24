@@ -25,8 +25,8 @@ import { useAuth } from "@/auth/AuthProvider";
 const drawerWidth = 248;
 
 const navItems = [
-  { label: "Home", to: "/app", icon: <HomeRoundedIcon fontSize="small" /> },
-  { label: "Profile", to: "/app/profile", icon: <PersonRoundedIcon fontSize="small" /> },
+  { label: "Главная", to: "/app", icon: <HomeRoundedIcon fontSize="small" /> },
+  { label: "Профиль", to: "/app/profile", icon: <PersonRoundedIcon fontSize="small" /> },
 ];
 
 export default function AppLayout() {
@@ -128,7 +128,7 @@ export default function AppLayout() {
               {user?.userName ?? "vitaent"}
             </Typography>
             <Button variant="text" color="inherit" onClick={handleSignOut} sx={{ color: "text.secondary", minWidth: 0, px: 1 }}>
-              Sign out
+              Выйти
             </Button>
           </Box>
         </Toolbar>

@@ -6,9 +6,12 @@ export default function PageContainer({ children, sx, ...rest }: BoxProps) {
     <Box
       {...rest}
       sx={{
+        boxSizing: "border-box",
+        display: "block",
+        minWidth: 0,
         width: "100%",
         maxWidth: "none",
-        px: { xs: "16px", sm: "24px", md: "32px", lg: "48px", xl: "72px" },
+        px: { xs: "16px", sm: "24px", md: "32px", lg: "48px", xl: "80px" },
         pt: { xs: 0.75, sm: 1, md: 1.5 },
         pb: { xs: 2, md: 3 },
         overflowX: "clip",
