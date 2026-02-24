@@ -215,8 +215,8 @@ export default function EmotionsPage() {
   return (
     <PageContainer
       sx={{
-        pt: { xs: 1.5, sm: 2, lg: 2.5 },
-        pb: { xs: 2.5, md: 3, lg: 3.5 },
+        pt: { xs: 2, sm: 2.5, lg: 3 },
+        pb: { xs: 2, md: 2.5, lg: 3 },
         minHeight: 0,
       }}
     >
@@ -249,25 +249,29 @@ export default function EmotionsPage() {
               alignItems: "stretch",
               alignContent: "start",
               justifyContent: "flex-start",
-              gap: { xs: 1.5, md: 2, lg: 2.5 },
-              [twoKMediaQuery]: { gap: 3 },
+              gap: { xs: 1.5, md: 1.75, lg: 2 },
+              [twoKMediaQuery]: { gap: 2.5 },
               "@media (min-width:1200px)": {
                 gridTemplateColumns: "minmax(260px, 1fr) minmax(340px, 1.15fr) minmax(300px, 1fr)",
               },
             }}
           >
-          <SoftCard title="Расписание за день" sx={{ minHeight: 0, height: "100%" }} contentSx={{ minHeight: 0 }}>
-            <Box sx={{ flex: 1, minHeight: 0, overflowY: "auto", pr: 0.5 }}>
+          <SoftCard
+            title="Расписание за день"
+            sx={{ minHeight: 0, height: "100%" }}
+            contentSx={{ minHeight: 0, p: { xs: 2, sm: 2.25, md: 2.5 }, "&:last-child": { pb: { xs: 2, sm: 2.25, md: 2.5 } } }}
+          >
+            <Box sx={{ flex: 1, minHeight: 0 }}>
               {groups.map((section) => (
-                <Box key={section.id} sx={{ mb: 2.25 }}>
-                  <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
+                <Box key={section.id} sx={{ mb: 1.5 }}>
+                  <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 0.75 }}>
                     <AccessTimeRoundedIcon sx={{ fontSize: 18, color: section.fillable ? "primary.main" : "#C9C9CB" }} />
                     <Typography variant="subtitle2" sx={{ color: "text.secondary" }}>
                       {section.title}
                     </Typography>
                   </Box>
 
-                  <List disablePadding sx={{ display: "grid", gap: 0.75 }}>
+                  <List disablePadding sx={{ display: "grid", gap: 0.5 }}>
                     {section.emotions.map((emotion) => {
                       const isSelected = emotion.id === selectedEmotionId;
                       const isDisabled = !section.fillable;
@@ -282,7 +286,7 @@ export default function EmotionsPage() {
                             border: isSelected ? "1px solid #C9C9CB" : "1px solid transparent",
                             bgcolor: isSelected ? "#F5F5F7" : "transparent",
                             px: 1.25,
-                            py: 1,
+                            py: 0.75,
                             opacity: isDisabled ? 0.56 : 1,
                             "&:hover": { bgcolor: "#F0F0F2" },
                             "&.Mui-selected": { bgcolor: "#F5F5F7" },
@@ -317,17 +321,21 @@ export default function EmotionsPage() {
             </Box>
           </SoftCard>
 
-          <SoftCard title={selectedEmotion?.title ?? "Эмоция"} sx={{ minHeight: 0, height: "100%" }} contentSx={{ minHeight: 0 }}>
+          <SoftCard
+            title={selectedEmotion?.title ?? "Эмоция"}
+            sx={{ minHeight: 0, height: "100%" }}
+            contentSx={{ minHeight: 0, p: { xs: 2, sm: 2.25, md: 2.5 }, "&:last-child": { pb: { xs: 2, sm: 2.25, md: 2.5 } } }}
+          >
             <Stack
-              spacing={{ xs: 2, md: 2.25 }}
-              sx={{ height: "100%", minHeight: 0, minWidth: 0, overflowY: "auto", overflowX: "hidden" }}
+              spacing={{ xs: 1.5, md: 1.75 }}
+              sx={{ height: "100%", minHeight: 0, minWidth: 0 }}
             >
               <Box sx={{ display: "flex", justifyContent: "center", width: "100%", flexShrink: 0 }}>
                 <Box
                   aria-hidden
                   sx={{
-                    width: { xs: 154, md: 180, xl: 198 },
-                    height: { xs: 154, md: 180, xl: 198 },
+                    width: { xs: 130, md: 146, xl: 160 },
+                    height: { xs: 130, md: 146, xl: 160 },
                     borderRadius: "50%",
                     border: "1px solid #C9C9CB",
                     bgcolor: "#F5F5F7",
@@ -348,7 +356,7 @@ export default function EmotionsPage() {
                   gap: 1.5,
                   flexShrink: 0,
                   minWidth: 0,
-                  py: 0.5,
+                  py: 0.25,
                 }}
               >
                 <Typography variant="body2" sx={{ color: "text.secondary", flexShrink: 0 }}>
@@ -368,7 +376,7 @@ export default function EmotionsPage() {
                     flex: 1,
                     minWidth: 0,
                     boxSizing: "border-box",
-                    py: "2px",
+                    py: "1px",
                     "& .MuiSlider-rail": {
                       height: 4,
                       bgcolor: "#E5E5E7",
@@ -400,9 +408,9 @@ export default function EmotionsPage() {
                 />
                 <Box
                   sx={{
-                    minWidth: 40,
-                    py: 0.375,
-                    px: 1.2,
+                    minWidth: 36,
+                    py: 0.25,
+                    px: 1,
                     borderRadius: "999px",
                     border: "1px solid #C9C9CB",
                     bgcolor: "#FFFFFF",
@@ -422,7 +430,7 @@ export default function EmotionsPage() {
                 onClick={handleApplyValue}
                 disabled={!selectedEmotion?.fillable}
                 sx={{
-                  mt: "auto",
+                  mt: 0.5,
                   alignSelf: "stretch",
                   borderRadius: "12px",
                   textTransform: "none",
@@ -443,25 +451,29 @@ export default function EmotionsPage() {
               display: "flex",
               flexDirection: "column",
               gap: { xs: 1.5, md: 2, lg: 2.5 },
-              [twoKMediaQuery]: { gap: 3 },
+              [twoKMediaQuery]: { gap: 2.5 },
             }}
           >
-            <SoftCard title="Информация" sx={{ minHeight: 0, flex: "0 0 250px" }} contentSx={{ minHeight: 0 }}>
-              <Stack spacing={1.5} sx={{ flex: 1, minHeight: 0, overflowY: "auto", pr: 0.5 }}>
+            <SoftCard
+              title="Информация"
+              sx={{ minHeight: 0, flex: "0 0 220px" }}
+              contentSx={{ minHeight: 0, p: { xs: 2, sm: 2.25, md: 2.5 }, "&:last-child": { pb: { xs: 2, sm: 2.25, md: 2.5 } } }}
+            >
+              <Stack spacing={1} sx={{ flex: 1, minHeight: 0 }}>
                 <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
                   {selectedEmotion?.title}
                 </Typography>
-                <Typography variant="body2" sx={{ color: "text.secondary", lineHeight: 1.6 }}>
+                <Typography variant="body2" sx={{ color: "text.secondary", lineHeight: 1.5 }}>
                   {selectedEmotion?.description}
                 </Typography>
                 {!!selectedEmotion?.symptoms?.length && (
                   <Box>
-                    <Typography variant="caption" sx={{ color: "text.secondary", display: "block", mb: 0.75 }}>
+                    <Typography variant="caption" sx={{ color: "text.secondary", display: "block", mb: 0.5 }}>
                       Возможные симптомы:
                     </Typography>
                     <Box component="ul" sx={{ m: 0, pl: 2.5, color: "#6B6B6B" }}>
                       {selectedEmotion.symptoms.map((symptom) => (
-                        <Typography key={symptom} component="li" variant="body2" sx={{ color: "text.secondary", mb: 0.5 }}>
+                        <Typography key={symptom} component="li" variant="body2" sx={{ color: "text.secondary", mb: 0.25 }}>
                           {symptom}
                         </Typography>
                       ))}
@@ -474,22 +486,22 @@ export default function EmotionsPage() {
             <SoftCard
               title="Общая статистика за день (Заполните расписание за день)"
               sx={{ minHeight: 0, flex: 1 }}
-              contentSx={{ minHeight: 0 }}
+              contentSx={{ minHeight: 0, p: { xs: 2, sm: 2.25, md: 2.5 }, "&:last-child": { pb: { xs: 2, sm: 2.25, md: 2.5 } } }}
             >
-              <Stack spacing={1.5} sx={{ flex: 1, minHeight: 0, overflowY: "auto", pr: 0.5 }}>
+              <Stack spacing={1} sx={{ flex: 1, minHeight: 0 }}>
                 {sequence
                   .filter((item) => item.fillable)
                   .map((item) => {
                     const safeValue = item.value ?? 0;
                     return (
                       <Box key={item.id}>
-                        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", mb: 0.5 }}>
+                        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", mb: 0.25 }}>
                           <Typography variant="body2">{item.title}</Typography>
                           <Typography variant="caption" sx={{ color: "text.secondary" }}>
                             {safeValue} из 10
                           </Typography>
                         </Box>
-                        <Box sx={{ width: "100%", height: 8, borderRadius: 99, bgcolor: "#E5E5E7", overflow: "hidden" }}>
+                        <Box sx={{ width: "100%", height: 6, borderRadius: 99, bgcolor: "#E5E5E7", overflow: "hidden" }}>
                           <Box
                             sx={{
                               width: `${(safeValue / 10) * 100}%`,
