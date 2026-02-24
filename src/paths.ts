@@ -9,5 +9,5 @@ export const Paths = {
     medicinesAdd: "/app/medicines/add",
     messages: "/app/messages",
     weekDays: "/app/calendar-week",
-    diseaseDetails: (id: string | number) => `/diseases/${id}`,
+    diseaseDetails: (id: string | number) => `/app/diseases/${id}`,
 } as const;
