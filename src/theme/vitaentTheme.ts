@@ -174,9 +174,9 @@ export const vitaentTheme = createTheme({
     MuiButton: {
       styleOverrides: {
         root: {
-          borderRadius: 14,
-          paddingLeft: 18,
-          paddingRight: 18,
+          borderRadius: 12,
+          paddingLeft: 16,
+          paddingRight: 16,
           "&:focus-visible": {
             outline: "2px solid #336FEE",
             outlineOffset: 2,
@@ -192,11 +192,11 @@ export const vitaentTheme = createTheme({
           },
         },
         outlinedPrimary: {
-          borderColor: "#9BB8F6",
-          color: "#2558C2",
+          borderColor: "#336FEE",
+          color: "#336FEE",
           "&:hover": {
-            borderColor: "#7EA4F3",
-            backgroundColor: "rgba(51, 111, 238, 0.08)",
+            borderColor: "#2558C2",
+            backgroundColor: "rgba(51, 111, 238, 0.04)",
           },
         },
       },
@@ -222,11 +222,12 @@ export const vitaentTheme = createTheme({
           borderRadius: 12,
           marginBottom: 4,
           "&.Mui-selected": {
-            backgroundColor: "#E5EDFF",
-            color: "#2F3B54",
+            backgroundColor: "#F5F5F7",
+            color: "#1E1E20",
+            border: "1px solid #C9C9CB",
           },
           "&.Mui-selected:hover": {
-            backgroundColor: "#DCE7FF",
+            backgroundColor: "#F5F5F7",
           },
           "&:focus-visible": {
             outline: "2px solid #336FEE",

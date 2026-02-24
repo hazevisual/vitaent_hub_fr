@@ -62,34 +62,34 @@ export default function MedicinesHomePage() {
 
   return (
     <PageContainer sx={{ width: "100%", maxWidth: "100%" }}>
-      <Stack spacing={3} sx={{ width: "100%", maxWidth: "100%", minWidth: 0 }}>
-        <Box sx={{ mb: { xs: 0.5, md: 1 } }}>
-          <Typography variant="h4" sx={{ fontSize: { xs: "1.4rem", md: "1.7rem" }, fontWeight: 700 }}>
+      <Stack spacing={4} sx={{ width: "100%", maxWidth: "100%", minWidth: 0 }}>
+        <Box sx={{ mb: { xs: 1, md: 1 } }}>
+          <Typography variant="h4" sx={{ fontSize: { xs: "1.5rem", md: "1.75rem" }, fontWeight: 600 }}>
             Лекарства
           </Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
+          <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
             Настройте расписание и добавляйте препараты в нужные временные слоты.
           </Typography>
         </Box>
 
         <Box sx={{ width: "100%", maxWidth: "100%", minWidth: 0 }}>
-          <Grid container spacing={{ xs: 2.5, md: 3 }} alignItems="stretch" sx={{ width: "100%", maxWidth: "100%", m: 0, minWidth: 0 }}>
+          <Grid container spacing={{ xs: 2, md: 3 }} alignItems="stretch" sx={{ width: "100%", maxWidth: "100%", m: 0, minWidth: 0 }}>
             <Grid item xs={12} md={4} sx={{ minWidth: 0, maxWidth: "100%", display: "flex" }}>
-              <SoftCard title="Расписание приёма" sx={{ minHeight: { xs: "auto", lg: 520 }, width: "100%" }}>
-              <Stack spacing={2.25}>
+              <SoftCard title="Расписание приёма" sx={{ minHeight: { xs: "auto", lg: 520 }, width: "100%", border: "1px solid #E5E5E7", boxShadow: "none", "@media (min-width:2000px)": { "& .MuiCardContent-root": { p: 3.75, "&:last-child": { pb: 3.75 } } } }}>
+              <Stack spacing={2}>
                 {slots.map((slot) => (
                   <Box
                     key={slot.id}
                     sx={{
                       px: 2.5,
                       py: 2,
-                      borderRadius: 1.5,
+                      borderRadius: "12px",
                       bgcolor: "#F5F5F7",
                       border: "1px solid #C9C9CB",
-                      mb: 1.5,
+                      mb: 2,
                     }}
                   >
-                    <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 1.1 }}>
+                    <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 1 }}>
                       <Typography variant="subtitle2" sx={{ fontWeight: 700, color: "text.primary" }}>
                         {slot.time}
                       </Typography>
@@ -98,8 +98,8 @@ export default function MedicinesHomePage() {
                     <Stack
                       spacing={1}
                       sx={{
-                        px: 1.25,
-                        py: 0.25,
+                        px: 1.5,
+                        py: 1,
                       }}
                     >
                       {slot.medications.map((name) => (
@@ -110,9 +110,9 @@ export default function MedicinesHomePage() {
                     </Stack>
                   </Box>
                 ))}
-                <Stack direction={{ xs: "column", sm: "row" }} spacing={1.5} sx={{ pt: 1.25, mt: "auto" }}>
-                  <Button variant="contained">Добавить лекарства</Button>
-                  <Button variant="outlined">Добавить временной слот</Button>
+                <Stack direction={{ xs: "column", sm: "row" }} spacing={1.5} sx={{ pt: 1.5, mt: "auto" }}>
+                  <Button variant="contained" sx={{ borderRadius: "12px", boxShadow: "none" }}>Добавить лекарства</Button>
+                  <Button variant="outlined" sx={{ borderRadius: "12px", boxShadow: "none" }}>Добавить временной слот</Button>
                 </Stack>
               </Stack>
             </SoftCard>
@@ -124,12 +124,12 @@ export default function MedicinesHomePage() {
                 sx={{
                   minHeight: { xs: "auto", lg: 520 },
                   width: "100%",
-                  bgcolor: "background.paper",
-                  border: "1px solid #C8C8CC",
-                  boxShadow: "0 0 0 1px #F5F5F7",
+                  border: "1px solid #E5E5E7",
+                  boxShadow: "none",
+                  "@media (min-width:2000px)": { "& .MuiCardContent-root": { p: 3.75, "&:last-child": { pb: 3.75 } } },
                 }}
               >
-              <Stack spacing={2.25} sx={{ minHeight: 0, flex: 1 }}>
+              <Stack spacing={2} sx={{ minHeight: 0, flex: 1 }}>
                 <TextField
                   value={query}
                   onChange={(event) => setQuery(event.target.value)}
@@ -148,27 +148,27 @@ export default function MedicinesHomePage() {
                       onClick={() => setSelectedId(item.id)}
                       sx={{
                         mb: 1,
-                        px: 1.5,
-                        py: 1.25,
-                        borderRadius: 2,
+                        px: 2,
+                        py: 1.5,
+                        borderRadius: "12px",
                         border: "1px solid transparent",
                         "&.Mui-selected": {
                           bgcolor: "#F5F5F7",
                           borderColor: "#C9C9CB",
                         },
                         "&.Mui-selected:hover": {
-                          bgcolor: "#EEEEF1",
+                          bgcolor: "#F5F5F7",
                         },
                         "&:hover": {
-                          bgcolor: "#F9F9FA",
+                          bgcolor: "#F5F5F7",
                         },
                       }}
                     >
                       <Avatar
                         sx={{
-                          width: 34,
-                          height: 34,
-                          mr: 1.2,
+                          width: 32,
+                          height: 32,
+                          mr: 1.5,
                           bgcolor: (theme) => alpha(theme.palette.primary.main, 0.24),
                           color: "primary.dark",
                         }}
@@ -178,7 +178,7 @@ export default function MedicinesHomePage() {
                       <ListItemText
                         primary={item.name}
                         secondary={`${item.dosage} • ${item.stock}`}
-                        primaryTypographyProps={{ fontWeight: 600, fontSize: 14 }}
+                        primaryTypographyProps={{ fontWeight: 600, fontSize: 16 }}
                       />
                     </ListItemButton>
                   ))}
@@ -188,21 +188,21 @@ export default function MedicinesHomePage() {
             </Grid>
 
             <Grid item xs={12} md={4} sx={{ minWidth: 0, maxWidth: "100%", display: "flex" }}>
-              <SoftCard title="Карточка препарата" sx={{ minHeight: { xs: "auto", lg: 520 }, width: "100%" }}>
-              <Stack spacing={2.5}>
+              <SoftCard title="Карточка препарата" sx={{ minHeight: { xs: "auto", lg: 520 }, width: "100%", border: "1px solid #E5E5E7", boxShadow: "none", "@media (min-width:2000px)": { "& .MuiCardContent-root": { p: 3.75, "&:last-child": { pb: 3.75 } } } }}>
+              <Stack spacing={3}>
                 <Box>
-                  <Typography variant="h5" sx={{ fontSize: "1.05rem" }}>
+                  <Typography variant="h5" sx={{ fontSize: "1.1rem", fontWeight: 600 }}>
                     {selectedMedication.name}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
+                  <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
                     {selectedMedication.dosage}
                   </Typography>
                 </Box>
 
                 <Divider />
 
-                <Box sx={{ pt: 0.5 }}>
-                  <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 1 }}>
+                <Box sx={{ pt: 1 }}>
+                  <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 2 }}>
                     Примечание
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
@@ -210,11 +210,11 @@ export default function MedicinesHomePage() {
                   </Typography>
                 </Box>
 
-                <Box sx={{ pt: 0.5 }}>
-                  <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 1 }}>
+                <Box sx={{ pt: 1 }}>
+                  <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 2 }}>
                     Количество
                   </Typography>
-                  <Stack direction="row" alignItems="center" spacing={1.1}>
+                  <Stack direction="row" alignItems="center" spacing={1.5}>
                     <IconButton onClick={() => setQuantity((prev) => Math.max(1, prev - 1))}>
                       <RemoveRoundedIcon fontSize="small" />
                     </IconButton>
@@ -225,7 +225,7 @@ export default function MedicinesHomePage() {
                   </Stack>
                 </Box>
 
-                <Button variant="contained" sx={{ mt: "auto", pt: 1.4, pb: 1.4 }}>
+                <Button variant="contained" sx={{ mt: "auto", pt: 1.5, pb: 1.5, borderRadius: "12px", boxShadow: "none" }}>
                   Добавить в расписание приёма
                 </Button>
               </Stack>
