@@ -1,4 +1,5 @@
 import * as React from "react";
+import AccessTimeRoundedIcon from "@mui/icons-material/AccessTimeRounded";
 import {
   Alert,
   Box,
@@ -14,140 +15,197 @@ import { useNavigate } from "react-router-dom";
 import PageContainer from "@/components/ui/PageContainer";
 import SoftCard from "@/components/ui/SoftCard";
 
-type EmotionItem = {
-  id: string;
-  sectionId: string;
-  name: string;
-  value: number;
-  info: string;
-};
-
-type EmotionSection = {
+type Emotion = {
   id: string;
   title: string;
-  items: EmotionItem[];
+  description: string;
+  symptoms?: string[];
+  value: number | null;
 };
 
-type EmotionStat = {
+type EmotionGroup = {
   id: string;
-  label: string;
-  value: number;
+  title: string;
+  fillable: boolean;
+  emotions: Emotion[];
 };
 
 const EMOTIONS_CONTENT_MAX_WIDTH = 1560;
 const twoKMediaQuery = "@media (min-width:2000px)";
 
-const initialSections: EmotionSection[] = [
+const initialGroups: EmotionGroup[] = [
   {
-    id: "morning",
+    id: "morning-negative",
     title: "Утреннее состояние",
-    items: [
+    fillable: true,
+    emotions: [
       {
-        id: "calm",
-        sectionId: "morning",
-        name: "Спокойствие",
-        value: 6,
-        info: "Спокойствие показывает, насколько ровным и устойчивым было ваше внутреннее состояние утром.",
+        id: "depression",
+        title: "Подавленность",
+        description: "Подавленность отражает снижение тонуса, мотивации и эмоционального ресурса в начале дня.",
+        symptoms: ["Сложно включиться в задачи", "Чувство усталости уже утром"],
+        value: null,
       },
       {
         id: "anxiety",
-        sectionId: "morning",
-        name: "Тревожность",
-        value: 3,
-        info: "Тревожность отражает уровень внутреннего напряжения и беспокойства в течение дня.",
+        title: "Тревога",
+        description: "Тревога показывает уровень внутреннего беспокойства и напряжения.",
+        symptoms: ["Навязчивые мысли", "Ощущение неопределенности"],
+        value: null,
       },
       {
-        id: "energy",
-        sectionId: "morning",
-        name: "Энергичность",
-        value: 7,
-        info: "Энергичность показывает уровень бодрости, готовности к действиям и активности.",
+        id: "stress",
+        title: "Стресс",
+        description: "Стресс помогает зафиксировать реакцию организма на нагрузку и внешнее давление.",
+        symptoms: ["Мышечное напряжение", "Снижение концентрации"],
+        value: null,
+      },
+      {
+        id: "irritability",
+        title: "Раздражительность",
+        description: "Раздражительность показывает, насколько остро вы реагировали на обычные события.",
+        value: null,
+      },
+      {
+        id: "aggression",
+        title: "Агрессия",
+        description: "Агрессия отражает интенсивность импульсивных и конфликтных реакций.",
+        value: null,
+      },
+    ],
+  },
+  {
+    id: "morning-positive",
+    title: "Утреннее состояние",
+    fillable: true,
+    emotions: [
+      {
+        id: "joy",
+        title: "Радость",
+        description: "Радость показывает степень позитивного эмоционального фона в течение утра.",
+        value: null,
+      },
+      {
+        id: "optimism",
+        title: "Оптимизм",
+        description: "Оптимизм отражает уверенность в благоприятном развитии дня.",
+        value: null,
+      },
+      {
+        id: "confidence",
+        title: "Уверенность",
+        description: "Уверенность помогает оценить ощущение контроля и готовности к действиям.",
+        value: null,
+      },
+      {
+        id: "satisfaction",
+        title: "Удовлетворение",
+        description: "Удовлетворение фиксирует внутреннее чувство согласия с собой и текущим состоянием.",
+        value: null,
       },
     ],
   },
   {
     id: "evening",
     title: "Вечернее состояние",
-    items: [
+    fillable: false,
+    emotions: [
       {
-        id: "joy",
-        sectionId: "evening",
-        name: "Радость",
-        value: 5,
-        info: "Радость описывает степень позитивных эмоций, удовлетворенности и приятных ощущений.",
+        id: "evening-calm",
+        title: "Спокойствие",
+        description: "Вечерние эмоции будут доступны после заполнения утреннего расписания.",
+        value: null,
       },
       {
-        id: "irritability",
-        sectionId: "evening",
-        name: "Раздражительность",
-        value: 4,
-        info: "Раздражительность отражает, насколько легко возникали негативные реакции на внешние факторы.",
-      },
-      {
-        id: "fatigue",
-        sectionId: "evening",
-        name: "Усталость",
-        value: 6,
-        info: "Усталость показывает накопленный уровень физического и эмоционального истощения.",
+        id: "evening-fatigue",
+        title: "Усталость",
+        description: "Вечерние эмоции будут доступны после заполнения утреннего расписания.",
+        value: null,
       },
     ],
   },
 ];
 
-const initialStats: EmotionStat[] = [
-  { id: "calm", label: "Спокойствие", value: 6 },
-  { id: "anxiety", label: "Тревожность", value: 3 },
-  { id: "energy", label: "Энергичность", value: 7 },
-  { id: "joy", label: "Радость", value: 5 },
-  { id: "irritability", label: "Раздражительность", value: 4 },
-  { id: "fatigue", label: "Усталость", value: 6 },
-];
-
-function getEmotionById(sections: EmotionSection[], id: string) {
-  for (const section of sections) {
-    for (const emotion of section.items) {
-      if (emotion.id === id) {
-        return emotion;
-      }
-    }
-  }
-
-  return null;
-}
+const getFlatSequence = (groups: EmotionGroup[]) =>
+  groups.flatMap((group) => group.emotions.map((emotion) => ({ ...emotion, groupId: group.id, fillable: group.fillable })));
 
 export default function EmotionsPage() {
   const navigate = useNavigate();
-  const [sections, setSections] = React.useState<EmotionSection[]>(initialSections);
-  const [stats, setStats] = React.useState<EmotionStat[]>(initialStats);
-  const [selectedEmotionId, setSelectedEmotionId] = React.useState(initialSections[0].items[0].id);
-  const [sliderValue, setSliderValue] = React.useState(initialSections[0].items[0].value);
+  const [groups, setGroups] = React.useState<EmotionGroup[]>(initialGroups);
+  const [selectedEmotionId, setSelectedEmotionId] = React.useState(initialGroups[0].emotions[0].id);
+  const [sliderValue, setSliderValue] = React.useState(0);
   const [isFinishMessageOpen, setIsFinishMessageOpen] = React.useState(false);
+  const [isAllFilledMessageOpen, setIsAllFilledMessageOpen] = React.useState(false);
 
-  const selectedEmotion = React.useMemo(() => getEmotionById(sections, selectedEmotionId), [sections, selectedEmotionId]);
+  const sequence = React.useMemo(() => getFlatSequence(groups), [groups]);
+  const fillableEmotionIds = React.useMemo(() => sequence.filter((emotion) => emotion.fillable).map((emotion) => emotion.id), [sequence]);
+
+  const selectedEmotion = React.useMemo(
+    () => sequence.find((emotion) => emotion.id === selectedEmotionId) ?? null,
+    [sequence, selectedEmotionId]
+  );
+
+  const allRequiredFilled = React.useMemo(
+    () => sequence.filter((emotion) => emotion.fillable).every((emotion) => emotion.value !== null),
+    [sequence]
+  );
 
   React.useEffect(() => {
-    if (selectedEmotion) {
-      setSliderValue(selectedEmotion.value);
-    }
-  }, [selectedEmotion]);
-
-  const handleApplyValue = () => {
     if (!selectedEmotion) {
       return;
     }
 
-    setSections((previous) =>
-      previous.map((section) => ({
-        ...section,
-        items: section.items.map((emotion) =>
-          emotion.id === selectedEmotion.id ? { ...emotion, value: sliderValue } : emotion
-        ),
+    setSliderValue(selectedEmotion.value ?? 0);
+  }, [selectedEmotion]);
+
+  const selectEmotion = (emotionId: string) => {
+    const emotion = sequence.find((item) => item.id === emotionId);
+    if (!emotion || !emotion.fillable) {
+      return;
+    }
+
+    setSelectedEmotionId(emotionId);
+    setSliderValue(emotion.value ?? 0);
+  };
+
+  const setEmotionValue = (emotionId: string, value: number) => {
+    setGroups((previous) =>
+      previous.map((group) => ({
+        ...group,
+        emotions: group.emotions.map((emotion) => (emotion.id === emotionId ? { ...emotion, value } : emotion)),
       }))
     );
+  };
 
-    setStats((previous) =>
-      previous.map((item) => (item.id === selectedEmotion.id ? { ...item, value: sliderValue } : item))
-    );
+  const handleApplyValue = () => {
+    if (!selectedEmotion || !selectedEmotion.fillable) {
+      return;
+    }
+
+    setEmotionValue(selectedEmotion.id, sliderValue);
+
+    const selectedIndex = fillableEmotionIds.findIndex((id) => id === selectedEmotion.id);
+    const nextEmotionId = fillableEmotionIds.slice(selectedIndex + 1).find((id) => {
+      const target = sequence.find((emotion) => emotion.id === id);
+      if (!target) {
+        return false;
+      }
+
+      if (target.id === selectedEmotion.id) {
+        return false;
+      }
+
+      return target.value === null;
+    });
+
+    if (!nextEmotionId) {
+      setIsAllFilledMessageOpen(true);
+      return;
+    }
+
+    setSelectedEmotionId(nextEmotionId);
+    const nextEmotion = sequence.find((emotion) => emotion.id === nextEmotionId);
+    setSliderValue(nextEmotion?.value ?? 0);
   };
 
   return (
@@ -167,34 +225,54 @@ export default function EmotionsPage() {
         >
           <SoftCard title="Расписание за день">
             <Box sx={{ maxHeight: { xs: 320, md: 540, xl: 620 }, overflowY: "auto", pr: 0.5 }}>
-              {sections.map((section) => (
-                <Box key={section.id} sx={{ mb: 2.5 }}>
-                  <Typography variant="subtitle2" sx={{ color: "text.secondary", mb: 1.2 }}>
-                    {section.title}
-                  </Typography>
-                  <List disablePadding sx={{ display: "grid", gap: 0.8 }}>
-                    {section.items.map((emotion) => {
+              {groups.map((section) => (
+                <Box key={section.id} sx={{ mb: 3 }}>
+                  <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1.5 }}>
+                    <AccessTimeRoundedIcon sx={{ fontSize: 18, color: section.fillable ? "primary.main" : "#C9C9CB" }} />
+                    <Typography variant="subtitle2" sx={{ color: "text.secondary" }}>
+                      {section.title}
+                    </Typography>
+                  </Box>
+
+                  <List disablePadding sx={{ display: "grid", gap: 1 }}>
+                    {section.emotions.map((emotion) => {
                       const isSelected = emotion.id === selectedEmotionId;
+                      const isDisabled = !section.fillable;
                       return (
                         <ListItemButton
                           key={emotion.id}
                           selected={isSelected}
-                          onClick={() => setSelectedEmotionId(emotion.id)}
+                          disabled={isDisabled}
+                          onClick={() => selectEmotion(emotion.id)}
                           sx={{
                             borderRadius: "12px",
                             border: isSelected ? "1px solid #C9C9CB" : "1px solid transparent",
                             bgcolor: isSelected ? "#F5F5F7" : "transparent",
                             px: 1.25,
                             py: 1,
+                            opacity: isDisabled ? 0.56 : 1,
                             "&:hover": { bgcolor: "#F0F0F2" },
                             "&.Mui-selected": { bgcolor: "#F5F5F7" },
                             "&.Mui-selected:hover": { bgcolor: "#F0F0F2" },
                           }}
                         >
-                          <Box sx={{ display: "flex", width: "100%", justifyContent: "space-between", gap: 1.5 }}>
-                            <Typography variant="body2">{emotion.name}</Typography>
+                          <Box sx={{ display: "flex", alignItems: "center", width: "100%", justifyContent: "space-between", gap: 1.5 }}>
+                            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                              <Box
+                                sx={{
+                                  width: 8,
+                                  height: 8,
+                                  borderRadius: "50%",
+                                  bgcolor: isSelected ? "primary.main" : "#C9C9CB",
+                                  flexShrink: 0,
+                                }}
+                              />
+                              <Typography variant="body2" sx={{ color: isSelected ? "primary.main" : "text.primary" }}>
+                                {emotion.title}
+                              </Typography>
+                            </Box>
                             <Typography variant="body2" sx={{ fontWeight: 600 }}>
-                              {emotion.value}
+                              {emotion.value ?? "—"}
                             </Typography>
                           </Box>
                         </ListItemButton>
@@ -206,7 +284,7 @@ export default function EmotionsPage() {
             </Box>
           </SoftCard>
 
-          <SoftCard title={selectedEmotion?.name ?? "Эмоция"}>
+          <SoftCard title={selectedEmotion?.title ?? "Эмоция"}>
             <Stack spacing={{ xs: 2.5, md: 3 }} sx={{ height: "100%" }}>
               <Box
                 aria-hidden
@@ -227,13 +305,25 @@ export default function EmotionsPage() {
               </Box>
 
               <Box>
-                <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 0.5 }}>
+                <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 1 }}>
                   <Typography variant="body2" sx={{ color: "text.secondary" }}>
                     Интенсивность
                   </Typography>
-                  <Typography variant="h4" sx={{ fontWeight: 600, lineHeight: 1 }}>
-                    {sliderValue}
-                  </Typography>
+                  <Box
+                    sx={{
+                      minWidth: 56,
+                      py: 0.5,
+                      px: 1.5,
+                      borderRadius: "999px",
+                      border: "1px solid #C9C9CB",
+                      bgcolor: "#F5F5F7",
+                      textAlign: "center",
+                    }}
+                  >
+                    <Typography variant="h6" sx={{ fontWeight: 600, lineHeight: 1.1 }}>
+                      {sliderValue}
+                    </Typography>
+                  </Box>
                 </Box>
                 <Slider
                   aria-label="Интенсивность эмоции"
@@ -242,7 +332,7 @@ export default function EmotionsPage() {
                   step={1}
                   marks
                   value={sliderValue}
-                  valueLabelDisplay="auto"
+                  disabled={!selectedEmotion?.fillable}
                   onChange={(_event, value) => setSliderValue(value as number)}
                 />
               </Box>
@@ -250,6 +340,7 @@ export default function EmotionsPage() {
               <Button
                 variant="contained"
                 onClick={handleApplyValue}
+                disabled={!selectedEmotion?.fillable}
                 sx={{
                   mt: "auto",
                   alignSelf: "stretch",
@@ -265,59 +356,81 @@ export default function EmotionsPage() {
 
           <Stack spacing={{ xs: 2, md: 3, lg: 4 }} sx={{ minWidth: 0, [twoKMediaQuery]: { gap: 5 } }}>
             <SoftCard title="Информация">
-              <Typography variant="body2" sx={{ color: "text.secondary", lineHeight: 1.6 }}>
-                {selectedEmotion?.info}
-              </Typography>
-            </SoftCard>
-
-            <SoftCard title="Общая статистика за день">
               <Stack spacing={1.5}>
-                {stats.map((item) => (
-                  <Box key={item.id}>
-                    <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", mb: 0.45 }}>
-                      <Typography variant="body2">{item.label}</Typography>
-                      <Typography variant="caption" sx={{ color: "text.secondary" }}>
-                        {item.value} из 10
-                      </Typography>
-                    </Box>
-                    <Box sx={{ width: "100%", height: 8, borderRadius: 99, bgcolor: "#E5E5E7", overflow: "hidden" }}>
-                      <Box
-                        sx={{
-                          width: `${(item.value / 10) * 100}%`,
-                          height: "100%",
-                          bgcolor: "primary.main",
-                        }}
-                      />
+                <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+                  {selectedEmotion?.title}
+                </Typography>
+                <Typography variant="body2" sx={{ color: "text.secondary", lineHeight: 1.6 }}>
+                  {selectedEmotion?.description}
+                </Typography>
+                {!!selectedEmotion?.symptoms?.length && (
+                  <Box>
+                    <Typography variant="caption" sx={{ color: "text.secondary", display: "block", mb: 0.75 }}>
+                      Возможные симптомы:
+                    </Typography>
+                    <Box component="ul" sx={{ m: 0, pl: 2.5, color: "#6B6B6B" }}>
+                      {selectedEmotion.symptoms.map((symptom) => (
+                        <Typography key={symptom} component="li" variant="body2" sx={{ color: "text.secondary", mb: 0.5 }}>
+                          {symptom}
+                        </Typography>
+                      ))}
                     </Box>
                   </Box>
-                ))}
+                )}
+              </Stack>
+            </SoftCard>
+
+            <SoftCard title="Общая статистика за день (Заполните расписание за день)">
+              <Stack spacing={1.5} sx={{ maxHeight: { xs: 280, md: 360 }, overflowY: "auto", pr: 0.5 }}>
+                {sequence
+                  .filter((item) => item.fillable)
+                  .map((item) => {
+                    const safeValue = item.value ?? 0;
+                    return (
+                      <Box key={item.id}>
+                        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", mb: 0.5 }}>
+                          <Typography variant="body2">{item.title}</Typography>
+                          <Typography variant="caption" sx={{ color: "text.secondary" }}>
+                            {safeValue} из 10
+                          </Typography>
+                        </Box>
+                        <Box sx={{ width: "100%", height: 8, borderRadius: 99, bgcolor: "#E5E5E7", overflow: "hidden" }}>
+                          <Box
+                            sx={{
+                              width: `${(safeValue / 10) * 100}%`,
+                              height: "100%",
+                              bgcolor: "primary.main",
+                            }}
+                          />
+                        </Box>
+                      </Box>
+                    );
+                  })}
               </Stack>
             </SoftCard>
 
             <Box sx={{ mt: "auto", display: "flex", justifyContent: "flex-end", gap: 1.5, flexWrap: "wrap" }}>
               <Button
-                variant="text"
+                variant="outlined"
                 onClick={() => {
                   if (window.history.length > 1) {
                     navigate(-1);
                     return;
                   }
-                  navigate("/", { replace: true });
+                  navigate("/app", { replace: true });
                 }}
-                sx={{ textTransform: "none" }}
+                sx={{ textTransform: "none", borderRadius: "12px" }}
               >
                 Назад
               </Button>
               <Button
                 variant="contained"
+                disabled={!allRequiredFilled}
                 onClick={() => setIsFinishMessageOpen(true)}
                 sx={{
                   textTransform: "none",
                   borderRadius: "12px",
-                  bgcolor: "#111111",
-                  color: "#FFFFFF",
                   boxShadow: "none",
-                  "&:hover": { bgcolor: "#222222", boxShadow: "none" },
                 }}
               >
                 Завершить заполнение данных
@@ -334,7 +447,18 @@ export default function EmotionsPage() {
         anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
       >
         <Alert onClose={() => setIsFinishMessageOpen(false)} severity="success" variant="filled" sx={{ width: "100%" }}>
-          Данные по эмоциям сохранены локально.
+          Данные сохранены
+        </Alert>
+      </Snackbar>
+
+      <Snackbar
+        open={isAllFilledMessageOpen}
+        autoHideDuration={2200}
+        onClose={() => setIsAllFilledMessageOpen(false)}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+      >
+        <Alert onClose={() => setIsAllFilledMessageOpen(false)} severity="info" variant="filled" sx={{ width: "100%" }}>
+          Все эмоции заполнены
         </Alert>
       </Snackbar>
     </PageContainer>
