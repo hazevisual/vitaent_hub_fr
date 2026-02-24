@@ -88,7 +88,7 @@ export default function MedicinesHomePage() {
                     }}
                   >
                     <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 1.1 }}>
-                      <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
+                      <Typography variant="subtitle2" sx={{ fontWeight: 700, color: "text.primary" }}>
                         {slot.time}
                       </Typography>
                       <Chip size="small" label={`${slot.medications.length} шт`} />
@@ -103,7 +103,7 @@ export default function MedicinesHomePage() {
                       }}
                     >
                       {slot.medications.map((name) => (
-                        <Typography key={`${slot.id}-${name}`} variant="body2" color="text.secondary">
+                        <Typography key={`${slot.id}-${name}`} variant="body2" sx={{ color: "text.primary" }}>
                           • {name}
                         </Typography>
                       ))}
@@ -119,7 +119,16 @@ export default function MedicinesHomePage() {
             </Grid>
 
             <Grid item xs={12} md={4} sx={{ minWidth: 0, maxWidth: "100%", display: "flex" }}>
-              <SoftCard title="Лекарства" sx={{ minHeight: { xs: "auto", lg: 520 }, width: "100%" }}>
+              <SoftCard
+                title="Лекарства"
+                sx={{
+                  minHeight: { xs: "auto", lg: 520 },
+                  width: "100%",
+                  bgcolor: "background.paper",
+                  border: "1px solid #C8C8CC",
+                  boxShadow: "0 0 0 1px #F5F5F7",
+                }}
+              >
               <Stack spacing={2.25} sx={{ minHeight: 0, flex: 1 }}>
                 <TextField
                   value={query}
