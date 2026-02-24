@@ -60,8 +60,8 @@ export default function MedicinesHomePage() {
   const selectedMedication = medications.find((item) => item.id === selectedId) ?? medications[0];
 
   return (
-    <PageContainer>
-      <Stack spacing={3} sx={{ width: "100%" }}>
+    <PageContainer sx={{ width: "100%", maxWidth: "100%" }}>
+      <Stack spacing={3} sx={{ width: "100%", maxWidth: "100%", minWidth: 0 }}>
         <Box sx={{ mb: { xs: 0.5, md: 1 } }}>
           <Typography variant="h4" sx={{ fontSize: { xs: "1.4rem", md: "1.7rem" }, fontWeight: 700 }}>
             Лекарства
@@ -71,9 +71,15 @@ export default function MedicinesHomePage() {
           </Typography>
         </Box>
 
-        <Box sx={{ width: "100%", maxWidth: "100%" }}>
-          <Grid container columns={12} spacing={3} alignItems="stretch" sx={{ width: "100%", m: 0 }}>
-            <Grid size={{ xs: 12, md: 4 }} sx={{ minWidth: 0, display: "flex" }}>
+        <Box sx={{ width: "100%", maxWidth: "100%", minWidth: 0 }}>
+          <Grid
+            container
+            columns={12}
+            spacing={{ xs: 2.5, md: 3 }}
+            alignItems="stretch"
+            sx={{ width: "100%", maxWidth: "100%", m: 0 }}
+          >
+            <Grid size={{ xs: 12, md: 4 }} sx={{ minWidth: 0, maxWidth: "100%", display: "flex" }}>
               <SoftCard title="Расписание приёма" sx={{ minHeight: { xs: "auto", lg: 520 }, width: "100%" }}>
               <Stack spacing={2.25}>
                 {slots.map((slot) => (
@@ -101,7 +107,7 @@ export default function MedicinesHomePage() {
             </SoftCard>
             </Grid>
 
-            <Grid size={{ xs: 12, md: 4 }} sx={{ minWidth: 0, display: "flex" }}>
+            <Grid size={{ xs: 12, md: 4 }} sx={{ minWidth: 0, maxWidth: "100%", display: "flex" }}>
               <SoftCard title="Лекарства" sx={{ minHeight: { xs: "auto", lg: 520 }, width: "100%" }}>
               <Stack spacing={2.25} sx={{ minHeight: 0, flex: 1 }}>
                 <TextField
@@ -155,7 +161,7 @@ export default function MedicinesHomePage() {
             </SoftCard>
             </Grid>
 
-            <Grid size={{ xs: 12, md: 4 }} sx={{ minWidth: 0, display: "flex" }}>
+            <Grid size={{ xs: 12, md: 4 }} sx={{ minWidth: 0, maxWidth: "100%", display: "flex" }}>
               <SoftCard title="Карточка препарата" sx={{ minHeight: { xs: "auto", lg: 520 }, width: "100%" }}>
               <Stack spacing={2.5}>
                 <Box>
