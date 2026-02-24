@@ -8,6 +8,8 @@ export default function PageContainer({ children, sx, ...rest }: BoxProps) {
       sx={{
         boxSizing: "border-box",
         display: "block",
+        alignSelf: "stretch",
+        flex: 1,
         minWidth: 0,
         width: "100%",
         maxWidth: "none",
