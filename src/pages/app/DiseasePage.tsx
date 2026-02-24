@@ -57,6 +57,23 @@ function SectionList({ title, items, isLoading }: SectionListProps) {
   );
 }
 
+function ScrollableText({ children }: { children?: string }) {
+  return (
+    <Box
+      sx={{
+        maxHeight: 180,
+        overflowY: "auto",
+        pr: 0.5,
+        minWidth: 0,
+      }}
+    >
+      <Typography variant="body1" color="text.secondary" sx={{ overflowWrap: "anywhere", wordBreak: "break-word" }}>
+        {children ?? "—"}
+      </Typography>
+    </Box>
+  );
+}
+
 export default function DiseasePage() {
   const { id = "1" } = useParams<{ id: string }>();
 
@@ -167,9 +184,7 @@ export default function DiseasePage() {
                     <Skeleton variant="text" width="70%" />
                   </Stack>
                 ) : (
-                  <Typography variant="body1" color="text.secondary" sx={{ overflowWrap: "anywhere", wordBreak: "break-word" }}>
-                    {diseaseQuery.data?.description}
-                  </Typography>
+                  <ScrollableText>{diseaseQuery.data?.description}</ScrollableText>
                 )}
               </Stack>
 
@@ -184,9 +199,7 @@ export default function DiseasePage() {
                     <Skeleton variant="text" width="65%" />
                   </Stack>
                 ) : (
-                  <Typography variant="body1" color="text.secondary" sx={{ overflowWrap: "anywhere", wordBreak: "break-word" }}>
-                    {diseaseQuery.data?.clinicalCourse}
-                  </Typography>
+                  <ScrollableText>{diseaseQuery.data?.clinicalCourse}</ScrollableText>
                 )}
               </Stack>
 
