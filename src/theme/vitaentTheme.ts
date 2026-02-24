@@ -22,8 +22,8 @@ export const vitaentTheme = createTheme({
       contrastText: "#FFFFFF",
     },
     background: {
-      default: "#F3F5FA",
-      paper: "#F9FBFF",
+      default: "#EEEDEF",
+      paper: "#FBFBFD",
     },
     text: {
       primary: "#2F3B54",
@@ -103,9 +103,9 @@ export const vitaentTheme = createTheme({
   components: {
     MuiCssBaseline: {
       styleOverrides: {
-        body: {
-          backgroundColor: "#F3F5FA",
-        },
+        body: ({ theme }) => ({
+          backgroundColor: theme.palette.background.default,
+        }),
       },
     },
     MuiAppBar: {
