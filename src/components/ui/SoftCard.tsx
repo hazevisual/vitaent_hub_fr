@@ -24,13 +24,24 @@ export default function SoftCard({
         display: "flex",
         flexDirection: "column",
         height: "100%",
+        backgroundColor: "#FFFFFF",
+        border: "1px solid #E5E5E7",
+        borderRadius: "16px",
+        boxShadow: "none",
+        "@media (min-width:2000px)": {
+          borderRadius: "16px",
+        },
         ...(cardProps.sx ?? {}),
       }}
     >
       <CardContent
         sx={{
-          p: { xs: 2, sm: 2.5, md: 3.25 },
-          "&:last-child": { pb: { xs: 2, sm: 2.5, md: 3.25 } },
+          p: { xs: 2, sm: 2.5, md: 3 },
+          "&:last-child": { pb: { xs: 2, sm: 2.5, md: 3 } },
+          "@media (min-width:2000px)": {
+            p: { xs: 2.5, sm: 3, md: 3.75 },
+            "&:last-child": { pb: { xs: 2.5, sm: 3, md: 3.75 } },
+          },
           display: "flex",
           flexDirection: "column",
           flex: 1,
@@ -49,7 +60,10 @@ export default function SoftCard({
           >
             <Box sx={{ minWidth: 0 }}>
               {title && (
-                <Typography variant="h5" sx={{ fontSize: { xs: "1rem", md: "1.1rem" }, color: "text.primary" }}>
+                <Typography
+                  variant="h5"
+                  sx={{ fontSize: { xs: "1rem", md: "1.06rem", lg: "1.12rem" }, fontWeight: 600, color: "text.primary" }}
+                >
                   {title}
                 </Typography>
               )}
