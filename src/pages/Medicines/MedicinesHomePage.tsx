@@ -14,6 +14,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { alpha } from "@mui/material/styles";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import RemoveRoundedIcon from "@mui/icons-material/RemoveRounded";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
@@ -77,14 +78,30 @@ export default function MedicinesHomePage() {
               <SoftCard title="Расписание приёма" sx={{ minHeight: { xs: "auto", lg: 520 }, width: "100%" }}>
               <Stack spacing={2.25}>
                 {slots.map((slot) => (
-                  <Box key={slot.id} sx={{ px: 3, py: 1.75, borderRadius: 2, bgcolor: "rgba(140, 167, 220, 0.1)" }}>
+                  <Box
+                    key={slot.id}
+                    sx={{
+                      px: 3,
+                      py: 1.75,
+                      borderRadius: 1,
+                      bgcolor: (theme) => alpha(theme.palette.primary.main, 0.1),
+                    }}
+                  >
                     <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 1.1 }}>
                       <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
                         {slot.time}
                       </Typography>
                       <Chip size="small" label={`${slot.medications.length} шт`} />
                     </Stack>
-                    <Stack spacing={1} sx={{ borderRadius: 1.5 }}>
+                    <Stack
+                      spacing={1}
+                      sx={{
+                        px: 1.25,
+                        py: 1,
+                        borderRadius: 0.75,
+                        bgcolor: (theme) => alpha(theme.palette.common.white, 0.72),
+                      }}
+                    >
                       {slot.medications.map((name) => (
                         <Typography key={`${slot.id}-${name}`} variant="body2" color="text.secondary">
                           • {name}
@@ -127,19 +144,25 @@ export default function MedicinesHomePage() {
                         borderRadius: 2,
                         border: "1px solid transparent",
                         "&.Mui-selected": {
-                          bgcolor: "rgba(140, 167, 220, 0.12)",
-                          borderColor: "rgba(140, 167, 220, 0.32)",
+                          bgcolor: (theme) => alpha(theme.palette.primary.main, 0.12),
+                          borderColor: (theme) => alpha(theme.palette.primary.main, 0.32),
                         },
                         "&.Mui-selected:hover": {
-                          bgcolor: "rgba(140, 167, 220, 0.16)",
+                          bgcolor: (theme) => alpha(theme.palette.primary.main, 0.16),
                         },
                         "&:hover": {
-                          bgcolor: "rgba(140, 167, 220, 0.08)",
+                          bgcolor: (theme) => alpha(theme.palette.primary.main, 0.08),
                         },
                       }}
                     >
                       <Avatar
-                        sx={{ width: 34, height: 34, mr: 1.2, bgcolor: "rgba(140, 167, 220, 0.24)", color: "primary.dark" }}
+                        sx={{
+                          width: 34,
+                          height: 34,
+                          mr: 1.2,
+                          bgcolor: (theme) => alpha(theme.palette.primary.main, 0.24),
+                          color: "primary.dark",
+                        }}
                       >
                         {item.name.slice(0, 1)}
                       </Avatar>
