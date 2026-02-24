@@ -33,7 +33,7 @@ const navItems = [
   { label: "Главная", to: "/app", icon: <HomeRoundedIcon fontSize="small" /> },
   { label: "Профиль", to: "/app/profile", icon: <PersonRoundedIcon fontSize="small" /> },
   { label: "Режим дня / Сон", to: "/app/sleep", icon: <BedtimeRoundedIcon fontSize="small" /> },
-  { label: "Эмоции", to: "/emotions", icon: <MoodRoundedIcon fontSize="small" /> },
+  { label: "Эмоции", to: "/app/emotions", icon: <MoodRoundedIcon fontSize="small" /> },
   { label: "Лекарства", to: "/app/medicines", icon: <MedicationRoundedIcon fontSize="small" /> },
 ];
 

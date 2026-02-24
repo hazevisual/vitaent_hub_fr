@@ -4,7 +4,7 @@ export const Paths = {
     app: "/app",
     profile: "/app/profile",
     sleep: "/app/sleep",
-    emotions: "/emotions",
+    emotions: "/app/emotions",
     medicines: "/app/medicines",
     medicinesAdd: "/app/medicines/add",
     weekDays: "/app/calendar-week",

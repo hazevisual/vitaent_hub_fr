@@ -34,7 +34,7 @@ const router = createBrowserRouter([
           { index: true, element: <HomePage /> },
           { path: "sleep", element: <SleepPage /> },
           { path: "calendar-week", element: <WeekDayPage /> },
-          { path: "/emotions", element: <EmotionsPage /> },
+          { path: "emotions", element: <EmotionsPage /> },
           { path: "profile", element: <ProfilePage /> },
           { path: "medicines", element: <MedicinesHomePage /> },
           { path: "medicines/add", element: <MedicationUpsertPage /> },
