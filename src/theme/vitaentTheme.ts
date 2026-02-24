@@ -80,7 +80,7 @@ export const vitaentTheme = createTheme({
     },
     body1: {
       fontSize: withUiScale(1),
-      fontWeight: 500,
+      fontWeight: 400,
       color: "#1E1E20",
     },
     body2: {
@@ -89,7 +89,7 @@ export const vitaentTheme = createTheme({
     },
     caption: {
       fontSize: withUiScale(0.8),
-      fontWeight: 500,
+      fontWeight: 400,
       color: "#8E98AB",
     },
     button: {

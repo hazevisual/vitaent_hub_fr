@@ -10,9 +10,10 @@ import {
 } from "@mui/material";
 import ChevronLeftRoundedIcon from "@mui/icons-material/ChevronLeftRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
+import { useNavigate } from "react-router-dom";
 import PageContainer from "@/components/ui/PageContainer";
 import SoftCard from "@/components/ui/SoftCard";
-import WeekDayViewContent from "@/pages/app/WeekDayViewContent";
+import { Paths } from "@/paths";
 
 type CardState = "loading" | "error" | "empty" | "ready";
 
@@ -130,6 +131,7 @@ const homeCardSx = {
 };
 
 export default function HomePage() {
+  const navigate = useNavigate();
   const completionState = resolveState({
     isBlockLoading: isLoading,
     hasError: mockErrors.completion,
@@ -264,6 +266,7 @@ export default function HomePage() {
 
                 <Button
                   variant="contained"
+                  onClick={() => navigate(Paths.weekDays)}
                   sx={{
                     mt: "auto",
                     alignSelf: "center",
@@ -277,7 +280,7 @@ export default function HomePage() {
                     "&:hover": { bgcolor: "primary.dark", boxShadow: "none" },
                   }}
                 >
-                  Обновить
+                  Открыть
                 </Button>
               </Stack>
             ),
@@ -410,9 +413,6 @@ export default function HomePage() {
         </SoftCard>
 
           </Box>
-
-          <WeekDayViewContent />
-
           <Box
             sx={{
               boxSizing: "border-box",

@@ -231,7 +231,7 @@ const SignUp = () => {
                         width: "clamp(280px, 50vw, 357px)",
                         height: "clamp(40px, 5vw, 44px)",
                         borderRadius: "10px",
-                        fontWeight: "bold",
+                        fontWeight: 500,
                     }}
                 >
                     {mutation.isPending ? "Создаём..." : "Зарегистрироваться"}

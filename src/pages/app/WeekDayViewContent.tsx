@@ -1,6 +1,5 @@
 import * as React from "react";
 import { Box, Button, Typography } from "@mui/material";
-import CalendarTodayRoundedIcon from "@mui/icons-material/CalendarTodayRounded";
 
 const weekDays = [
   { label: "Пн", date: "16" },
@@ -12,12 +11,15 @@ const weekDays = [
   { label: "Вс", date: "22" },
 ];
 
-const dayCards = [
-  { title: "Симптомы", value: "62%" },
-  { title: "Пульс", value: "44%" },
-  { title: "Давление", value: "57%" },
-  { title: "Сон", value: "39%" },
-];
+const dayCompletion = {
+  Пн: 48,
+  Вт: 54,
+  Ср: 62,
+  Чт: 58,
+  Пт: 66,
+  Сб: 71,
+  Вс: 63,
+} as const;
 
 export default function WeekDayViewContent() {
   const [selectedWeekDay, setSelectedWeekDay] = React.useState("Вс");
@@ -25,16 +27,9 @@ export default function WeekDayViewContent() {
   return (
     <Box
       sx={{
-        p: 3,
-        borderRadius: "16px",
-        border: "1px solid #E5E5E7",
-        bgcolor: "#FFFFFF",
         display: "flex",
         flexDirection: "column",
         gap: 3,
-        "@media (min-width:2000px)": {
-          p: 3.75,
-        },
       }}
     >
       <Typography variant="subtitle2" sx={{ fontWeight: 600, color: "text.primary", lineHeight: 1.2 }}>
@@ -44,12 +39,13 @@ export default function WeekDayViewContent() {
       <Box
         sx={{
           display: "grid",
-          gridTemplateColumns: "repeat(7, minmax(0, 1fr))",
+          gridTemplateColumns: "repeat(7, minmax(92px, 1fr))",
           gap: 2,
         }}
       >
         {weekDays.map((day) => {
           const isSelected = selectedWeekDay === day.label;
+          const completion = dayCompletion[day.label as keyof typeof dayCompletion];
 
           return (
             <Button
@@ -58,7 +54,7 @@ export default function WeekDayViewContent() {
               onClick={() => setSelectedWeekDay(day.label)}
               sx={{
                 minWidth: 0,
-                minHeight: 80,
+                minHeight: 240,
                 px: 2,
                 py: 2,
                 borderRadius: "12px",
@@ -69,7 +65,7 @@ export default function WeekDayViewContent() {
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "flex-start",
-                justifyContent: "space-between",
+                justifyContent: "flex-start",
                 gap: 1,
                 textTransform: "none",
                 "&:hover": {
@@ -78,60 +74,36 @@ export default function WeekDayViewContent() {
                 },
               }}
             >
-              <Typography variant="caption" sx={{ color: "text.secondary", lineHeight: 1.2 }}>
+              <Typography variant="caption" sx={{ color: "text.secondary", lineHeight: 1.2, fontWeight: 400 }}>
                 {day.label}
               </Typography>
               <Typography variant="body2" sx={{ color: "text.primary", fontWeight: 600 }}>
                 {day.date}
               </Typography>
-              {isSelected ? (
+              <Typography variant="caption" sx={{ mt: "auto", color: "text.secondary", fontWeight: 400 }}>
+                Заполнено {completion}%
+              </Typography>
+              <Box
+                sx={{
+                  width: "100%",
+                  height: 4,
+                  borderRadius: "8px",
+                  bgcolor: "#E5E5E7",
+                  overflow: "hidden",
+                }}
+              >
                 <Box
                   sx={{
-                    width: "100%",
-                    height: 2,
+                    width: `${completion}%`,
+                    height: "100%",
                     borderRadius: "8px",
                     bgcolor: "primary.main",
                   }}
                 />
-              ) : null}
+              </Box>
             </Button>
           );
         })}
-      </Box>
-
-      <Box
-        sx={{
-          display: "grid",
-          gridTemplateColumns: { xs: "repeat(2, minmax(0, 1fr))", md: "repeat(4, minmax(0, 1fr))" },
-          gap: 2,
-        }}
-      >
-        {dayCards.map((item) => (
-          <Box
-            key={item.title}
-            sx={{
-              p: 2,
-              borderRadius: "12px",
-              border: "1px solid #E5E5E7",
-              bgcolor: "#FFFFFF",
-              boxShadow: "none",
-              minHeight: 112,
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between",
-            }}
-          >
-            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-              <CalendarTodayRoundedIcon sx={{ fontSize: 16, color: "primary.main" }} />
-              <Typography variant="caption" sx={{ color: "text.secondary" }}>
-                {item.title}
-              </Typography>
-            </Box>
-            <Typography variant="h5" sx={{ mt: 2, color: "text.primary", fontWeight: 600 }}>
-              {item.value}
-            </Typography>
-          </Box>
-        ))}
       </Box>
     </Box>
   );

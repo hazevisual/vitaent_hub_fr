@@ -12,6 +12,7 @@ import RequireAuth from "@/components/RequireAuth";
 import AppLayout from "@/pages/app/AppLayout";
 import HomePage from "@/pages/app/HomePage";
 import ProfilePage from "@/pages/app/ProfilePage";
+import WeekDayPage from "@/pages/app/WeekDayPage";
 import MedicationUpsertPage from "@/pages/Medicines/MedicationUpsertPage";
 import MedicinesHomePage from "@/pages/Medicines/MedicinesHomePage";
 import { vitaentTheme } from "@/theme/vitaentTheme";
@@ -29,6 +30,7 @@ const router = createBrowserRouter([
         element: <AppLayout />,
         children: [
           { index: true, element: <HomePage /> },
+          { path: "week-days", element: <WeekDayPage /> },
           { path: "profile", element: <ProfilePage /> },
           { path: "medicines", element: <MedicinesHomePage /> },
           { path: "medicines/add", element: <MedicationUpsertPage /> },
