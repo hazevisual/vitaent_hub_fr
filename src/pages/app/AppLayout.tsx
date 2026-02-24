@@ -19,6 +19,7 @@ import FavoriteBorderRoundedIcon from "@mui/icons-material/FavoriteBorderRounded
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import MedicationRoundedIcon from "@mui/icons-material/MedicationRounded";
+import BedtimeRoundedIcon from "@mui/icons-material/BedtimeRounded";
 import { useTheme } from "@mui/material/styles";
 import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/auth/AuthProvider";
@@ -30,6 +31,7 @@ const contentMaxWidth = 1560;
 const navItems = [
   { label: "Главная", to: "/app", icon: <HomeRoundedIcon fontSize="small" /> },
   { label: "Профиль", to: "/app/profile", icon: <PersonRoundedIcon fontSize="small" /> },
+  { label: "Режим дня / Сон", to: "/app/sleep", icon: <BedtimeRoundedIcon fontSize="small" /> },
   { label: "Лекарства", to: "/app/medicines", icon: <MedicationRoundedIcon fontSize="small" /> },
 ];
 
