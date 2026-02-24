@@ -287,6 +287,7 @@ export default function EmotionsPage() {
           maxWidth: EMOTIONS_CONTENT_MAX_WIDTH,
           mx: "auto",
           minWidth: 0,
+          overflowX: "clip",
           flex: 1,
           minHeight: 0,
         }}
@@ -303,10 +304,11 @@ export default function EmotionsPage() {
             gap: gridGapSx,
             [twoKMediaQuery]: { gap: 2.5 },
             "& > *": {
+              minWidth: 0,
               minHeight: 0,
             },
             "@media (min-width:1200px)": {
-              gridTemplateColumns: "minmax(260px, 1fr) minmax(340px, 1.15fr) minmax(300px, 1fr)",
+              gridTemplateColumns: "minmax(0, 0.95fr) minmax(0, 1.1fr) minmax(0, 0.95fr)",
             },
           }}
         >
@@ -382,7 +384,7 @@ export default function EmotionsPage() {
           >
             <Stack
               spacing={{ xs: 1, md: 1.5 }}
-              sx={{ minHeight: 0, minWidth: 0 }}
+              sx={{ minHeight: 0, minWidth: 0, overflowX: "clip" }}
             >
               <Box sx={{ display: "flex", justifyContent: "center", width: "100%", flexShrink: 0, py: 0.25 }}>
                 <Box
@@ -410,14 +412,15 @@ export default function EmotionsPage() {
                   gap: 1,
                   flexShrink: 0,
                   minWidth: 0,
+                  overflowX: "hidden",
                   py: 0,
-                  px: 0.5,
+                  px: 0,
                 }}
               >
                 <Typography variant="body2" sx={{ color: "text.secondary", flexShrink: 0 }}>
                   Интенсивность
                 </Typography>
-                <Box sx={{ flex: 1, minWidth: 0, px: 0.75 }}>
+                <Box sx={{ flex: 1, minWidth: 0, px: 0.5, overflow: "hidden" }}>
                   <Slider
                     aria-label="Интенсивность эмоции"
                     min={0}
@@ -502,19 +505,21 @@ export default function EmotionsPage() {
               width: "100%",
               boxSizing: "border-box",
               gap: gridGapSx,
+              overflow: "hidden",
               [twoKMediaQuery]: { gap: 2.5 },
               "& > *": {
                 width: "100%",
                 boxSizing: "border-box",
+                minWidth: 0,
               },
             }}
           >
             <SoftCard
               title="Информация"
-              sx={{ minHeight: 0 }}
+              sx={{ minHeight: 0, minWidth: 0 }}
               contentSx={{ minHeight: 0, p: { xs: 2, sm: 2, md: 2 }, "&:last-child": { pb: { xs: 2, sm: 2, md: 2 } } }}
             >
-              <Stack spacing={1} sx={{ flex: 1, minHeight: 0, minWidth: 0 }}>
+              <Stack spacing={1} sx={{ flex: 1, minHeight: 0, minWidth: 0, width: "100%" }}>
                 <Typography variant="subtitle1" sx={{ fontWeight: 600, lineHeight: 1.35 }}>
                   {selectedEmotion?.title}
                 </Typography>
