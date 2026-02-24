@@ -28,7 +28,7 @@ import { useAuth } from "@/auth/AuthProvider";
 
 const drawerWidth = 248;
 const appBarOffset = { xs: 68, md: 74 };
-const contentMaxWidth = 1560;
+const contentColumnMaxWidth = 1560;
 
 const navItems = [
   { label: "Главная", to: "/app", icon: <HomeRoundedIcon fontSize="small" /> },
@@ -106,7 +106,7 @@ export default function AppLayout() {
         }}
       >
         <Toolbar sx={{ minHeight: appBarOffset, px: { xs: 1.25, sm: 2.5, md: 3 } }}>
-          <Box sx={{ width: "100%", maxWidth: contentMaxWidth, mx: "auto", minWidth: 0, display: "flex", alignItems: "center" }}>
+          <Box sx={{ width: "100%", maxWidth: contentColumnMaxWidth, mx: "auto", minWidth: 0, display: "flex", alignItems: "center" }}>
             {!isDesktop && (
               <IconButton onClick={handleDrawerToggle} sx={{ mr: 1 }} aria-label="open navigation menu">
                 <MenuRoundedIcon />
