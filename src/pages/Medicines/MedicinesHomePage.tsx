@@ -77,12 +77,12 @@ export default function MedicinesHomePage() {
               <SoftCard title="Расписание приёма" sx={{ minHeight: { xs: "auto", lg: 520 }, width: "100%" }}>
               <Stack spacing={2.25}>
                 {slots.map((slot) => (
-                  <Box key={slot.id} sx={{ px: 2, py: 1.75, borderRadius: 3, bgcolor: "rgba(140, 167, 220, 0.1)" }}>
-                    <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 1.1, pr: 0.5 }}>
+                  <Box key={slot.id} sx={{ px: 3, py: 1.75, borderRadius: 3, bgcolor: "rgba(140, 167, 220, 0.1)" }}>
+                    <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 1.1 }}>
                       <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
                         {slot.time}
                       </Typography>
-                      <Chip size="small" label={`${slot.medications.length} шт`} sx={{ mr: 0.5 }} />
+                      <Chip size="small" label={`${slot.medications.length} шт`} />
                     </Stack>
                     <Stack spacing={1}>
                       {slot.medications.map((name) => (
