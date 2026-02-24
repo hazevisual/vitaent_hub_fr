@@ -157,7 +157,6 @@ export default function HomePage() {
           width: "100%",
           minWidth: 0,
           overflowX: "hidden",
-          zoom: { xs: 1, md: 1, lg: 1.15, xl: 1.33 },
         }}
       >
         <Box
