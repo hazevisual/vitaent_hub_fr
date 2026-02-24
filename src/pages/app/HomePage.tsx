@@ -3,6 +3,8 @@ import {
   Alert,
   Box,
   Button,
+  Dialog,
+  DialogContent,
   IconButton,
   Skeleton,
   Stack,
@@ -10,8 +12,10 @@ import {
 } from "@mui/material";
 import ChevronLeftRoundedIcon from "@mui/icons-material/ChevronLeftRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
+import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import PageContainer from "@/components/ui/PageContainer";
 import SoftCard from "@/components/ui/SoftCard";
+import WeekDayViewContent from "@/pages/app/WeekDayViewContent";
 
 type CardState = "loading" | "error" | "empty" | "ready";
 
@@ -128,26 +132,8 @@ const homeCardSx = {
   },
 };
 
-const weekDays = [
-  { label: "Пн", date: "16" },
-  { label: "Вт", date: "17" },
-  { label: "Ср", date: "18" },
-  { label: "Чт", date: "19" },
-  { label: "Пт", date: "20" },
-  { label: "Сб", date: "21" },
-  { label: "Вс", date: "22" },
-];
-
-const dayCards = [
-  { title: "Симптомы", value: "62%" },
-  { title: "Пульс", value: "44%" },
-  { title: "Давление", value: "57%" },
-  { title: "Сон", value: "39%" },
-];
-
 export default function HomePage() {
-  const [isWeeklyBlockOpened, setIsWeeklyBlockOpened] = React.useState(false);
-  const [selectedWeekDay, setSelectedWeekDay] = React.useState("Вс");
+  const [isWeekDayDialogOpen, setIsWeekDayDialogOpen] = React.useState(false);
 
   const completionState = resolveState({
     isBlockLoading: isLoading,
@@ -283,7 +269,7 @@ export default function HomePage() {
 
                 <Button
                   variant="contained"
-                  onClick={() => setIsWeeklyBlockOpened(true)}
+                  onClick={() => setIsWeekDayDialogOpen(true)}
                   sx={{
                     mt: "auto",
                     alignSelf: "center",
@@ -431,95 +417,6 @@ export default function HomePage() {
 
           </Box>
 
-          {isWeeklyBlockOpened ? (
-            <SoftCard
-              sx={{
-                ...homeCardSx,
-                borderRadius: "16px",
-                borderColor: "#E5E5E7",
-                boxShadow: "none",
-              }}
-            >
-              <Stack spacing={3}>
-                <Typography variant="subtitle2" sx={{ ...sectionHeaderSx, color: "text.primary" }}>
-                  Просмотр по неделе и дням
-                </Typography>
-
-                <Box
-                  sx={{
-                    display: "grid",
-                    gridTemplateColumns: "repeat(7, minmax(0, 1fr))",
-                    gap: 1,
-                  }}
-                >
-                  {weekDays.map((day) => {
-                    const isSelected = selectedWeekDay === day.label;
-
-                    return (
-                      <Button
-                        key={day.label}
-                        variant="text"
-                        onClick={() => setSelectedWeekDay(day.label)}
-                        sx={{
-                          minWidth: 0,
-                          px: 1,
-                          py: 1,
-                          borderRadius: "12px",
-                          border: isSelected ? "1px solid #C9C9CB" : "1px solid #E5E5E7",
-                          bgcolor: isSelected ? "#F5F5F7" : "#FFFFFF",
-                          color: "text.primary",
-                          boxShadow: "none",
-                          display: "flex",
-                          flexDirection: "column",
-                          gap: 0.25,
-                          "&:hover": {
-                            bgcolor: isSelected ? "#F0F0F2" : "#F8F8FA",
-                            borderColor: isSelected ? "#C9C9CB" : "#E5E5E7",
-                          },
-                        }}
-                      >
-                        <Typography variant="caption" sx={{ color: "text.secondary" }}>
-                          {day.label}
-                        </Typography>
-                        <Typography variant="body2" sx={{ color: "text.primary", fontWeight: 600 }}>
-                          {day.date}
-                        </Typography>
-                      </Button>
-                    );
-                  })}
-                </Box>
-
-                <Box
-                  sx={{
-                    display: "grid",
-                    gridTemplateColumns: { xs: "repeat(2, minmax(0, 1fr))", md: "repeat(4, minmax(0, 1fr))" },
-                    gap: 1.5,
-                  }}
-                >
-                  {dayCards.map((item) => (
-                    <Box
-                      key={item.title}
-                      sx={{
-                        p: 2,
-                        borderRadius: "12px",
-                        border: "1px solid #E5E5E7",
-                        bgcolor: "#FFFFFF",
-                        boxShadow: "none",
-                      }}
-                    >
-                      <Typography variant="caption" sx={{ color: "text.secondary" }}>
-                        {item.title}
-                      </Typography>
-                      <Typography variant="h5" sx={{ mt: 0.5, color: "text.primary", fontWeight: 600 }}>
-                        {item.value}
-                      </Typography>
-                    </Box>
-                  ))}
-                </Box>
-              </Stack>
-            </SoftCard>
-          ) : null}
-
           <Box
             sx={{
               boxSizing: "border-box",
@@ -646,6 +543,51 @@ export default function HomePage() {
           </Box>
         </Box>
       </Box>
+      <Dialog
+        open={isWeekDayDialogOpen}
+        onClose={() => setIsWeekDayDialogOpen(false)}
+        fullWidth
+        maxWidth="lg"
+        aria-labelledby="week-day-dialog-title"
+        PaperProps={{
+          sx: {
+            width: "100%",
+            maxWidth: { lg: "1560px" },
+            borderRadius: "16px",
+            border: "1px solid #E5E5E7",
+            boxShadow: 3,
+            maxHeight: "85vh",
+            m: { xs: 2, md: 3 },
+            bgcolor: "#FFFFFF",
+          },
+        }}
+      >
+        <DialogContent
+          sx={{
+            p: { xs: 3, xl: 4 },
+            overflowY: "auto",
+            bgcolor: "#FFFFFF",
+          }}
+        >
+          <Stack spacing={3}>
+            <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 2 }}>
+              <Typography id="week-day-dialog-title" variant="subtitle2" sx={{ ...sectionHeaderSx, color: "text.primary" }}>
+                Просмотр по неделе и дням
+              </Typography>
+              <IconButton
+                aria-label="Закрыть окно просмотра по неделе и дням"
+                size="small"
+                onClick={() => setIsWeekDayDialogOpen(false)}
+                sx={{ color: "text.secondary" }}
+              >
+                <CloseRoundedIcon fontSize="small" />
+              </IconButton>
+            </Box>
+
+            <WeekDayViewContent />
+          </Stack>
+        </DialogContent>
+      </Dialog>
     </PageContainer>
   );
 }
