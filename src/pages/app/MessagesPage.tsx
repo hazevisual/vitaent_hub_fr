@@ -4,9 +4,9 @@ import {
   Badge,
   Box,
   Button,
+  Collapse,
   Divider,
   IconButton,
-  InputAdornment,
   List,
   ListItemButton,
   ListItemText,
@@ -15,6 +15,7 @@ import {
   Typography,
 } from "@mui/material";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
+import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import SendRoundedIcon from "@mui/icons-material/SendRounded";
 import PushPinRoundedIcon from "@mui/icons-material/PushPinRounded";
 import PageContainer from "@/components/ui/PageContainer";
@@ -130,7 +131,19 @@ const CONTENT_MAX_WIDTH = 1560;
 export default function MessagesPage() {
   const [activeDoctorId, setActiveDoctorId] = React.useState(doctors[0].id);
   const [draft, setDraft] = React.useState("");
+  const [searchOpen, setSearchOpen] = React.useState(false);
+  const [searchQuery, setSearchQuery] = React.useState("");
   const [messages, setMessages] = React.useState(initialMessages);
+  const searchInputRef = React.useRef<HTMLInputElement>(null);
+
+  React.useEffect(() => {
+    if (searchOpen) {
+      searchInputRef.current?.focus();
+      return;
+    }
+
+    setSearchQuery("");
+  }, [searchOpen]);
 
   const activeDoctor = React.useMemo(
     () => doctors.find((doctor) => doctor.id === activeDoctorId) ?? doctors[0],
@@ -239,33 +252,26 @@ export default function MessagesPage() {
                 <Box sx={{ px: { xs: 2, md: 3 }, py: 2, borderBottom: "1px solid #E5E5E7" }}>
                   <Box
                     sx={{
-                      display: "grid",
-                      gridTemplateColumns: { xs: "minmax(0, 1fr)", lg: "minmax(0, 1fr) minmax(240px, 360px) 240px" },
+                      display: "flex",
+                      justifyContent: "space-between",
                       alignItems: "center",
                       gap: 1.5,
                     }}
                   >
-                    <Stack direction="row" alignItems="center" spacing={1.5} sx={{ minWidth: 0 }}>
+                    <Stack direction="row" alignItems="center" spacing={1.5} sx={{ minWidth: 0, flex: 1 }}>
                       <Avatar sx={{ bgcolor: "#E8EEF9", color: "#3B4E6D" }}>{activeDoctor.avatar}</Avatar>
                       <Typography variant="h6" sx={{ fontSize: "1rem", fontWeight: 600, minWidth: 0, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
                         {activeDoctor.name}
                       </Typography>
                     </Stack>
-                    <Box sx={{ width: "100%", minWidth: { xs: 0, lg: 240 }, maxWidth: 360, justifySelf: "center" }}>
-                      <TextField
+                    <Stack direction="row" spacing={1} alignItems="center" sx={{ flexShrink: 0 }}>
+                      <IconButton
                         size="small"
-                        placeholder="Поиск по истории сообщений"
-                        sx={{ width: "100%" }}
-                        InputProps={{
-                          startAdornment: (
-                            <InputAdornment position="start">
-                              <SearchRoundedIcon fontSize="small" sx={{ color: "text.secondary" }} />
-                            </InputAdornment>
-                          ),
-                        }}
-                      />
-                    </Box>
-                    <Box sx={{ justifySelf: { xs: "start", lg: "end" }, minWidth: { xs: 0, lg: 220 }, flexShrink: 0 }}>
+                        aria-label="Открыть поиск по сообщениям"
+                        onClick={() => setSearchOpen((prev) => !prev)}
+                      >
+                        <SearchRoundedIcon fontSize="small" />
+                      </IconButton>
                       <Button
                         size="small"
                         variant="outlined"
@@ -274,8 +280,26 @@ export default function MessagesPage() {
                       >
                         Закрепленные сообщения
                       </Button>
-                    </Box>
+                    </Stack>
                   </Box>
+
+                  <Collapse in={searchOpen} timeout="auto" unmountOnExit>
+                    <Box sx={{ mt: 1.5 }}>
+                      <Stack direction="row" spacing={1} alignItems="center">
+                        <TextField
+                          inputRef={searchInputRef}
+                          fullWidth
+                          size="small"
+                          placeholder="Поиск по истории сообщений"
+                          value={searchQuery}
+                          onChange={(event) => setSearchQuery(event.target.value)}
+                        />
+                        <IconButton size="small" aria-label="Закрыть поиск" onClick={() => setSearchOpen(false)}>
+                          <CloseRoundedIcon fontSize="small" />
+                        </IconButton>
+                      </Stack>
+                    </Box>
+                  </Collapse>
                 </Box>
 
                 <Box sx={{ flex: 1, minHeight: 0, overflowY: "auto", px: { xs: 2, md: 3 }, py: 2.5 }}>
