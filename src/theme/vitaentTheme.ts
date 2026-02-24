@@ -50,7 +50,7 @@ export const vitaentTheme = createTheme({
     },
     text: {
       primary: "#1E1E20",
-      secondary: "#7A869C",
+      secondary: "#000000",
     },
     divider: "#E6EAF3",
   },
@@ -85,7 +85,7 @@ export const vitaentTheme = createTheme({
     },
     body2: {
       fontSize: withUiScale(0.95),
-      color: "#7A869C",
+      color: "#000000",
     },
     caption: {
       fontSize: withUiScale(0.8),
@@ -100,7 +100,7 @@ export const vitaentTheme = createTheme({
     subtitle2: {
       fontSize: withUiScale(0.95),
       fontWeight: 600,
-      color: "#7A869C",
+      color: "#000000",
     },
   },
   shadows: [
