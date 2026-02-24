@@ -81,10 +81,12 @@ export default function MedicinesHomePage() {
                   <Box
                     key={slot.id}
                     sx={{
-                      px: 3,
-                      py: 1.75,
-                      borderRadius: 1,
-                      bgcolor: "background.paper",
+                      px: 2.5,
+                      py: 2,
+                      borderRadius: 1.5,
+                      bgcolor: "#F5F5F7",
+                      border: "1px solid #C9C9CB",
+                      mb: 1.5,
                     }}
                   >
                     <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 1.1 }}>
@@ -97,9 +99,7 @@ export default function MedicinesHomePage() {
                       spacing={1}
                       sx={{
                         px: 1.25,
-                        py: 1,
-                        borderRadius: 0.75,
-                        bgcolor: "background.paper",
+                        py: 0.25,
                       }}
                     >
                       {slot.medications.map((name) => (
@@ -153,14 +153,14 @@ export default function MedicinesHomePage() {
                         borderRadius: 2,
                         border: "1px solid transparent",
                         "&.Mui-selected": {
-                          bgcolor: (theme) => alpha(theme.palette.primary.main, 0.12),
-                          borderColor: (theme) => alpha(theme.palette.primary.main, 0.32),
+                          bgcolor: "#F5F5F7",
+                          borderColor: "#C9C9CB",
                         },
                         "&.Mui-selected:hover": {
-                          bgcolor: (theme) => alpha(theme.palette.primary.main, 0.16),
+                          bgcolor: "#EEEEF1",
                         },
                         "&:hover": {
-                          bgcolor: (theme) => alpha(theme.palette.primary.main, 0.08),
+                          bgcolor: "#F9F9FA",
                         },
                       }}
                     >
