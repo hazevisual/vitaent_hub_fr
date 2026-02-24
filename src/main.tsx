@@ -15,6 +15,7 @@ import ProfilePage from "@/pages/app/ProfilePage";
 import SleepPage from "@/pages/app/SleepPage";
 import WeekDayPage from "@/pages/app/WeekDayPage";
 import EmotionsPage from "@/pages/app/EmotionsPage";
+import MessagesPage from "@/pages/app/MessagesPage";
 import MedicationUpsertPage from "@/pages/Medicines/MedicationUpsertPage";
 import MedicinesHomePage from "@/pages/Medicines/MedicinesHomePage";
 import { vitaentTheme } from "@/theme/vitaentTheme";
@@ -36,6 +37,7 @@ const router = createBrowserRouter([
           { path: "calendar-week", element: <WeekDayPage /> },
           { path: "emotions", element: <EmotionsPage /> },
           { path: "profile", element: <ProfilePage /> },
+          { path: "messages", element: <MessagesPage /> },
           { path: "medicines", element: <MedicinesHomePage /> },
           { path: "medicines/add", element: <MedicationUpsertPage /> },
           { path: "medicines/:id/edit", element: <MedicationUpsertPage /> },

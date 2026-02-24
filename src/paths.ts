@@ -7,5 +7,6 @@ export const Paths = {
     emotions: "/app/emotions",
     medicines: "/app/medicines",
     medicinesAdd: "/app/medicines/add",
+    messages: "/app/messages",
     weekDays: "/app/calendar-week",
 } as const;
