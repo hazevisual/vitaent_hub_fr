@@ -58,45 +58,68 @@ export default function DiseasePage() {
   const disease = diseaseQuery.data;
   const stats = statsQuery.data;
   const updatedAt = stats.updatedAt ?? disease.createdAt;
+  const fallbackDescription =
+    "Биполярное расстройство I типа (БАР I) — это хроническое аффективное заболевание, характеризующееся чередованием маниакальных, депрессивных и интермиссионных периодов. " +
+    "В клинической практике важно учитывать длительность эпизодов, выраженность психомоторных и когнитивных нарушений, а также влияние симптомов на социальное и профессиональное функционирование пациента.\n\n" +
+    "На этапе наблюдения оценивают качество сна, изменения аппетита, динамику активности, риск импульсивного поведения, наличие психотических симптомов, а также приверженность медикаментозной и психотерапевтической поддержке. " +
+    "План ведения формируется индивидуально, с регулярной переоценкой эффективности и переносимости терапии.\n\n" +
+    "При длительном течении заболевания рекомендуется структурированное междисциплинарное сопровождение: обучение пациента и семьи признакам обострения, работа с факторами стресса, контроль соматических факторов риска и профилактика рецидивов. " +
+    "Своевременная коррекция схемы лечения и поддержка режима дня улучшают прогноз и устойчивость ремиссии.";
+  const descriptionText = disease.description?.trim() ? disease.description : fallbackDescription;
 
   return (
-    <PageContainer>
+    <PageContainer sx={{ minHeight: 0 }}>
       <Box
         sx={{
+          flex: 1,
           width: "100%",
           maxWidth: 1560,
           mx: "auto",
           display: "grid",
           gridTemplateColumns: { xs: "1fr", lg: "minmax(0, 1fr) 320px" },
           gap: { xs: 2, md: 3 },
-          alignItems: "start",
+          alignItems: "stretch",
           minWidth: 0,
+          minHeight: 0,
           overflowX: "hidden",
         }}
       >
-        <SoftCard sx={{ minWidth: 0 }} contentSx={{ gap: 3, minWidth: 0 }}>
-          <Box>
+        <SoftCard
+          sx={{ minWidth: 0, minHeight: 0 }}
+          contentSx={{ gap: 3, minWidth: 0, minHeight: 0, overflow: "hidden" }}
+        >
+          <Box sx={{ minWidth: 0 }}>
             <Typography variant="h4" sx={{ fontSize: { xs: "1.5rem", md: "1.8rem" }, fontWeight: 600, mb: 0.75 }}>
               {disease.name}
             </Typography>
             <Typography variant="body2" sx={{ color: "text.secondary", mb: 2 }}>
               Код: {disease.code}
             </Typography>
+          </Box>
+
+          <Box sx={{ display: "flex", flexDirection: "column", minHeight: 0, overflow: "hidden", gap: 1.5 }}>
+            <Typography variant="h6" sx={{ fontSize: "1rem", fontWeight: 600 }}>
+              Описание
+            </Typography>
             <Box
               sx={{
-                maxHeight: { xs: 240, md: 320, xl: 400 },
-                overflowY: "auto",
+                flex: 1,
+                minHeight: 0,
+                maxHeight: { xs: 260, md: 360, xl: 420 },
+                overflow: "auto",
                 pr: 1,
                 minWidth: 0,
               }}
             >
-              <Typography variant="body1">{disease.description}</Typography>
+              <Typography variant="body1" sx={{ whiteSpace: "pre-line", overflowWrap: "anywhere" }}>
+                {descriptionText}
+              </Typography>
             </Box>
           </Box>
 
-          <Divider />
+          <Divider sx={{ flexShrink: 0 }} />
 
-          <Stack spacing={3}>
+          <Stack spacing={3} sx={{ minWidth: 0 }}>
             <Box>
               <Typography variant="h6" sx={{ fontSize: "1rem", fontWeight: 600, mb: 1.5 }}>
                 Клиническое течение
