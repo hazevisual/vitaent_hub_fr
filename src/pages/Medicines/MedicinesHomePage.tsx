@@ -71,37 +71,38 @@ export default function MedicinesHomePage() {
           </Typography>
         </Box>
 
-        <Grid container spacing={3} alignItems="stretch">
-          <Grid size={{ xs: 12, md: 4 }}>
-            <SoftCard title="Расписание приёма" sx={{ minHeight: { xs: "auto", lg: 520 } }}>
+        <Box sx={{ width: "100%", maxWidth: "100%" }}>
+          <Grid container columns={12} spacing={3} alignItems="stretch" sx={{ width: "100%", m: 0 }}>
+            <Grid size={{ xs: 12, md: 4 }} sx={{ minWidth: 0, display: "flex" }}>
+              <SoftCard title="Расписание приёма" sx={{ minHeight: { xs: "auto", lg: 520 }, width: "100%" }}>
               <Stack spacing={2.25}>
-              {slots.map((slot) => (
-                <Box key={slot.id} sx={{ px: 2, py: 1.75, borderRadius: 3, bgcolor: "rgba(140, 167, 220, 0.1)" }}>
-                  <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 1.1, pr: 0.5 }}>
-                    <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
-                      {slot.time}
-                    </Typography>
-                    <Chip size="small" label={`${slot.medications.length} шт`} sx={{ mr: 0.5 }} />
-                  </Stack>
-                  <Stack spacing={1}>
-                    {slot.medications.map((name) => (
-                      <Typography key={`${slot.id}-${name}`} variant="body2" color="text.secondary">
-                        • {name}
+                {slots.map((slot) => (
+                  <Box key={slot.id} sx={{ px: 2, py: 1.75, borderRadius: 3, bgcolor: "rgba(140, 167, 220, 0.1)" }}>
+                    <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 1.1, pr: 0.5 }}>
+                      <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
+                        {slot.time}
                       </Typography>
-                    ))}
-                  </Stack>
-                </Box>
-              ))}
+                      <Chip size="small" label={`${slot.medications.length} шт`} sx={{ mr: 0.5 }} />
+                    </Stack>
+                    <Stack spacing={1}>
+                      {slot.medications.map((name) => (
+                        <Typography key={`${slot.id}-${name}`} variant="body2" color="text.secondary">
+                          • {name}
+                        </Typography>
+                      ))}
+                    </Stack>
+                  </Box>
+                ))}
                 <Stack direction={{ xs: "column", sm: "row" }} spacing={1.5} sx={{ pt: 1.25, mt: "auto" }}>
                   <Button variant="contained">Добавить лекарства</Button>
                   <Button variant="outlined">Добавить временной слот</Button>
                 </Stack>
               </Stack>
             </SoftCard>
-          </Grid>
+            </Grid>
 
-          <Grid size={{ xs: 12, md: 4 }}>
-            <SoftCard title="Лекарства" sx={{ minHeight: { xs: "auto", lg: 520 } }}>
+            <Grid size={{ xs: 12, md: 4 }} sx={{ minWidth: 0, display: "flex" }}>
+              <SoftCard title="Лекарства" sx={{ minHeight: { xs: "auto", lg: 520 }, width: "100%" }}>
               <Stack spacing={2.25} sx={{ minHeight: 0, flex: 1 }}>
                 <TextField
                   value={query}
@@ -152,53 +153,54 @@ export default function MedicinesHomePage() {
                 </List>
               </Stack>
             </SoftCard>
-          </Grid>
+            </Grid>
 
-          <Grid size={{ xs: 12, md: 4 }}>
-            <SoftCard title="Карточка препарата" sx={{ minHeight: { xs: "auto", lg: 520 } }}>
+            <Grid size={{ xs: 12, md: 4 }} sx={{ minWidth: 0, display: "flex" }}>
+              <SoftCard title="Карточка препарата" sx={{ minHeight: { xs: "auto", lg: 520 }, width: "100%" }}>
               <Stack spacing={2.5}>
-              <Box>
-                <Typography variant="h5" sx={{ fontSize: "1.05rem" }}>
-                  {selectedMedication.name}
-                </Typography>
-                <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
-                  {selectedMedication.dosage}
-                </Typography>
-              </Box>
+                <Box>
+                  <Typography variant="h5" sx={{ fontSize: "1.05rem" }}>
+                    {selectedMedication.name}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
+                    {selectedMedication.dosage}
+                  </Typography>
+                </Box>
 
-              <Divider />
+                <Divider />
 
-              <Box sx={{ pt: 0.5 }}>
-                <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 1 }}>
-                  Примечание
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {selectedMedication.note}
-                </Typography>
-              </Box>
+                <Box sx={{ pt: 0.5 }}>
+                  <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 1 }}>
+                    Примечание
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {selectedMedication.note}
+                  </Typography>
+                </Box>
 
-              <Box sx={{ pt: 0.5 }}>
-                <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 1 }}>
-                  Количество
-                </Typography>
-                <Stack direction="row" alignItems="center" spacing={1.1}>
-                  <IconButton onClick={() => setQuantity((prev) => Math.max(1, prev - 1))}>
-                    <RemoveRoundedIcon fontSize="small" />
-                  </IconButton>
-                  <Chip label={quantity} sx={{ minWidth: 54, fontWeight: 600 }} />
-                  <IconButton onClick={() => setQuantity((prev) => prev + 1)}>
-                    <AddRoundedIcon fontSize="small" />
-                  </IconButton>
-                </Stack>
-              </Box>
+                <Box sx={{ pt: 0.5 }}>
+                  <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 1 }}>
+                    Количество
+                  </Typography>
+                  <Stack direction="row" alignItems="center" spacing={1.1}>
+                    <IconButton onClick={() => setQuantity((prev) => Math.max(1, prev - 1))}>
+                      <RemoveRoundedIcon fontSize="small" />
+                    </IconButton>
+                    <Chip label={quantity} sx={{ minWidth: 54, fontWeight: 600 }} />
+                    <IconButton onClick={() => setQuantity((prev) => prev + 1)}>
+                      <AddRoundedIcon fontSize="small" />
+                    </IconButton>
+                  </Stack>
+                </Box>
 
-              <Button variant="contained" sx={{ mt: "auto", pt: 1.4, pb: 1.4 }}>
-                Добавить в расписание приёма
-              </Button>
+                <Button variant="contained" sx={{ mt: "auto", pt: 1.4, pb: 1.4 }}>
+                  Добавить в расписание приёма
+                </Button>
               </Stack>
             </SoftCard>
+            </Grid>
           </Grid>
-        </Grid>
+        </Box>
       </Stack>
     </PageContainer>
   );
