@@ -217,9 +217,9 @@ export default function EmotionsPage() {
       sx={{
         pt: { xs: 1.5, sm: 2, lg: 2.5 },
         pb: { xs: 2.5, md: 3, lg: 3.5 },
+        position: "relative",
         minHeight: 0,
         height: "100%",
-        maxHeight: "100%",
         overflow: "hidden",
       }}
     >
@@ -323,7 +323,10 @@ export default function EmotionsPage() {
           </SoftCard>
 
           <SoftCard title={selectedEmotion?.title ?? "Эмоция"} sx={{ minHeight: 0, height: "100%" }} contentSx={{ minHeight: 0 }}>
-            <Stack spacing={{ xs: 2, md: 2.25 }} sx={{ height: "100%", minHeight: 0, overflowY: "auto" }}>
+            <Stack
+              spacing={{ xs: 2, md: 2.25 }}
+              sx={{ height: "100%", minHeight: 0, minWidth: 0, overflowY: "auto", overflowX: "hidden" }}
+            >
               <Box sx={{ display: "flex", justifyContent: "center", width: "100%", flexShrink: 0 }}>
                 <Box
                   aria-hidden
@@ -343,8 +346,19 @@ export default function EmotionsPage() {
                 </Box>
               </Box>
 
-              <Box sx={{ display: "flex", flexDirection: "column", gap: 1, px: { xs: 0.5, md: 0.75 }, py: 0.5, flexShrink: 0 }}>
-                <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 1.5 }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "stretch",
+                  gap: 1,
+                  py: 0.5,
+                  flexShrink: 0,
+                  minWidth: 0,
+                  overflowX: "hidden",
+                }}
+              >
+                <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 1.5, minWidth: 0 }}>
                   <Typography variant="body2" sx={{ color: "text.secondary" }}>
                     Интенсивность
                   </Typography>
@@ -357,6 +371,8 @@ export default function EmotionsPage() {
                       border: "1px solid #C9C9CB",
                       bgcolor: "#FFFFFF",
                       textAlign: "center",
+                      flexShrink: 0,
+                      maxWidth: 72,
                     }}
                   >
                     <Typography variant="body2" sx={{ fontWeight: 600, lineHeight: 1.1, color: "text.primary" }}>
@@ -376,6 +392,8 @@ export default function EmotionsPage() {
                   disabled={!selectedEmotion?.fillable}
                   onChange={(_event, value) => setSliderValue(value as number)}
                   sx={{
+                    width: "100%",
+                    boxSizing: "border-box",
                     p: "2px 0 !important",
                     mx: 0,
                     "& .MuiSlider-rail": {
