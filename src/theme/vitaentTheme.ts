@@ -174,6 +174,11 @@ export const vitaentTheme = createTheme({
     MuiIconButton: {
       styleOverrides: {
         root: {
+          color: "#336FEE",
+          backgroundColor: "transparent",
+          "&:hover": {
+            backgroundColor: "transparent",
+          },
           "&:focus-visible": {
             outline: "2px solid #336FEE",
             outlineOffset: 1,
