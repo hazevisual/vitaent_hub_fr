@@ -37,6 +37,7 @@ const navItems = [
   { label: "Эмоции", to: "/app/emotions", icon: <MoodRoundedIcon fontSize="small" /> },
   { label: "Сообщения", to: "/app/messages", icon: <ChatBubbleOutlineRoundedIcon fontSize="small" /> },
   { label: "Лекарства", to: "/app/medicines", icon: <MedicationRoundedIcon fontSize="small" /> },
+  { label: "Болезнь", to: "/app/diseases/1", icon: <FavoriteBorderRoundedIcon fontSize="small" /> },
 ];
 
 export default function AppLayout() {
