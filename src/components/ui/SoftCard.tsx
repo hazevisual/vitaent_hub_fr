@@ -18,11 +18,22 @@ export default function SoftCard({
   ...cardProps
 }: SoftCardProps) {
   return (
-    <Card {...cardProps}>
+    <Card
+      {...cardProps}
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        height: "100%",
+        ...(cardProps.sx ?? {}),
+      }}
+    >
       <CardContent
         sx={{
           p: { xs: 2, sm: 2.5, md: 3.25 },
           "&:last-child": { pb: { xs: 2, sm: 2.5, md: 3.25 } },
+          display: "flex",
+          flexDirection: "column",
+          flex: 1,
           ...contentSx,
         }}
       >

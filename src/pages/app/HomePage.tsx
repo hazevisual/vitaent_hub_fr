@@ -133,14 +133,17 @@ export default function HomePage() {
   });
 
   return (
-    <PageContainer sx={{ display: "flex", flexDirection: "column", alignItems: "stretch", justifyContent: "flex-start", width: "100%", minWidth: 0 }}>
+    <PageContainer sx={{ alignItems: "stretch", justifyContent: "flex-start", width: "100%", minWidth: 0 }}>
       <Box
         sx={{
           width: "100%",
           minWidth: 0,
           display: "grid",
           gridTemplateColumns: "repeat(12, minmax(0, 1fr))",
-          gap: { xs: "16px", sm: "24px", lg: "32px" },
+          alignContent: "start",
+          rowGap: { xs: "16px", sm: "24px", lg: "28px" },
+          columnGap: { xs: "16px", sm: "24px", lg: "32px" },
+          pb: { xs: 1, md: 2, lg: 3 },
         }}
       >
         <Box
@@ -148,21 +151,21 @@ export default function HomePage() {
             gridColumn: { xs: "1 / -1", lg: "1 / span 8" },
             minWidth: 0,
             display: "grid",
-            gap: { xs: "16px", sm: "24px", lg: "32px" },
+            gap: { xs: "16px", sm: "24px", lg: "28px" },
             gridTemplateColumns: { xs: "minmax(0, 1fr)", md: "repeat(2, minmax(0, 1fr))" },
           }}
         >
           <SoftCard
             title="Выполнение за день"
             subtitle="Сегодня выполнено"
-            sx={{ minHeight: { xs: 250, sm: 265, md: 280 }, minWidth: 0 }}
+            sx={{ minHeight: { xs: 220, sm: 236, md: 252, lg: 280 }, minWidth: 0 }}
           >
             {renderStateBody({
               state: completionState,
               emptyText: "Нет данных за выбранный день",
               errorText: "Не удалось загрузить данные. Попробуйте обновить страницу.",
               skeleton: (
-                <Stack spacing={1.8}>
+                <Stack spacing={1.8} sx={{ minHeight: { xs: 160, sm: 172, md: 184, lg: 196 } }}>
                   <Skeleton width="38%" height={24} />
                   <Skeleton variant="rounded" width="65%" height={78} />
                   <Skeleton width="90%" />
@@ -189,7 +192,7 @@ export default function HomePage() {
           <SoftCard
             title="Календарь"
             subtitle={monthLabel}
-            sx={{ minHeight: { xs: 290, sm: 305, md: 320 }, minWidth: 0 }}
+            sx={{ minHeight: { xs: 230, sm: 246, md: 260, lg: 282 }, minWidth: 0 }}
             headerAction={
               <Stack direction="row" spacing={0.5}>
                 <IconButton size="small" sx={{ bgcolor: "rgba(140, 167, 220, 0.14)" }}>
@@ -206,7 +209,7 @@ export default function HomePage() {
               emptyText: "Нет данных календаря",
               errorText: "Не удалось загрузить данные. Попробуйте обновить страницу.",
               skeleton: (
-                <Box sx={{ display: "grid", gridTemplateColumns: "repeat(7, minmax(0, 1fr))", gap: 1 }}>
+                <Box sx={{ minHeight: { xs: 160, sm: 176, md: 188, lg: 200 }, display: "grid", gridTemplateColumns: "repeat(7, minmax(0, 1fr))", gap: 1 }}>
                   {Array.from({ length: 42 }).map((_, idx) => (
                     <Skeleton key={idx} variant="rounded" height={28} />
                   ))}
@@ -254,7 +257,7 @@ export default function HomePage() {
           sx={{
             gridColumn: { xs: "1 / -1", md: "1 / -1", lg: "9 / span 4" },
             minWidth: 0,
-            minHeight: { xs: 255, sm: 270, md: 280 },
+            minHeight: { xs: 220, sm: 236, md: 250, lg: 274 },
           }}
         >
           {renderStateBody({
@@ -262,7 +265,7 @@ export default function HomePage() {
             emptyText: "Симптомы не отмечены",
             errorText: "Не удалось загрузить данные. Попробуйте обновить страницу.",
             skeleton: (
-              <Stack spacing={2.1}>
+              <Stack spacing={2.1} sx={{ minHeight: { xs: 160, sm: 172, md: 182, lg: 194 } }}>
                 {Array.from({ length: 4 }).map((_, idx) => (
                   <Box key={idx}>
                     <Skeleton width="40%" height={22} sx={{ mb: 0.8 }} />
@@ -297,24 +300,13 @@ export default function HomePage() {
             ),
           })}
         </SoftCard>
-      </Box>
 
-      <Box
-        sx={{
-          width: "100%",
-          minWidth: 0,
-          mt: { xs: "16px", sm: "24px", lg: "32px" },
-          display: "grid",
-          gridTemplateColumns: "repeat(12, minmax(0, 1fr))",
-          gap: { xs: "16px", sm: "24px", lg: "32px" },
-        }}
-      >
         <SoftCard
           title="Рекомендации"
           subtitle="На основе вашей сводки"
           sx={{
             gridColumn: { xs: "1 / -1", md: "1 / span 8", lg: "1 / span 8" },
-            minHeight: { xs: 235, sm: 250, md: 255 },
+            minHeight: { xs: 176, sm: 190, md: 206, lg: 224 },
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -327,7 +319,7 @@ export default function HomePage() {
             emptyText: "Рекомендаций пока нет",
             errorText: "Не удалось загрузить данные. Попробуйте обновить страницу.",
             skeleton: (
-              <Stack alignItems="center" spacing={2.4} width="100%">
+              <Stack alignItems="center" spacing={2.4} width="100%" sx={{ minHeight: { xs: 120, sm: 132, md: 142, lg: 152 }, justifyContent: "center" }}>
                 <Skeleton width="76%" height={44} />
                 <Skeleton width="48%" height={44} />
                 <Skeleton variant="rounded" width={130} height={38} />
@@ -363,7 +355,7 @@ export default function HomePage() {
           title="Следующий приём"
           sx={{
             gridColumn: { xs: "1 / -1", md: "9 / span 4", lg: "9 / span 4" },
-            minHeight: { xs: 235, sm: 250, md: 255 },
+            minHeight: { xs: 176, sm: 190, md: 206, lg: 224 },
             display: "grid",
             placeItems: "center",
             minWidth: 0,
@@ -374,7 +366,7 @@ export default function HomePage() {
             emptyText: "Нет предстоящих приёмов",
             errorText: "Не удалось загрузить данные. Попробуйте обновить страницу.",
             skeleton: (
-              <Stack alignItems="center" spacing={1.3} width="100%">
+              <Stack alignItems="center" spacing={1.3} width="100%" sx={{ minHeight: { xs: 120, sm: 132, md: 142, lg: 152 }, justifyContent: "center" }}>
                 <Skeleton width="80%" height={42} />
                 <Skeleton width="62%" height={42} />
               </Stack>
