@@ -4,7 +4,6 @@ import {
   Box,
   Button,
   Chip,
-  Divider,
   FormControl,
   FormControlLabel,
   FormHelperText,
@@ -276,284 +275,259 @@ export default function MedicationUpsertPage() {
             alignItems: "start",
           }}
         >
-          <SoftCard title="Параметры лекарства">
-            <Stack spacing={3}>
-              <Box>
-                <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 2 }}>
-                  A) Лекарство
-                </Typography>
-                <Stack spacing={2}>
-                  <TextField
-                    label="Название *"
-                    value={name}
-                    onChange={(event) => setName(event.target.value)}
-                    error={Boolean(getFieldError("name"))}
-                    helperText={getFieldError("name")}
-                    fullWidth
-                  />
+          <SoftCard title="Параметры лекарства" subtitle="Заполните карточку и настройте режим приема.">
+            <Stack spacing={3.5} sx={{ height: "100%" }}>
+              <Stack spacing={2}>
+                <TextField
+                  label="Название *"
+                  value={name}
+                  onChange={(event) => setName(event.target.value)}
+                  error={Boolean(getFieldError("name"))}
+                  helperText={getFieldError("name")}
+                  fullWidth
+                />
 
-                  <FormControl fullWidth>
-                    <InputLabel id="medication-form-label">Форма</InputLabel>
-                    <Select
-                      labelId="medication-form-label"
-                      label="Форма"
-                      value={form}
-                      onChange={(event) => setForm(event.target.value as MedicationForm | "")}
-                    >
-                      <MenuItem value="">Не выбрано</MenuItem>
-                      {formOptions.map((option) => (
-                        <MenuItem key={option} value={option}>
-                          {option}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-
-                  <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
-                    <TextField
-                      label="Доза за прием *"
-                      type="number"
-                      inputProps={{ min: 0, step: "0.01" }}
-                      value={doseAmount}
-                      onChange={(event) => setDoseAmount(event.target.value)}
-                      error={Boolean(getFieldError("doseamount", "dose"))}
-                      helperText={getFieldError("doseamount", "dose")}
-                      fullWidth
-                    />
-                    <FormControl fullWidth error={Boolean(getFieldError("doseunit"))}>
-                      <InputLabel id="dose-unit-label">Единица *</InputLabel>
-                      <Select
-                        labelId="dose-unit-label"
-                        label="Единица *"
-                        value={doseUnit}
-                        onChange={(event) => setDoseUnit(event.target.value as MedicationDoseUnit | "")}
-                      >
-                        {doseUnitOptions.map((unit) => (
-                          <MenuItem key={unit} value={unit}>
-                            {unit}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                      <FormHelperText>{getFieldError("doseunit")}</FormHelperText>
-                    </FormControl>
-                  </Stack>
-
-                  <TextField
-                    label="Заметки"
-                    multiline
-                    minRows={3}
-                    value={notes}
-                    onChange={(event) => setNotes(event.target.value)}
-                    fullWidth
-                  />
-                </Stack>
-              </Box>
-
-              <Divider />
-
-              <Box>
-                <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 2 }}>
-                  B) Расписание
-                </Typography>
-
-                <Stack spacing={2}>
-                  <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
-                    <TextField
-                      label="Дата начала *"
-                      type="date"
-                      value={startDate}
-                      onChange={(event) => setStartDate(event.target.value)}
-                      error={Boolean(getFieldError("startdate"))}
-                      helperText={getFieldError("startdate")}
-                      InputLabelProps={{ shrink: true }}
-                      fullWidth
-                    />
-                    <TextField
-                      label="Дата окончания"
-                      type="date"
-                      value={endDate}
-                      onChange={(event) => setEndDate(event.target.value)}
-                      error={Boolean(getFieldError("enddate"))}
-                      helperText={getFieldError("enddate") || "Оставьте пустым для бессрочного приема."}
-                      InputLabelProps={{ shrink: true }}
-                      fullWidth
-                    />
-                  </Stack>
-
-                  <FormControl fullWidth>
-                    <InputLabel id="schedule-type-label">Тип частоты *</InputLabel>
-                    <Select
-                      labelId="schedule-type-label"
-                      label="Тип частоты *"
-                      value={scheduleType}
-                      onChange={(event) => setScheduleType(event.target.value as MedicationScheduleType)}
-                    >
-                      <MenuItem value="Daily">Каждый день</MenuItem>
-                      <MenuItem value="Weekly">По дням недели</MenuItem>
-                      <MenuItem value="Interval">Интервал (каждые N дней)</MenuItem>
-                      <MenuItem value="Prn">По необходимости (PRN)</MenuItem>
-                    </Select>
-                  </FormControl>
-
-                  <ToggleButtonGroup
-                    color="primary"
-                    value={scheduleType}
-                    exclusive
-                    onChange={(_, value) => {
-                      if (value) setScheduleType(value);
-                    }}
-                    sx={{ flexWrap: "wrap", justifyContent: "flex-start" }}
+                <FormControl fullWidth>
+                  <InputLabel id="medication-form-label">Форма</InputLabel>
+                  <Select
+                    labelId="medication-form-label"
+                    label="Форма"
+                    value={form}
+                    onChange={(event) => setForm(event.target.value as MedicationForm | "")}
                   >
-                    <ToggleButton value="Daily">Каждый день</ToggleButton>
-                    <ToggleButton value="Weekly">По дням недели</ToggleButton>
-                    <ToggleButton value="Interval">Интервал</ToggleButton>
-                    <ToggleButton value="Prn">PRN</ToggleButton>
-                  </ToggleButtonGroup>
+                    <MenuItem value="">Не выбрано</MenuItem>
+                    {formOptions.map((option) => (
+                      <MenuItem key={option} value={option}>
+                        {option}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
 
-                  {scheduleType === "Weekly" && (
-                    <Box>
-                      <Typography variant="body2" sx={{ mb: 1 }}>
-                        Дни недели *
-                      </Typography>
-                      <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-                        {weekdays.map((day) => (
-                          <Chip
-                            key={day.value}
-                            label={day.label}
-                            color={weekdaysSelected.includes(day.value) ? "primary" : "default"}
-                            onClick={() => toggleWeekday(day.value)}
-                          />
-                        ))}
-                      </Stack>
-                      {getFieldError("weekdays") && (
-                        <FormHelperText error>{getFieldError("weekdays")}</FormHelperText>
-                      )}
-                    </Box>
-                  )}
-
-                  {scheduleType === "Interval" && (
-                    <TextField
-                      label="Интервал, дней *"
-                      type="number"
-                      value={intervalDays}
-                      onChange={(event) => setIntervalDays(event.target.value)}
-                      inputProps={{ min: 1, step: 1 }}
-                      error={Boolean(getFieldError("intervaldays"))}
-                      helperText={getFieldError("intervaldays")}
-                      sx={{ maxWidth: 260 }}
-                    />
-                  )}
-
-                  {scheduleType === "Prn" ? (
-                    <TextField
-                      label="Причина / Когда принимать"
-                      value={prnReason}
-                      onChange={(event) => setPrnReason(event.target.value)}
-                      fullWidth
-                    />
-                  ) : (
-                    <Box>
-                      <Typography variant="body2" sx={{ mb: 1 }}>
-                        Время приема *
-                      </Typography>
-                      <Stack spacing={1.2}>
-                        {times.map((time, index) => (
-                          <Stack key={`time-${index}`} direction="row" spacing={1.2} alignItems="center">
-                            <TextField
-                              type="time"
-                              value={time}
-                              onChange={(event) => updateTime(index, event.target.value)}
-                              InputLabelProps={{ shrink: true }}
-                              sx={{ maxWidth: 220 }}
-                            />
-                            <Button onClick={() => removeTime(index)} disabled={times.length <= 1}>
-                              Удалить
-                            </Button>
-                          </Stack>
-                        ))}
-                        <Box>
-                          <Button variant="outlined" onClick={addTime}>
-                            + Добавить время
-                          </Button>
-                        </Box>
-                        {getFieldError("times") && <FormHelperText error>{getFieldError("times")}</FormHelperText>}
-                      </Stack>
-                    </Box>
-                  )}
-                </Stack>
-              </Box>
-
-              <Divider />
-
-              <Box>
-                <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 1.5 }}>
-                  C) Напоминания
-                </Typography>
-                <Stack spacing={1.5}>
-                  <FormControlLabel
-                    control={<Switch checked={reminderEnabled} onChange={(_, checked) => setReminderEnabled(checked)} />}
-                    label="Включить напоминания"
+                <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
+                  <TextField
+                    label="Доза за прием *"
+                    type="number"
+                    inputProps={{ min: 0, step: "0.01" }}
+                    value={doseAmount}
+                    onChange={(event) => setDoseAmount(event.target.value)}
+                    error={Boolean(getFieldError("doseamount", "dose"))}
+                    helperText={getFieldError("doseamount", "dose")}
+                    fullWidth
                   />
-                  <FormControl disabled={!reminderEnabled} sx={{ maxWidth: 260 }}>
-                    <InputLabel id="lead-time-label">За сколько минут</InputLabel>
+                  <FormControl fullWidth error={Boolean(getFieldError("doseunit"))}>
+                    <InputLabel id="dose-unit-label">Единица *</InputLabel>
                     <Select
-                      labelId="lead-time-label"
-                      label="За сколько минут"
-                      value={reminderLeadTime}
-                      onChange={(event) => setReminderLeadTime(Number(event.target.value))}
+                      labelId="dose-unit-label"
+                      label="Единица *"
+                      value={doseUnit}
+                      onChange={(event) => setDoseUnit(event.target.value as MedicationDoseUnit | "")}
                     >
-                      {reminderLeadOptions.map((value) => (
-                        <MenuItem key={value} value={value}>
-                          {value} минут
+                      {doseUnitOptions.map((unit) => (
+                        <MenuItem key={unit} value={unit}>
+                          {unit}
                         </MenuItem>
                       ))}
                     </Select>
+                    <FormHelperText>{getFieldError("doseunit")}</FormHelperText>
                   </FormControl>
                 </Stack>
-              </Box>
 
-              <Divider />
+                <TextField
+                  label="Заметки"
+                  multiline
+                  minRows={3}
+                  value={notes}
+                  onChange={(event) => setNotes(event.target.value)}
+                  fullWidth
+                />
+              </Stack>
 
-              <Box>
-                <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 1.5 }}>
-                  D) Контроль остатка
+              <Stack spacing={2}>
+                <Typography variant="subtitle2" sx={{ fontWeight: 600, color: "text.secondary" }}>
+                  Расписание приема
                 </Typography>
-                <Stack spacing={1.5}>
-                  <FormControlLabel
-                    control={<Switch checked={stockEnabled} onChange={(_, checked) => setStockEnabled(checked)} />}
-                    label="Вести учет остатка"
-                  />
 
-                  <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
-                    <TextField
-                      label="Текущий остаток"
-                      type="number"
-                      disabled={!stockEnabled}
-                      inputProps={{ min: 0, step: "0.01" }}
-                      value={currentStock}
-                      onChange={(event) => setCurrentStock(event.target.value)}
-                      error={Boolean(getFieldError("currentstock"))}
-                      helperText={getFieldError("currentstock")}
-                      fullWidth
-                    />
-                    <TextField
-                      label="Порог остатка"
-                      type="number"
-                      disabled={!stockEnabled}
-                      inputProps={{ min: 0, step: "0.01" }}
-                      value={lowStockThreshold}
-                      onChange={(event) => setLowStockThreshold(event.target.value)}
-                      error={Boolean(getFieldError("lowstockthreshold"))}
-                      helperText={getFieldError("lowstockthreshold")}
-                      fullWidth
-                    />
-                  </Stack>
+                <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
+                  <TextField
+                    label="Дата начала *"
+                    type="date"
+                    value={startDate}
+                    onChange={(event) => setStartDate(event.target.value)}
+                    error={Boolean(getFieldError("startdate"))}
+                    helperText={getFieldError("startdate")}
+                    InputLabelProps={{ shrink: true }}
+                    fullWidth
+                  />
+                  <TextField
+                    label="Дата окончания"
+                    type="date"
+                    value={endDate}
+                    onChange={(event) => setEndDate(event.target.value)}
+                    error={Boolean(getFieldError("enddate"))}
+                    helperText={getFieldError("enddate") || "Оставьте пустым для бессрочного приема."}
+                    InputLabelProps={{ shrink: true }}
+                    fullWidth
+                  />
                 </Stack>
-              </Box>
+
+                <ToggleButtonGroup
+                  color="primary"
+                  value={scheduleType}
+                  exclusive
+                  onChange={(_, value) => {
+                    if (value) setScheduleType(value);
+                  }}
+                  sx={{ flexWrap: "wrap", justifyContent: "flex-start" }}
+                >
+                  <ToggleButton value="Daily">Каждый день</ToggleButton>
+                  <ToggleButton value="Weekly">По дням недели</ToggleButton>
+                  <ToggleButton value="Interval">Интервал</ToggleButton>
+                  <ToggleButton value="Prn">PRN</ToggleButton>
+                </ToggleButtonGroup>
+
+                {scheduleType === "Weekly" && (
+                  <Box>
+                    <Typography variant="body2" sx={{ mb: 1 }}>
+                      Дни недели *
+                    </Typography>
+                    <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+                      {weekdays.map((day) => (
+                        <Chip
+                          key={day.value}
+                          label={day.label}
+                          color={weekdaysSelected.includes(day.value) ? "primary" : "default"}
+                          onClick={() => toggleWeekday(day.value)}
+                        />
+                      ))}
+                    </Stack>
+                    {getFieldError("weekdays") && <FormHelperText error>{getFieldError("weekdays")}</FormHelperText>}
+                  </Box>
+                )}
+
+                {scheduleType === "Interval" && (
+                  <TextField
+                    label="Интервал, дней *"
+                    type="number"
+                    value={intervalDays}
+                    onChange={(event) => setIntervalDays(event.target.value)}
+                    inputProps={{ min: 1, step: 1 }}
+                    error={Boolean(getFieldError("intervaldays"))}
+                    helperText={getFieldError("intervaldays")}
+                    sx={{ maxWidth: 260 }}
+                  />
+                )}
+
+                {scheduleType === "Prn" ? (
+                  <TextField
+                    label="Причина / Когда принимать"
+                    value={prnReason}
+                    onChange={(event) => setPrnReason(event.target.value)}
+                    fullWidth
+                  />
+                ) : (
+                  <Box>
+                    <Typography variant="body2" sx={{ mb: 1 }}>
+                      Время приема *
+                    </Typography>
+                    <Stack spacing={1.2}>
+                      {times.map((time, index) => (
+                        <Stack key={`time-${index}`} direction="row" spacing={1.2} alignItems="center">
+                          <TextField
+                            type="time"
+                            value={time}
+                            onChange={(event) => updateTime(index, event.target.value)}
+                            InputLabelProps={{ shrink: true }}
+                            sx={{ maxWidth: 220 }}
+                          />
+                          <Button onClick={() => removeTime(index)} disabled={times.length <= 1}>
+                            Удалить
+                          </Button>
+                        </Stack>
+                      ))}
+                      <Box>
+                        <Button variant="outlined" onClick={addTime}>
+                          + Добавить время
+                        </Button>
+                      </Box>
+                      {getFieldError("times") && <FormHelperText error>{getFieldError("times")}</FormHelperText>}
+                    </Stack>
+                  </Box>
+                )}
+              </Stack>
+
+              <Stack spacing={1.5}>
+                <Typography variant="subtitle2" sx={{ fontWeight: 600, color: "text.secondary" }}>
+                  Напоминания
+                </Typography>
+                <FormControlLabel
+                  control={<Switch checked={reminderEnabled} onChange={(_, checked) => setReminderEnabled(checked)} />}
+                  label="Включить напоминания"
+                />
+                <FormControl disabled={!reminderEnabled} sx={{ maxWidth: 260 }}>
+                  <InputLabel id="lead-time-label">За сколько минут</InputLabel>
+                  <Select
+                    labelId="lead-time-label"
+                    label="За сколько минут"
+                    value={reminderLeadTime}
+                    onChange={(event) => setReminderLeadTime(Number(event.target.value))}
+                  >
+                    {reminderLeadOptions.map((value) => (
+                      <MenuItem key={value} value={value}>
+                        {value} минут
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Stack>
+
+              <Stack spacing={1.5}>
+                <Typography variant="subtitle2" sx={{ fontWeight: 600, color: "text.secondary" }}>
+                  Контроль остатка
+                </Typography>
+                <FormControlLabel
+                  control={<Switch checked={stockEnabled} onChange={(_, checked) => setStockEnabled(checked)} />}
+                  label="Вести учет остатка"
+                />
+
+                <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
+                  <TextField
+                    label="Текущий остаток"
+                    type="number"
+                    disabled={!stockEnabled}
+                    inputProps={{ min: 0, step: "0.01" }}
+                    value={currentStock}
+                    onChange={(event) => setCurrentStock(event.target.value)}
+                    error={Boolean(getFieldError("currentstock"))}
+                    helperText={getFieldError("currentstock")}
+                    fullWidth
+                  />
+                  <TextField
+                    label="Порог остатка"
+                    type="number"
+                    disabled={!stockEnabled}
+                    inputProps={{ min: 0, step: "0.01" }}
+                    value={lowStockThreshold}
+                    onChange={(event) => setLowStockThreshold(event.target.value)}
+                    error={Boolean(getFieldError("lowstockthreshold"))}
+                    helperText={getFieldError("lowstockthreshold")}
+                    fullWidth
+                  />
+                </Stack>
+              </Stack>
+
+              <Stack direction="row" spacing={1.5} justifyContent="flex-end" sx={{ mt: "auto", pt: 1 }}>
+                <Button variant="outlined" onClick={() => navigate(-1)} disabled={mutation.isPending}>
+                  Назад
+                </Button>
+                <Button variant="contained" onClick={onSubmit} disabled={mutation.isPending}>
+                  {mutation.isPending ? "Сохранение..." : "Сохранить"}
+                </Button>
+              </Stack>
             </Stack>
           </SoftCard>
 
-          <SoftCard title="Информация" subtitle="Как заполнить карточку лекарства">
+          <SoftCard title="Как заполнить карточку лекарства">
             <Stack spacing={1.25}>
               <Typography variant="body2" color="text.secondary">
                 • Обязательные поля отмечены звездочкой (*).
@@ -570,15 +544,6 @@ export default function MedicationUpsertPage() {
             </Stack>
           </SoftCard>
         </Box>
-
-        <Stack direction="row" spacing={1.5} justifyContent="flex-end">
-          <Button variant="outlined" onClick={() => navigate(-1)} disabled={mutation.isPending}>
-            Назад
-          </Button>
-          <Button variant="contained" onClick={onSubmit} disabled={mutation.isPending}>
-            {mutation.isPending ? "Сохранение..." : "Сохранить"}
-          </Button>
-        </Stack>
       </Stack>
 
       <Snackbar
