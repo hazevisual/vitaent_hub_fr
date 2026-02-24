@@ -133,17 +133,11 @@ type FlatEmotion = ReturnType<typeof getFlatSequence>[number];
 
 function DailyStatsCard({ emotions }: { emotions: FlatEmotion[] }) {
   const fillableStats = emotions.filter((item) => item.fillable);
-  const statsRows = fillableStats.length
-    ? fillableStats
-    : [
-        { id: "placeholder-1", title: "Эмоция 1", value: null },
-        { id: "placeholder-2", title: "Эмоция 2", value: null },
-        { id: "placeholder-3", title: "Эмоция 3", value: null },
-      ];
+  const hasStatsData = fillableStats.some((item) => item.value !== null);
 
   return (
     <SoftCard
-      title="Общая статистика за день (Заполните расписание за день)"
+      title="Общая статистика за день"
       sx={{ minHeight: 0, flex: 1, display: "flex", flexDirection: "column", width: "100%" }}
       contentSx={{
         minHeight: 0,
@@ -154,34 +148,41 @@ function DailyStatsCard({ emotions }: { emotions: FlatEmotion[] }) {
         "&:last-child": { pb: { xs: 2, sm: 2, md: 2 } },
       }}
     >
-      <Stack spacing={0.75} sx={{ minHeight: 0, alignContent: "flex-start" }}>
-        {statsRows.map((item) => {
-          const safeValue = item.value ?? 0;
-          const isPlaceholder = item.value === null;
+      {!hasStatsData ? (
+        <Box sx={{ flex: 1, display: "grid", placeItems: "center", minHeight: 0 }}>
+          <Typography variant="body2" sx={{ color: "text.secondary", textAlign: "center" }}>
+            Заполните расписание за день
+          </Typography>
+        </Box>
+      ) : (
+        <Stack spacing={0.75} sx={{ minHeight: 0, alignContent: "flex-start" }}>
+          {fillableStats.map((item) => {
+            const safeValue = item.value ?? 0;
 
-          return (
-            <Box key={item.id}>
-              <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", mb: 0 }}>
-                <Typography variant="body2" sx={{ color: isPlaceholder ? "text.secondary" : "text.primary" }}>
-                  {item.title}
-                </Typography>
-                <Typography variant="caption" sx={{ color: "text.secondary" }}>
-                  {safeValue} из 10
-                </Typography>
+            return (
+              <Box key={item.id}>
+                <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", mb: 0 }}>
+                  <Typography variant="body2" sx={{ color: "text.primary" }}>
+                    {item.title}
+                  </Typography>
+                  <Typography variant="caption" sx={{ color: "text.secondary" }}>
+                    {safeValue} из 10
+                  </Typography>
+                </Box>
+                <Box sx={{ width: "100%", height: 6, borderRadius: 99, bgcolor: "#E5E5E7", overflow: "hidden" }}>
+                  <Box
+                    sx={{
+                      width: `${(safeValue / 10) * 100}%`,
+                      height: "100%",
+                      bgcolor: "primary.main",
+                    }}
+                  />
+                </Box>
               </Box>
-              <Box sx={{ width: "100%", height: 6, borderRadius: 99, bgcolor: "#E5E5E7", overflow: "hidden" }}>
-                <Box
-                  sx={{
-                    width: `${(safeValue / 10) * 100}%`,
-                    height: "100%",
-                    bgcolor: isPlaceholder ? "#C9CCD4" : "primary.main",
-                  }}
-                />
-              </Box>
-            </Box>
-          );
-        })}
-      </Stack>
+            );
+          })}
+        </Stack>
+      )}
     </SoftCard>
   );
 }
@@ -493,6 +494,7 @@ export default function EmotionsPage() {
             sx={{
               minWidth: 0,
               minHeight: 0,
+              flex: 1,
               height: "100%",
               display: "flex",
               flexDirection: "column",
