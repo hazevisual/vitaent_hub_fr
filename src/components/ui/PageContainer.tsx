@@ -18,11 +18,11 @@ export default function PageContainer({ children, sx, ...rest }: BoxProps) {
         px: { xs: "16px", sm: "24px", md: "32px", lg: "48px", xl: "80px" },
         pt: { xs: 2, sm: 3, lg: 4 },
         pb: { xs: 4, md: 5, lg: 6 },
-        overflowX: "clip",
+        overflowX: "hidden",
         ...sx,
       }}
     >
-      {children}
+      <Box sx={{ width: "100%", maxWidth: "100%", minWidth: 0 }}>{children}</Box>
     </Box>
   );
 }

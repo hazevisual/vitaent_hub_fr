@@ -1,5 +1,4 @@
 :root {
-  --ui-scale: 1;
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -84,9 +83,3 @@ button:focus-visible {
   }
 }
 
-
-@media (min-width: 2400px) {
-  :root {
-    --ui-scale: 1.15;
-  }
-}

@@ -194,7 +194,7 @@ export default function AppLayout() {
           minWidth: 0,
           width: "100%",
           pb: { xs: 1.5, md: 2.5 },
-          overflowX: "clip",
+          overflowX: "hidden",
         }}
       >
         <Toolbar sx={{ minHeight: appBarOffset }} />
