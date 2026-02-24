@@ -8,7 +8,6 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { alpha } from "@mui/material/styles";
 import ChevronLeftRoundedIcon from "@mui/icons-material/ChevronLeftRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 import PageContainer from "@/components/ui/PageContainer";
@@ -94,7 +93,7 @@ function renderStateBody({
   if (state === "loading") return skeleton;
   if (state === "error") {
     return (
-      <Alert severity="error" variant="outlined" sx={{ borderRadius: 3 }}>
+      <Alert severity="error" variant="outlined" sx={{ borderRadius: "12px" }}>
         {errorText}
       </Alert>
     );
@@ -124,10 +123,8 @@ const HOME_CARD_2K_MEDIA_QUERY = "@media (min-width:2000px)";
 const homeCardSx = {
   minWidth: 0,
   p: 3,
-  borderRadius: 4,
   [HOME_CARD_2K_MEDIA_QUERY]: {
     p: 3.75,
-    borderRadius: 5,
   },
 };
 
@@ -223,7 +220,7 @@ export default function HomePage() {
             emptyText: "Нет данных за выбранный день",
             errorText: "Не удалось загрузить данные. Попробуйте обновить страницу.",
             skeleton: (
-              <Stack spacing={1.8} sx={{ minHeight: 200 }}>
+              <Stack spacing={2} sx={{ minHeight: 200 }}>
                 <Skeleton variant="rounded" width="100%" height={40} />
                 <Skeleton width="50%" height={96} sx={{ mx: "auto" }} />
                 <Skeleton width="80%" sx={{ mx: "auto" }} />
@@ -239,10 +236,11 @@ export default function HomePage() {
                   <Box
                     sx={{
                       justifySelf: "center",
-                      px: 2.25,
-                      py: 0.8,
+                      px: 2,
+                      py: 1,
                       borderRadius: 999,
-                      bgcolor: (theme) => alpha(theme.palette.primary.main, 0.12),
+                      bgcolor: "#F5F5F7",
+                      border: "1px solid #C9C9CB",
                     }}
                   >
                     <Typography variant="caption" sx={{ lineHeight: 1.2, color: "text.primary", fontWeight: 500 }}>
@@ -255,7 +253,7 @@ export default function HomePage() {
                 </Box>
 
                 <Stack spacing={1} alignItems="center" sx={{ mt: 1 }}>
-                  <Typography variant="h1" sx={{ lineHeight: 1 }}>
+                  <Typography variant="h1" sx={{ lineHeight: 1, fontSize: { xs: "3rem", md: "3.75rem", lg: "4.2rem" }, fontWeight: 600 }}>
                     {dashboardData.completion}%
                   </Typography>
                   <Typography variant="body2" sx={{ textAlign: "center", color: "text.secondary" }}>
@@ -270,10 +268,12 @@ export default function HomePage() {
                     alignSelf: "center",
                     width: 160,
                     bgcolor: "#111111",
+                    bgcolor: "primary.main",
                     color: "#FFFFFF",
-                    borderRadius: 999,
+                    borderRadius: "12px",
                     textTransform: "none",
-                    "&:hover": { bgcolor: "#1f1f1f" },
+                    boxShadow: "none",
+                    "&:hover": { bgcolor: "primary.dark", boxShadow: "none" },
                   }}
                 >
                   Открыть
@@ -305,8 +305,8 @@ export default function HomePage() {
             ),
             ready: (
               <>
-                <Typography variant="subtitle2" sx={{ ...sectionHeaderSx, textAlign: "center", mb: 2.5 }}>Ежедневное заполнение данных</Typography>
-                <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 2.2 }}>
+                <Typography variant="subtitle2" sx={{ ...sectionHeaderSx, textAlign: "center", mb: 3 }}>Ежедневное заполнение данных</Typography>
+                <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 2 }}>
                   <IconButton size="small" sx={{ color: "primary.main" }}>
                     <ChevronLeftRoundedIcon fontSize="small" />
                   </IconButton>
@@ -317,7 +317,7 @@ export default function HomePage() {
                 </Stack>
                 <Box sx={{ display: "grid", gridTemplateColumns: "repeat(7, minmax(0, 1fr))", gap: 1 }}>
                   {calendarDays.map((day) => (
-                    <Typography key={day} variant="caption" sx={{ textAlign: "center", pb: 0.5 }}>
+                    <Typography key={day} variant="caption" sx={{ textAlign: "center", pb: 1 }}>
                       {day}
                     </Typography>
                   ))}
@@ -331,10 +331,10 @@ export default function HomePage() {
                         key={idx}
                         sx={{
                           height: 34,
-                          borderRadius: 2,
-                          bgcolor: (theme) =>
-                            isSelected ? theme.palette.primary.main : alpha(theme.palette.primary.main, 0.1),
-                          color: isSelected ? "#fff" : "text.primary",
+                          borderRadius: "12px",
+                          bgcolor: isSelected ? "#F5F5F7" : "transparent",
+                          border: isSelected ? "1px solid #C9C9CB" : "1px solid transparent",
+                          color: "text.primary",
                           display: "grid",
                           placeItems: "center",
                           typography: "body2",
@@ -369,7 +369,7 @@ export default function HomePage() {
               <Stack spacing={2.1} sx={{ minHeight: 194 }}>
                 {Array.from({ length: 4 }).map((_, idx) => (
                   <Box key={idx}>
-                    <Skeleton width="40%" height={22} sx={{ mb: 0.8 }} />
+                    <Skeleton width="40%" height={22} sx={{ mb: 1 }} />
                     <Skeleton variant="rounded" width="100%" height={6} />
                   </Box>
                 ))}
@@ -377,24 +377,24 @@ export default function HomePage() {
             ),
             ready: (
               <Stack sx={{ height: "100%" }}>
-                <Typography variant="subtitle2" sx={{ ...sectionHeaderSx, mb: 0.75 }}>Сводка по Болезни за выбранное число</Typography>
-                <Typography variant="caption" sx={{ color: "text.secondary", mb: 2.5 }}>
+                <Typography variant="subtitle2" sx={{ ...sectionHeaderSx, mb: 1 }}>Сводка по Болезни за выбранное число</Typography>
+                <Typography variant="caption" sx={{ color: "text.secondary", mb: 3 }}>
                   16.02.2026
                 </Typography>
-                <Stack spacing={1.8}>
+                <Stack spacing={2}>
                   {symptomLabels.map((label, index) => {
                     const score = dashboardData.summaryRows[index % dashboardData.summaryRows.length]?.value ?? 0;
                     return (
                       <Box key={label}>
-                        <Typography variant="body2" sx={{ color: "text.primary", fontWeight: 500, mb: 0.6 }}>
+                        <Typography variant="body2" sx={{ color: "text.primary", fontWeight: 500, mb: 1 }}>
                           {label}
                         </Typography>
-                        <Box sx={{ height: 4, borderRadius: 999, bgcolor: "rgba(240, 137, 152, 0.2)", overflow: "hidden" }}>
+                        <Box sx={{ height: 4, borderRadius: "8px", bgcolor: "rgba(240, 137, 152, 0.2)", overflow: "hidden" }}>
                           <Box
                             sx={{
                               width: `${score}%`,
                               height: "100%",
-                              borderRadius: 999,
+                              borderRadius: "8px",
                               bgcolor: "#E78B9B",
                             }}
                           />
@@ -440,7 +440,7 @@ export default function HomePage() {
             emptyText: "Рекомендаций пока нет",
             errorText: "Не удалось загрузить данные. Попробуйте обновить страницу.",
             skeleton: (
-              <Stack alignItems="center" spacing={2.4} width="100%" sx={{ minHeight: 152, justifyContent: "center" }}>
+              <Stack alignItems="center" spacing={3} width="100%" sx={{ minHeight: 152, justifyContent: "center" }}>
                 <Skeleton width="76%" height={44} />
                 <Skeleton width="48%" height={44} />
                 <Skeleton variant="rounded" width={130} height={38} />
@@ -464,7 +464,7 @@ export default function HomePage() {
                     <ChevronLeftRoundedIcon />
                   </IconButton>
 
-                  <Stack spacing={2.5} alignItems="center" justifyContent="center" sx={{ flex: 1 }}>
+                  <Stack spacing={3} alignItems="center" justifyContent="center" sx={{ flex: 1 }}>
                     <Typography
                       variant="h2"
                       sx={{
@@ -473,12 +473,12 @@ export default function HomePage() {
                         lineHeight: 1.2,
                         fontWeight: 500,
                         maxWidth: 620,
-                        fontSize: { xs: "1.5rem", md: "1.75rem" },
+                        fontSize: { xs: "1.5rem", md: "1.75rem", lg: "1.75rem" },
                       }}
                     >
                       {dashboardData.recommendation}
                     </Typography>
-                    <Button variant="outlined" sx={{ borderRadius: 999, minWidth: 132 }}>
+                    <Button variant="outlined" sx={{ borderRadius: "12px", minWidth: 132, boxShadow: "none" }}>
                       Подробнее
                     </Button>
                   </Stack>
@@ -506,7 +506,7 @@ export default function HomePage() {
             emptyText: "Нет предстоящих приёмов",
             errorText: "Не удалось загрузить данные. Попробуйте обновить страницу.",
             skeleton: (
-              <Stack alignItems="center" spacing={1.3} width="100%" sx={{ minHeight: 152, justifyContent: "center" }}>
+              <Stack alignItems="center" spacing={2} width="100%" sx={{ minHeight: 152, justifyContent: "center" }}>
                 <Skeleton width="80%" height={42} />
                 <Skeleton width="62%" height={42} />
               </Stack>
@@ -514,7 +514,7 @@ export default function HomePage() {
             ready: (
               <Stack sx={{ height: "100%" }}>
                 <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", textAlign: "center", height: "100%" }}>
-                  <Stack spacing={1.4}>
+                  <Stack spacing={2}>
                     <Typography variant="h5" sx={{ color: "text.primary", maxWidth: 320, fontWeight: 500 }}>
                       Ваш следующий прием назначен
                     </Typography>
