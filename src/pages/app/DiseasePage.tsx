@@ -63,7 +63,7 @@ const textOverflowScrollSx = {
   flex: 1,
   maxHeight: { xs: "none", md: "calc(100vh - 320px)" },
   overflowY: { xs: "visible", md: "auto" },
-  pr: { md: 0.25 },
+  pr: { md: 0.5 },
   scrollbarGutter: { md: "stable" },
   scrollbarWidth: "thin",
   scrollbarColor: "rgba(23, 23, 23, 0.25) transparent",
@@ -107,10 +107,8 @@ export default function DiseasePage() {
         value: statsQuery.data?.totalPatients ?? "—",
       },
       {
-        label: "Ср. длительность лечения",
-        value: statsQuery.data?.averageTreatmentDurationDays
-          ? `${statsQuery.data.averageTreatmentDurationDays} дней`
-          : "—",
+        label: "Средняя длительность лечения",
+        value: statsQuery.data?.averageTreatmentDurationDays ? `${statsQuery.data.averageTreatmentDurationDays} дней` : "—",
       },
       {
         label: "Последнее обновление",
@@ -121,15 +119,12 @@ export default function DiseasePage() {
         value: formatDate(diseaseQuery.data?.createdAt),
       },
     ],
-    [diseaseQuery.data?.createdAt, statsQuery.data]
+    [diseaseQuery.data?.createdAt, statsQuery.data],
   );
 
   return (
     <PageContainer>
-      <SoftCard
-        sx={{ width: "100%", minWidth: 0, boxSizing: "border-box", overflow: "hidden" }}
-        contentSx={{ p: { xs: 2, sm: 3, md: 4 }, "&:last-child": { pb: { xs: 2, sm: 3, md: 4 } } }}
-      >
+      <SoftCard sx={{ width: "100%", minWidth: 0, boxSizing: "border-box", overflow: "hidden" }} contentSx={{ gap: 0 }}>
         <Box
           sx={{
             display: "grid",
@@ -159,24 +154,20 @@ export default function DiseasePage() {
                     <Typography variant="h5" sx={{ fontWeight: 700, overflowWrap: "anywhere" }}>
                       {diseaseQuery.data?.name ?? "Карточка заболевания"}
                     </Typography>
-                    <Typography
-                      variant="body2"
-                      color="text.secondary"
-                      sx={{ mt: 0.75, overflowWrap: "anywhere", wordBreak: "break-word" }}
-                    >
+                    <Typography variant="body2" color="text.secondary" sx={{ mt: 1, overflowWrap: "anywhere", wordBreak: "break-word" }}>
                       {diseaseQuery.data?.code ?? "Код не указан"}
                     </Typography>
                   </>
                 )}
               </Box>
-              <Button variant="contained" sx={{ borderRadius: "10px", boxShadow: "none", flexShrink: 0 }}>
+              <Button variant="contained" sx={{ borderRadius: "12px", boxShadow: "none", flexShrink: 0, textTransform: "none" }}>
                 Редактировать
               </Button>
             </Stack>
 
             <Divider />
 
-            <Stack spacing={3.5} sx={textOverflowScrollSx}>
+            <Stack spacing={3} sx={textOverflowScrollSx}>
               <Stack spacing={1.5} sx={{ minWidth: 0 }}>
                 <Typography variant="h6" sx={{ fontSize: "1.05rem", fontWeight: 600 }}>
                   Описание
@@ -214,11 +205,7 @@ export default function DiseasePage() {
 
               <SectionList title="Основные симптомы" items={diseaseQuery.data?.symptoms} isLoading={diseaseQuery.isLoading} />
               <SectionList title="Возможные осложнения" items={diseaseQuery.data?.complications} isLoading={diseaseQuery.isLoading} />
-              <SectionList
-                title="Рекомендуемые обследования"
-                items={diseaseQuery.data?.recommendedExams}
-                isLoading={diseaseQuery.isLoading}
-              />
+              <SectionList title="Рекомендуемые обследования" items={diseaseQuery.data?.recommendedExams} isLoading={diseaseQuery.isLoading} />
             </Stack>
           </Box>
 
@@ -230,7 +217,7 @@ export default function DiseasePage() {
                 alignSelf: "flex-start",
                 border: "1px solid #E5E5E7",
                 borderRadius: "14px",
-                p: { xs: 2, md: 2.5 },
+                p: { xs: 2, md: 3 },
                 backgroundColor: "#FAFAFB",
               }}
             >
@@ -243,7 +230,7 @@ export default function DiseasePage() {
                     key={item.label}
                     sx={{
                       px: 1.5,
-                      py: 1.25,
+                      py: 1.5,
                       borderRadius: "10px",
                       border: "1px solid #E5E5E7",
                       bgcolor: "#FFFFFF",
@@ -256,10 +243,7 @@ export default function DiseasePage() {
                     {statsQuery.isLoading ? (
                       <Skeleton variant="text" width="45%" sx={{ mt: 0.5 }} />
                     ) : (
-                      <Typography
-                        variant="body1"
-                        sx={{ fontWeight: 600, mt: 0.5, overflowWrap: "anywhere", wordBreak: "break-word" }}
-                      >
+                      <Typography variant="body1" sx={{ fontWeight: 600, mt: 0.5, overflowWrap: "anywhere", wordBreak: "break-word" }}>
                         {item.value}
                       </Typography>
                     )}

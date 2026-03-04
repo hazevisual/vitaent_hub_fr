@@ -1,54 +1,147 @@
-# React + TypeScript + Vite
+# Vitaent
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Vitaent is a multi-tenant medical platform with:
 
-Currently, two official plugins are available:
+- patient portal
+- doctor interface
+- clinic administration
+- appointments
+- medical records
+- chat
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+This repository currently contains:
 
-## Expanding the ESLint configuration
+- React + TypeScript + Vite frontend
+- ASP.NET backend
+- Postgres local runtime through Docker Compose
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+The architecture source of truth is [docs/Architecture.md](docs/Architecture.md).
+Frontend UI work must follow [docs/VITAENT_UX_UI_GUIDELINES.md](docs/VITAENT_UX_UI_GUIDELINES.md).
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## Local Development
+
+### Prerequisites
+
+- Docker Desktop or equivalent Docker engine with Compose support
+
+Optional local tooling outside containers:
+
+- Node 20+
+- .NET 8 SDK
+
+### Environment
+
+Copy `.env.example` to `.env` and adjust values if needed.
+
+Available local variables:
+
+- `DB_NAME`
+- `DB_USER`
+- `DB_PASSWORD`
+- `ASPNETCORE_ENV`
+- `JWT_KEY`
+- `JWT_EXP_MINUTES`
+- `VITE_API_URL`
+- `VITE_API_MOCKS`
+
+### Start the stack
+
+```bash
+docker compose up --build
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Expected startup order:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+1. `postgres`
+2. `backend`
+3. `frontend`
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+Expected local ports:
+
+- `5432` -> Postgres
+- `5163` -> Backend API
+- `3001` -> Frontend
+
+### Health checks
+
+- Backend health endpoint: `http://localhost:5163/health`
+- Frontend: `http://localhost:3001`
+
+### Modes
+
+Live API mode:
+
+- `VITE_API_URL=http://localhost:5163`
+- `VITE_API_MOCKS=false`
+
+Frontend mock-capable mode:
+
+- `VITE_API_MOCKS=true`
+
+Phase 0 only wires the environment contract for mock mode. Feature-complete mock adapters are still pending.
+
+### Rebuild and shutdown
+
+Rebuild:
+
+```bash
+docker compose up --build
+```
+
+Stop containers:
+
+```bash
+docker compose down
+```
+
+Stop containers and remove local database volume:
+
+```bash
+docker compose down -v
+```
+
+### Troubleshooting
+
+Port conflict:
+
+- Ensure ports `3001`, `5163`, and `5432` are free.
+
+Backend cannot connect to database:
+
+- Verify Postgres is healthy.
+- Verify `.env` values match the Compose configuration.
+
+Backend healthcheck fails:
+
+- Inspect backend logs for migration or connection failures.
+- Confirm the backend can reach `postgres:5432`.
+
+Frontend points to the wrong API:
+
+- Check `VITE_API_URL`.
+- Rebuild the frontend container after environment changes.
+
+Frontend-only work without backend:
+
+- Set `VITE_API_MOCKS=true`.
+- Mock adapter implementation is planned but not fully delivered yet.
+
+## Validation Baseline
+
+Frontend:
+
+```bash
+npm run build
+```
+
+Backend:
+
+```bash
+dotnet build backend/backend.csproj
+```
+
+Containers:
+
+```bash
+docker compose build
 ```

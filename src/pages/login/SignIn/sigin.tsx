@@ -1,327 +1,234 @@
-// src/pages/auth/SignIn.tsx
 import * as React from "react";
 import { useNavigate, Link as RouterLink } from "react-router-dom";
 import {
-    Box, Button, Divider, FormControl, Link, TextField, Typography,
-    Card as MuiCard, Alert, IconButton, InputAdornment, Dialog, DialogActions, DialogContent, DialogTitle
+  Box,
+  Button,
+  Card as MuiCard,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  FormControl,
+  IconButton,
+  InputAdornment,
+  Link,
+  TextField,
+  Typography,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useAuth } from "@/auth/AuthProvider";
 import { Eye, EyeOff } from "lucide-react";
 import signinLogo from "@/assets/LogoVitaentFull.svg";
-import { ClinicInfoDto } from "types/Clinic/ClinicInfoDto";
+import ForgotPassword from "./components/ForgotPassword";
 
 const Card = styled(MuiCard)(({ theme }) => ({
-    display: "flex",
-    flexDirection: "column",
-    width: "100%",
-    maxWidth: "460px",
-    minHeight: "min(620px, calc(100vh - 48px))",
-    padding: theme.spacing(3, 4, 2.5),
-    gap: theme.spacing(1.5),
-    backgroundColor: "#ffffff",
-    borderRadius: "24px",
-    border: "1px solid rgba(15, 23, 42, 0.08)",
-    boxShadow: "0px 16px 36px rgba(15, 23, 42, 0.07)",
-    fontFamily: "Lato, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
-    [theme.breakpoints.down("sm")]: {
-        minHeight: "auto",
-        padding: theme.spacing(2.5, 2.5, 2),
-        borderRadius: "18px",
-    },
-    ...theme.applyStyles?.("dark", {
-        boxShadow:
-            "hsla(220, 30%, 5%, 0.5) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.08) 0px 15px 35px -5px",
-    }),
+  display: "flex",
+  flexDirection: "column",
+  width: "100%",
+  maxWidth: 440,
+  minHeight: 560,
+  padding: theme.spacing(4),
+  gap: theme.spacing(3),
+  backgroundColor: "#FFFFFF",
+  borderRadius: 16,
+  border: "1px solid #C9C9CB",
+  boxShadow: "none",
+  [theme.breakpoints.down("sm")]: {
+    minHeight: "auto",
+    padding: theme.spacing(3),
+  },
 }));
 
-// Локальная схема = удобные имена полей
 const schema = z.object({
-    username: z.string().trim().min(1, "Введите логин."),
-    password: z.string().min(6, "Пароль должен быть минимум 6 символов."),
+  username: z.string().trim().min(1, "Введите логин."),
+  password: z.string().min(6, "Пароль должен содержать не менее 6 символов."),
 });
+
 type FormData = z.infer<typeof schema>;
 
 export default function SignIn() {
-    const navigate = useNavigate();
-    const { signIn, user } = useAuth();
-    const [errorMessage, setErrorMessage] = React.useState("");
-    const [showPassword, setShowPassword] = React.useState(false);
-    const [isSuccessOpen, setIsSuccessOpen] = React.useState(false);
-    const [signedInUserName, setSignedInUserName] = React.useState("vitaent");
+  const navigate = useNavigate();
+  const { signIn, user } = useAuth();
+  const [errorMessage, setErrorMessage] = React.useState("");
+  const [showPassword, setShowPassword] = React.useState(false);
+  const [isSuccessOpen, setIsSuccessOpen] = React.useState(false);
+  const [isForgotPasswordOpen, setIsForgotPasswordOpen] = React.useState(false);
+  const [signedInUserName, setSignedInUserName] = React.useState("vitaent");
+  const apiMocksEnabled = (import.meta.env.VITE_API_MOCKS as string | undefined)?.toLowerCase() === "true";
 
-    const {
-        register,
-        handleSubmit,
-        formState: { errors, isSubmitting },
-    } = useForm<FormData>({
-        resolver: zodResolver(schema),
-        mode: "onSubmit",
-    });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<FormData>({
+    resolver: zodResolver(schema),
+    mode: "onSubmit",
+  });
 
-    const {
-        data: clinic,
-        /*isLoading: clinicLoading,
-        isError: clinicError,
-        error: clinicErrorObj,*/
-    } = useQuery<ClinicInfoDto>({
-        queryKey: ["clinicInfo"],
-        queryFn: async () => {
-            const res = await fetch("/api/ClinicInfo", {
-                method: "GET",
-                headers: {
-                    "Accept": "application/json",
-                },
-            });
+  React.useEffect(() => {
+    if (user) {
+      navigate("/app", { replace: true });
+    }
+  }, [user, navigate]);
 
-            if (!res.ok) {
-                throw new Error("Не удалось загрузить данные клиники.");
-            }
+  const mutation = useMutation({
+    mutationFn: async (values: FormData) => {
+      return await signIn({
+        UserName: values.username,
+        Password: values.password,
+      });
+    },
+    onSuccess: () => {
+      setSignedInUserName(user?.userName ?? "vitaent");
+      setIsSuccessOpen(true);
+    },
+    onError: (e: unknown) => {
+      const msg = e instanceof Error ? e.message : "Не удалось выполнить вход. Проверьте логин и пароль.";
+      setErrorMessage(msg);
+    },
+  });
 
-            return res.json() as Promise<ClinicInfoDto>;
-        },
-        // в фоне перезапрашивать необязательно, нам хватит одного раза на загрузку страницы
-        staleTime: 5 * 60 * 1000,
-    });
+  React.useEffect(() => {
+    if (user?.userName) {
+      setSignedInUserName(user.userName);
+    }
+  }, [user]);
 
+  const onSubmit = (data: FormData) => {
+    if (isSubmitting || mutation.isPending) return;
+    setErrorMessage("");
+    mutation.mutate(data);
+  };
 
+  return (
+    <>
+      <Box
+        sx={{
+          minHeight: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          px: { xs: 2, sm: 3, md: 4 },
+          py: { xs: 3, sm: 4 },
+          backgroundColor: "#F5F5F7",
+        }}
+      >
+        <Card variant="outlined">
+          <Box sx={{ display: "flex", justifyContent: "center" }}>
+            <Box component="img" src={signinLogo} alt="Vitaent" sx={{ width: 176, height: "auto" }} />
+          </Box>
 
-    // Если уже авторизованы — уводим
-    React.useEffect(() => {
-        if (user) {
-            navigate("/app", { replace: true });
-        }
-    }, [user, navigate]);
+          <Box sx={{ textAlign: "center" }}>
+            <Typography variant="h5" sx={{ fontSize: "1.125rem", fontWeight: 600, color: "text.primary" }}>
+              Вход
+            </Typography>
+            <Typography variant="body2" sx={{ mt: 1, color: "text.secondary" }}>
+              Войдите в рабочее пространство активной клиники.
+            </Typography>
+            {apiMocksEnabled ? (
+              <Typography variant="caption" sx={{ mt: 1.5, display: "block", color: "text.secondary" }}>
+                Тестовые учетные записи: `patient` / `Patient123!`, `doctor` / `Doctor123!`, `clinic` / `Clinic123!`, `admin` / `Admin123!`
+              </Typography>
+            ) : null}
+          </Box>
 
-    const mutation = useMutation({
-        mutationFn: async (values: FormData) => {
-            // МАППИНГ под API: { UserName, Password }
-            return await signIn({
-                UserName: values.username,
-                Password: values.password,
-            });
-        },
-        onSuccess: () => {
-            setSignedInUserName(user?.userName ?? "vitaent");
-            setIsSuccessOpen(true);
-        },
-        onError: (e: unknown) => {
-            const msg =
-                e instanceof Error
-                    ? e.message
-                    : "Не удалось выполнить вход. Проверьте логин и пароль.";
-            setErrorMessage(msg);
-        },
-    });
+          {errorMessage ? (
+            <Typography variant="body2" sx={{ color: "error.main", textAlign: "center" }}>
+              {errorMessage}
+            </Typography>
+          ) : null}
 
-    React.useEffect(() => {
-        if (user?.userName) {
-            setSignedInUserName(user.userName);
-        }
-    }, [user]);
+          <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)} sx={{ display: "flex", flexDirection: "column", gap: 2, width: "100%" }}>
+            <FormControl fullWidth>
+              <TextField
+                id="login"
+                label="Логин"
+                autoComplete="username"
+                autoFocus
+                fullWidth
+                disabled={mutation.isPending}
+                error={!!errors.username}
+                helperText={errors.username?.message}
+                {...register("username")}
+              />
+            </FormControl>
 
-    const onSubmit = (data: FormData) => {
-        // защита от двойного сабмита
-        if (isSubmitting || mutation.isPending) return;
-        setErrorMessage("");
-        mutation.mutate(data);
-    };
+            <FormControl fullWidth>
+              <TextField
+                id="password"
+                label="Пароль"
+                type={showPassword ? "text" : "password"}
+                autoComplete="current-password"
+                fullWidth
+                disabled={mutation.isPending}
+                error={!!errors.password}
+                helperText={errors.password?.message}
+                {...register("password")}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label={showPassword ? "Скрыть пароль" : "Показать пароль"}
+                        onClick={() => setShowPassword((v) => !v)}
+                        edge="end"
+                        tabIndex={-1}
+                      >
+                        {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </FormControl>
 
-    return (
-        <>
-        <Box
-            sx={{
-                minHeight: "100vh",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                px: { xs: 2, sm: 3, md: 4 },
-                py: { xs: 3, sm: 4 },
-                backgroundColor: "#f6f7f9",
+            <Button type="submit" variant="contained" fullWidth disabled={mutation.isPending || isSubmitting} sx={{ mt: 1, textTransform: "none" }}>
+              {mutation.isPending ? "Вход..." : "Войти"}
+            </Button>
+
+            <Typography variant="caption" align="center" sx={{ color: "text.secondary" }}>
+              Нужна помощь? Обратитесь к администратору клиники.
+            </Typography>
+
+            <Link component="button" variant="body2" sx={{ mx: "auto", color: "primary.main" }} onClick={() => setIsForgotPasswordOpen(true)}>
+              Забыли пароль?
+            </Link>
+          </Box>
+
+          <Box sx={{ pt: 3, mt: "auto", borderTop: "1px solid #E5E5E7", textAlign: "center" }}>
+            <Typography variant="body2" sx={{ color: "text.secondary", mb: 1 }}>
+              Если врач выдал код приглашения, завершите регистрацию по нему.
+            </Typography>
+            <Button component={RouterLink} to="/register" variant="outlined" fullWidth sx={{ textTransform: "none" }}>
+              Регистрация по коду
+            </Button>
+          </Box>
+        </Card>
+      </Box>
+
+      <ForgotPassword open={isForgotPasswordOpen} handleClose={() => setIsForgotPasswordOpen(false)} />
+
+      <Dialog open={isSuccessOpen} onClose={() => setIsSuccessOpen(false)}>
+        <DialogTitle>Вход выполнен</DialogTitle>
+        <DialogContent>
+          <Typography>Вы вошли как {signedInUserName || "vitaent"}.</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() => {
+              setIsSuccessOpen(false);
+              navigate("/app");
             }}
-        >
-            <Card variant="outlined" sx={{ backgroundColor: clinic?.backgroundColor, color: clinic?.textColor }}>
-                <Box
-                    sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                        width: "100%",
-                        justifyContent: "flex-start",
-                        gap: 1.5,
-                    }}
-                >
-                    <Box sx={{ display: "flex", justifyContent: "center", width: "100%", mt: 0 }}>
-                        <img src={signinLogo} alt="Logo" style={{ width: 180 }} />
-                    </Box>
-                    <Box sx={{ width: "100%", textAlign: "center", mb: 0.5 }}>
-                        <Typography variant="h4" align="center" sx={{ fontWeight: 500, letterSpacing: "0.01em", fontSize: { xs: "1.7rem", md: "2rem" } }}>
-                            Sign in
-                        </Typography>
-                        <Typography variant="body1" align="center" sx={{ color: "text.secondary", mt: 1, fontSize: "0.95rem", fontWeight: 400 }}>
-                            Access Vitaent HUB
-                        </Typography>
-                    </Box>
-
-                    {!!errorMessage && (
-                        <Alert severity="error" sx={{ width: "100%" }}>
-                            {errorMessage}
-                        </Alert>
-                    )}
-
-                    <Box
-                        component="form"
-                        noValidate
-                        onSubmit={handleSubmit(onSubmit)}
-                        sx={{
-                            display: "flex",
-                            flexDirection: "column",
-                            gap: 1.5,
-                            width: "100%",
-                            maxWidth: "380px",
-                            mx: "auto",
-                        }}
-                    >
-                        <FormControl fullWidth>
-                            <TextField
-                                id="login"
-                                label="Username"
-                                placeholder="Ваш логин"
-                                autoComplete="username"
-                                autoFocus
-                                fullWidth
-                                disabled={mutation.isPending}
-                                error={!!errors.username}
-                                helperText={errors.username?.message}
-                                {...register("username")}
-                                InputProps={{
-                                    sx: {
-                                        height: "48px",
-                                        borderRadius: "12px",
-                                        "& input": {
-                                            height: "100%",
-                                            boxSizing: "border-box",
-                                            padding: "12px 14px",
-                                            lineHeight: 1.2,
-                                            fontWeight: 400,
-                                        },
-                                    },
-                                }}
-                            />
-                        </FormControl>
-
-                        <FormControl fullWidth>
-                            <TextField
-                                id="password"
-                                label="Password"
-                                type={showPassword ? "text" : "password"}
-                                placeholder="••••••"
-                                autoComplete="current-password"
-                                fullWidth
-                                disabled={mutation.isPending}
-                                error={!!errors.password}
-                                helperText={errors.password?.message}
-                                {...register("password")}
-                                InputProps={{
-                                    endAdornment: (
-                                        <InputAdornment position="end">
-                                            <IconButton
-                                                aria-label={showPassword ? "Скрыть пароль" : "Показать пароль"}
-                                                onClick={() => setShowPassword((v) => !v)}
-                                                edge="end"
-                                                tabIndex={-1}
-                                            >
-                                                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                                            </IconButton>
-                                        </InputAdornment>
-                                    ),
-                                    sx: {
-                                        height: "48px",
-                                        borderRadius: "12px",
-                                        "& input": {
-                                            height: "100%",
-                                            boxSizing: "border-box",
-                                            padding: "12px 14px",
-                                            lineHeight: 1.2,
-                                            fontWeight: 400,
-                                        },
-                                    },
-                                }}
-                            />
-                        </FormControl>
-
-                        <Button
-                            type="submit"
-                            variant="contained"
-                            fullWidth
-                            disabled={mutation.isPending || isSubmitting}
-                            sx={{
-                                height: "50px",
-                                borderRadius: "14px",
-                                mt: 1,
-                                textTransform: "none",
-                                letterSpacing: "0.02em",
-                                fontWeight: 500,
-                                boxShadow: "0 6px 16px rgba(15, 23, 42, 0.12)",
-                                transition: "all 180ms ease",
-                                "&:hover": {
-                                    boxShadow: "0 10px 18px rgba(15, 23, 42, 0.15)",
-                                    transform: "translateY(-1px)",
-                                },
-                                "&.Mui-disabled": {
-                                    boxShadow: "none",
-                                    opacity: 0.65,
-                                },
-                            }}
-                        >
-                            {mutation.isPending ? "Входим..." : "Войти"}
-                        </Button>
-
-                        <Typography variant="caption" align="center" sx={{ color: "text.secondary", mt: 0.5 }}>
-                            Need help? Contact your administrator.
-                        </Typography>
-
-                        <Link component="button" onClick={() => { /* TODO: модал восстановления */ }} variant="body2" sx={{ mx: "auto", mt: 0.5 }}>
-                            Забыли пароль?
-                        </Link>
-                    </Box>
-                </Box>
-
-                <Divider sx={{ width: "100%", mt: 1 }} />
-
-                <Box sx={{ textAlign: "center", display: "flex", flexDirection: "column", gap: 1 }}>
-                    {!!clinic?.brandName && (
-                        <Typography variant="body2" sx={{ color: "text.secondary" }}>
-                            {clinic.brandName}
-                        </Typography>
-                    )}
-                    <Button component={RouterLink} to="/register" variant="contained">
-                        Зарегистрироваться
-                    </Button>
-                </Box>
-            </Card>
-        </Box>
-
-            <Dialog open={isSuccessOpen} onClose={() => setIsSuccessOpen(false)}>
-                <DialogTitle>Успешный вход</DialogTitle>
-                <DialogContent>
-                    <Typography>Вы вошли как: {signedInUserName || "vitaent"}</Typography>
-                </DialogContent>
-                <DialogActions>
-                    <Button
-                        onClick={() => {
-                            setIsSuccessOpen(false);
-                            navigate("/app");
-                        }}
-                        variant="contained"
-                    >
-                        Continue
-                    </Button>
-                </DialogActions>
-            </Dialog>
-        </>
-    );
+            variant="contained"
+            sx={{ textTransform: "none" }}
+          >
+            Продолжить
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </>
+  );
 }

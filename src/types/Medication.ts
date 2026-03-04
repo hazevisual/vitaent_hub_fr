@@ -7,56 +7,51 @@ export type MedicationForm =
   | "Инъекции"
   | "Другое";
 
-export type MedicationDoseUnit =
-  | "мг"
-  | "мкг"
-  | "г"
-  | "мл"
-  | "капли"
-  | "таб"
-  | "капс"
-  | "впрыск"
-  | "другое";
-
-export type MedicationScheduleType = "Daily" | "Weekly" | "Interval" | "Prn";
-
-export type MedicationSchedule = {
-  type: MedicationScheduleType;
-  times?: string[];
-  weekdays?: number[];
-  intervalDays?: number;
-  prnReason?: string;
-};
-
-export type MedicationReminder = {
-  enabled: boolean;
-  leadTimeMinutes?: number;
-};
-
-export type MedicationStock = {
-  enabled: boolean;
-  currentStock?: number;
-  lowStockThreshold?: number;
-};
-
 export type MedicationDto = {
   id: string;
   name: string;
-  form?: MedicationForm;
-  doseAmount: number;
-  doseUnit: MedicationDoseUnit;
-  schedule: MedicationSchedule;
-  startDate: string;
-  endDate?: string;
-  isPrn: boolean;
-  notes?: string;
-  reminders?: MedicationReminder;
-  stock?: MedicationStock;
+  strength?: string | null;
+  form?: MedicationForm | string | null;
+  note?: string | null;
+  createdAt: string;
 };
 
-export type MedicationCreateRequest = Omit<MedicationDto, "id">;
+export type MedicationSlotItemDto = {
+  id: string;
+  medicineId: string;
+  medicineName: string;
+  medicineStrength?: string | null;
+  medicineForm?: string | null;
+  doseAmount: number;
+  instructions?: string | null;
+  createdAt: string;
+};
+
+export type MedicationSlotDto = {
+  id: string;
+  timeOfDay: string;
+  createdAt: string;
+  items: MedicationSlotItemDto[];
+};
+
+export type MedicationCreateRequest = {
+  name: string;
+  strength?: string;
+  form?: string;
+  note?: string;
+};
 
 export type MedicationUpdateRequest = MedicationCreateRequest;
+
+export type MedicationSlotCreateRequest = {
+  timeOfDay: string;
+};
+
+export type MedicationSlotItemCreateRequest = {
+  medicineId: string;
+  doseAmount: number;
+  instructions?: string;
+};
 
 export type ValidationProblemDetails = {
   title?: string;

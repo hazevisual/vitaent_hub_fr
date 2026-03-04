@@ -1,4 +1,4 @@
-import { createTheme } from "@mui/material/styles";
+﻿import { alpha, createTheme } from "@mui/material/styles";
 
 const uiSpacing = (...args: Array<number | string>) => {
   if (args.length === 0) {
@@ -20,137 +20,192 @@ const uiSpacing = (...args: Array<number | string>) => {
     .join(" ");
 };
 
+const tokens = {
+  shell: "#EEEDEF",
+  chrome: "#F5F5F7",
+  surface: "#FBFBFD",
+  contrastSurface: "#FFFFFF",
+  textPrimary: "#333333",
+  textSecondary: "#838384",
+  border: "#C8C8CC",
+  divider: "#EEEDEF",
+  blue: "#336FEE",
+  blueIndicator: "#1E82F5",
+  red: "#FF4163",
+  black: "#070708",
+};
+
 export const vitaentTheme = createTheme({
   spacing: uiSpacing,
+  shape: {
+    borderRadius: 10,
+  },
   palette: {
     mode: "light",
     primary: {
-      main: "#336FEE",
-      light: "#5C8AF2",
-      dark: "#2558C2",
-      contrastText: "#FFFFFF",
+      main: tokens.blue,
+      light: alpha(tokens.blue, 0.12),
+      dark: "#255DDA",
+      contrastText: tokens.contrastSurface,
     },
     error: {
-      main: "#FF4163",
-      light: "#FF6A84",
-      dark: "#D73552",
-      contrastText: "#FFFFFF",
-    },
-    secondary: {
-      main: "#8EA4D7",
-      light: "#B8C5E6",
-      dark: "#748EC6",
-      contrastText: "#FFFFFF",
+      main: tokens.red,
+      contrastText: tokens.contrastSurface,
     },
     background: {
-      default: "#EEEDEF",
-      paper: "#FBFBFD",
+      default: tokens.shell,
+      paper: tokens.surface,
     },
     text: {
-      primary: "#1E1E20",
-      secondary: "#000000",
+      primary: tokens.textPrimary,
+      secondary: tokens.textSecondary,
     },
-    divider: "#E6EAF3",
-  },
-  shape: {
-    borderRadius: 8,
+    divider: tokens.divider,
   },
   typography: {
-    fontFamily: '"Inter", "Segoe UI", "Roboto", sans-serif',
+    fontFamily: '"Lato", "Segoe UI", "Helvetica Neue", Arial, sans-serif',
     h1: {
-      fontSize: "4.2rem",
-      fontWeight: 700,
+      fontSize: "4rem",
+      fontWeight: 600,
       lineHeight: 1,
-      letterSpacing: "-0.03em",
-      color: "#1E1E20",
+      color: tokens.textPrimary,
     },
     h2: {
-      fontSize: "2.6rem",
-      fontWeight: 700,
-      lineHeight: 1.1,
-      letterSpacing: "-0.02em",
-      color: "#1E1E20",
+      fontSize: "2.25rem",
+      fontWeight: 600,
+      lineHeight: 1.25,
+      color: tokens.textPrimary,
     },
     h5: {
-      fontSize: "1.5rem",
+      fontSize: "1.0625rem",
       fontWeight: 600,
-      letterSpacing: "-0.01em",
+      lineHeight: 1.2,
+      color: tokens.textPrimary,
     },
-    body1: {
-      fontSize: "1rem",
-      fontWeight: 400,
-      color: "#1E1E20",
-    },
-    body2: {
-      fontSize: "0.95rem",
-      color: "#000000",
-    },
-    caption: {
-      fontSize: "0.8rem",
-      fontWeight: 400,
-      color: "#8E98AB",
-    },
-    button: {
-      fontSize: "1rem",
-      textTransform: "none",
+    subtitle1: {
+      fontSize: "0.9375rem",
       fontWeight: 600,
+      lineHeight: 1.2,
+      color: tokens.textPrimary,
     },
     subtitle2: {
-      fontSize: "0.95rem",
+      fontSize: "0.8125rem",
       fontWeight: 600,
-      color: "#000000",
+      lineHeight: 1.2,
+      color: tokens.textPrimary,
+    },
+    body1: {
+      fontSize: "0.9375rem",
+      fontWeight: 400,
+      lineHeight: 1.45,
+      color: tokens.textPrimary,
+    },
+    body2: {
+      fontSize: "0.8125rem",
+      fontWeight: 400,
+      lineHeight: 1.4,
+      color: tokens.textSecondary,
+    },
+    caption: {
+      fontSize: "0.8125rem",
+      fontWeight: 400,
+      lineHeight: 1.25,
+      color: tokens.textSecondary,
+    },
+    button: {
+      fontSize: "0.8125rem",
+      fontWeight: 600,
+      lineHeight: 1,
+      textTransform: "none",
     },
   },
-  shadows: [
+  shadows: Array(25).fill("none") as [
     "none",
-    "0 8px 24px rgba(62, 78, 114, 0.06)",
-    "0 10px 28px rgba(62, 78, 114, 0.08)",
-    "0 12px 32px rgba(62, 78, 114, 0.1)",
-    "0 14px 36px rgba(62, 78, 114, 0.11)",
-    "0 16px 40px rgba(62, 78, 114, 0.12)",
-    "0 18px 44px rgba(62, 78, 114, 0.13)",
-    "0 20px 48px rgba(62, 78, 114, 0.14)",
-    "0 22px 52px rgba(62, 78, 114, 0.15)",
-    "0 24px 56px rgba(62, 78, 114, 0.16)",
-    "0 26px 60px rgba(62, 78, 114, 0.17)",
-    "0 28px 64px rgba(62, 78, 114, 0.18)",
-    "0 30px 68px rgba(62, 78, 114, 0.19)",
-    "0 32px 72px rgba(62, 78, 114, 0.2)",
-    "0 34px 76px rgba(62, 78, 114, 0.21)",
-    "0 36px 80px rgba(62, 78, 114, 0.22)",
-    "0 38px 84px rgba(62, 78, 114, 0.23)",
-    "0 40px 88px rgba(62, 78, 114, 0.24)",
-    "0 42px 92px rgba(62, 78, 114, 0.25)",
-    "0 44px 96px rgba(62, 78, 114, 0.26)",
-    "0 46px 100px rgba(62, 78, 114, 0.27)",
-    "0 48px 104px rgba(62, 78, 114, 0.28)",
-    "0 50px 108px rgba(62, 78, 114, 0.29)",
-    "0 52px 112px rgba(62, 78, 114, 0.3)",
-    "0 54px 116px rgba(62, 78, 114, 0.31)",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none"
   ],
   components: {
     MuiCssBaseline: {
       styleOverrides: {
-        body: ({ theme }) => ({
-          backgroundColor: theme.palette.background.default,
-        }),
+        ":root": {
+          colorScheme: "light",
+          fontSynthesis: "none",
+          textRendering: "optimizeLegibility",
+          WebkitFontSmoothing: "antialiased",
+          MozOsxFontSmoothing: "grayscale",
+          "--vitaent-shell-bg": tokens.shell,
+          "--vitaent-chrome-bg": tokens.chrome,
+          "--vitaent-surface-bg": tokens.surface,
+          "--vitaent-contrast-surface": tokens.contrastSurface,
+          "--vitaent-border": tokens.border,
+          "--vitaent-text-primary": tokens.textPrimary,
+          "--vitaent-text-secondary": tokens.textSecondary,
+          "--vitaent-blue": tokens.blue,
+          "--vitaent-blue-indicator": tokens.blueIndicator,
+          "--vitaent-red": tokens.red,
+          "--vitaent-black": tokens.black,
+        },
+        "html, body, #root": {
+          width: "100%",
+          minHeight: "100%",
+        },
+        "html, body": {
+          overflowX: "hidden",
+          backgroundColor: tokens.shell,
+        },
+        "*, *::before, *::after": {
+          boxSizing: "border-box",
+        },
+        body: {
+          margin: 0,
+          minHeight: "100vh",
+          color: tokens.textPrimary,
+          backgroundColor: tokens.shell,
+        },
+        a: {
+          color: tokens.blue,
+          textDecoration: "none",
+        },
       },
     },
     MuiAppBar: {
       styleOverrides: {
         root: {
-          backgroundColor: "#F6F8FD",
-          color: "#2F3B54",
-          boxShadow: "0 2px 14px rgba(62, 78, 114, 0.06)",
-          borderBottom: "1px solid #E7ECF5",
+          backgroundColor: tokens.chrome,
+          color: tokens.textPrimary,
+          boxShadow: "none",
+          borderBottom: `1px solid ${tokens.border}`,
         },
       },
     },
     MuiDrawer: {
       styleOverrides: {
         paper: {
-          backgroundColor: "#F7F9FD",
-          borderRight: "1px solid #E7ECF5",
+          backgroundColor: tokens.surface,
+          borderRight: `1px solid ${tokens.divider}`,
+          backgroundImage: "none",
         },
       },
     },
@@ -164,36 +219,33 @@ export const vitaentTheme = createTheme({
     MuiCard: {
       styleOverrides: {
         root: {
-          boxShadow: "0 12px 32px rgba(62, 78, 114, 0.08)",
+          boxShadow: "none",
+          backgroundImage: "none",
         },
       },
     },
     MuiButton: {
       styleOverrides: {
         root: {
-          borderRadius: 12,
-          paddingLeft: 16,
-          paddingRight: 16,
-          "&:focus-visible": {
-            outline: "2px solid #336FEE",
-            outlineOffset: 2,
-          },
+          minHeight: 38,
+          borderRadius: 10,
+          padding: "10px 18px",
+          boxShadow: "none",
         },
         containedPrimary: {
-          backgroundColor: "#336FEE",
-          color: "#FFFFFF",
-          boxShadow: "none",
+          backgroundColor: tokens.blue,
+          color: tokens.contrastSurface,
           "&:hover": {
-            backgroundColor: "#2558C2",
+            backgroundColor: "#255DDA",
             boxShadow: "none",
           },
         },
         outlinedPrimary: {
-          borderColor: "#336FEE",
-          color: "#336FEE",
+          borderColor: tokens.blue,
+          color: tokens.blue,
           "&:hover": {
-            borderColor: "#2558C2",
-            backgroundColor: "rgba(51, 111, 238, 0.04)",
+            borderColor: tokens.blue,
+            backgroundColor: alpha(tokens.blue, 0.06),
           },
         },
       },
@@ -201,14 +253,9 @@ export const vitaentTheme = createTheme({
     MuiIconButton: {
       styleOverrides: {
         root: {
-          color: "#336FEE",
-          backgroundColor: "transparent",
+          color: tokens.textSecondary,
           "&:hover": {
-            backgroundColor: "transparent",
-          },
-          "&:focus-visible": {
-            outline: "2px solid #336FEE",
-            outlineOffset: 1,
+            backgroundColor: alpha(tokens.blue, 0.06),
           },
         },
       },
@@ -216,20 +263,40 @@ export const vitaentTheme = createTheme({
     MuiListItemButton: {
       styleOverrides: {
         root: {
-          borderRadius: 12,
-          marginBottom: 4,
+          position: "relative",
+          minHeight: 46,
+          borderRadius: 10,
+          "&:hover": {
+            backgroundColor: tokens.contrastSurface,
+          },
           "&.Mui-selected": {
-            backgroundColor: "#F5F5F7",
-            color: "#1E1E20",
-            border: "1px solid #C9C9CB",
+            backgroundColor: tokens.contrastSurface,
           },
           "&.Mui-selected:hover": {
-            backgroundColor: "#F5F5F7",
+            backgroundColor: tokens.contrastSurface,
           },
-          "&:focus-visible": {
-            outline: "2px solid #336FEE",
-            outlineOffset: -1,
+        },
+      },
+    },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          borderRadius: 10,
+          backgroundColor: tokens.contrastSurface,
+          "& .MuiOutlinedInput-notchedOutline": {
+            borderColor: tokens.border,
           },
+          "&:hover .MuiOutlinedInput-notchedOutline": {
+            borderColor: tokens.blue,
+          },
+          "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+            borderColor: tokens.blue,
+            borderWidth: 1,
+          },
+        },
+        input: {
+          paddingTop: 11,
+          paddingBottom: 11,
         },
       },
     },

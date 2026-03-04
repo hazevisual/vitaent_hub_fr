@@ -1,260 +1,242 @@
-// src/pages/auth/SignUp.tsx
 import * as React from "react";
-import { useNavigate, Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import {
-    Box, Button, Divider, FormControl, TextField, Typography,
-    Card as MuiCard, Link, Alert
+  Box,
+  Button,
+  Card as MuiCard,
+  FormControl,
+  InputLabel,
+  Link,
+  MenuItem,
+  Select,
+  TextField,
+  Typography,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import type { Hospital } from "types/Hospital";
-import type { RegisterRequest } from "types/Auth/RegisterRequest";
-import type { AuthResponse } from "types/Auth/AuthResponse";
-import { api } from "@/api/client";
-import { registerUser } from "@/api/auth";
-import { AxiosError } from "axios";
+import { useMutation } from "@tanstack/react-query";
+import { Controller, useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useAuth } from "@/auth/AuthProvider";
 
 const Card = styled(MuiCard)(({ theme }) => ({
-    display: "flex",
-    flexDirection: "column",
-    alignSelf: "center",
-    alignItems: "center",
-    justifyContent: "center",
-    width: "clamp(300px, 50vw, 460px)",
-    padding: theme.spacing(4),
-    gap: theme.spacing(2),
-    margin: "auto",
-    backgroundColor: "#FCFCFC",
-    borderRadius: "25px",
-    boxShadow:
-        "hsla(220, 30%, 5%, 0.05) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.05) 0px 15px 35px -5px",
-    ...theme.applyStyles?.("dark", {
-        boxShadow:
-            "hsla(220, 30%, 5%, 0.5) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.08) 0px 15px 35px -5px",
-    }),
+  display: "flex",
+  flexDirection: "column",
+  width: "100%",
+  maxWidth: 480,
+  padding: theme.spacing(4),
+  gap: theme.spacing(3),
+  margin: "auto",
+  backgroundColor: "#FFFFFF",
+  borderRadius: 16,
+  border: "1px solid #C9C9CB",
+  boxShadow: "none",
+  [theme.breakpoints.down("sm")]: {
+    padding: theme.spacing(3),
+  },
 }));
 
+const schema = z.object({
+  inviteCode: z.string().trim().min(1, "Введите код приглашения."),
+  email: z.string().trim().min(1, "Введите адрес электронной почты.").email("Введите корректный адрес электронной почты."),
+  password: z.string().min(6, "Пароль должен содержать не менее 6 символов."),
+  fullName: z.string().trim().min(2, "Введите имя пациента.").max(256, "Имя пациента должно содержать от 2 до 256 символов."),
+  birthDate: z.string().min(1, "Укажите дату рождения."),
+  sex: z.enum(["male", "female", "other", "unknown"], {
+    errorMap: () => ({ message: "Укажите пол." }),
+  }),
+});
+
+type FormData = z.infer<typeof schema>;
+
+const sexOptions = [
+  { value: "female", label: "Женский" },
+  { value: "male", label: "Мужской" },
+  { value: "other", label: "Другой" },
+  { value: "unknown", label: "Не указан" },
+] as const;
+
 const SignUp = () => {
-    const navigate = useNavigate();
-    const [chooseClinic, setChooseClinic] = React.useState(false);
-    const [selectedClinic, setSelectedClinic] = React.useState<number | "">("");
-    const [errorMessage, setErrorMessage] = React.useState<string>("");
-    const [openSnackbar, setOpenSnackbar] = React.useState(false);
+  const navigate = useNavigate();
+  const { registerByInvite, user } = useAuth();
+  const [errorMessage, setErrorMessage] = React.useState("");
 
-    // клиники — через общий api-клиент
-    const fetchHospitals = async (): Promise<Hospital[]> => {
-        const { data } = await api.get<Hospital[]>("/hospitals");
-        return data;
-    };
+  const {
+    control,
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<FormData>({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      inviteCode: "",
+      email: "",
+      password: "",
+      fullName: "",
+      birthDate: "",
+      sex: "unknown",
+    },
+    mode: "onSubmit",
+  });
 
-    const { data: clinics = [], isLoading: clinicsLoading } = useQuery<Hospital[]>({
-        queryKey: ["hospitals"],
-        queryFn: fetchHospitals,
-    });
+  React.useEffect(() => {
+    if (user) {
+      navigate("/app", { replace: true });
+    }
+  }, [user, navigate]);
 
-    const mutation = useMutation<AuthResponse, Error, RegisterRequest>({
-        mutationFn: registerUser,
-        onSuccess: (data) => {
-            const url = data.user?.urlHospital;
-            if (url && url.startsWith("http")) {
-                // внешний адрес
-                window.location.href = url;
-            } else {
-                // внутри SPA
-                navigate(url || "/app", { replace: true });
-            }
-        },
-        onError: (error) => {
-            console.log(error);
-            const axiosError = error as AxiosError<{ errorMessage: string }>;
-            //setErrorMessage(error.response.data.errorMessage || "Ошибка при регистрации");
-            setErrorMessage(axiosError.response?.data?.errorMessage?? "Ошибка при регистрации");
-            setOpenSnackbar(true);
-        },
-    });
+  const mutation = useMutation({
+    mutationFn: async (values: FormData) => {
+      await registerByInvite(values);
+    },
+    onError: (error: unknown) => {
+      setErrorMessage(error instanceof Error ? error.message : "Не удалось завершить регистрацию по коду приглашения.");
+    },
+  });
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        const form = new FormData(event.currentTarget);
+  const onSubmit = (values: FormData) => {
+    if (isSubmitting || mutation.isPending) {
+      return;
+    }
 
-        const login = (form.get("login") || "").toString().trim();
-        const password = (form.get("password") || "").toString();
-        const confirmPassword = (form.get("confirmPassword") || "").toString();
+    setErrorMessage("");
+    mutation.mutate(values);
+  };
 
-        if (!login || !password) {
-            setErrorMessage("Логин и пароль не должны быть пустыми");
-            setOpenSnackbar(true);
-            return;
-        }
-        if (password !== confirmPassword) {
-            setErrorMessage("Пароли не совпадают");
-            setOpenSnackbar(true);
-            return;
-        }
+  return (
+    <Box
+      sx={{
+        minHeight: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        px: { xs: 2, sm: 3, md: 4 },
+        py: { xs: 3, sm: 4 },
+        backgroundColor: "#F5F5F7",
+      }}
+    >
+      <Card variant="outlined">
+        <Box sx={{ textAlign: "center" }}>
+          <Typography variant="h5" sx={{ fontSize: "1.125rem", fontWeight: 600, color: "text.primary" }}>
+            Регистрация по коду приглашения
+          </Typography>
+          <Typography variant="body2" sx={{ mt: 1, color: "text.secondary" }}>
+            Введите код приглашения от врача. Клиника будет определена автоматически.
+          </Typography>
+        </Box>
 
-        mutation.mutate({
-            login,
-            password,
-            confirmPassword,
-            hospitalId: chooseClinic && selectedClinic ? Number(selectedClinic) : undefined,
-        });
-    };
+        {errorMessage ? (
+          <Typography variant="body2" sx={{ color: "error.main", textAlign: "center" }}>
+            {errorMessage}
+          </Typography>
+        ) : null}
 
-    return (
-        <Card variant="outlined">
-            <Typography variant="h4" align="center">Регистрация</Typography>
-            <Typography variant="body2" align="center" sx={{ opacity: 0.6 }}>
-                Создайте аккаунт, заполнив данные ниже
-            </Typography>
+        <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)} sx={{ display: "flex", flexDirection: "column", width: "100%", gap: 2 }}>
+          <FormControl fullWidth>
+            <TextField
+              label="Код приглашения"
+              autoFocus
+              fullWidth
+              disabled={mutation.isPending}
+              error={!!errors.inviteCode}
+              helperText={errors.inviteCode?.message}
+              {...register("inviteCode")}
+            />
+          </FormControl>
 
-            <Box
-                component="form"
-                onSubmit={handleSubmit}
-                noValidate
-                sx={{ display: "flex", flexDirection: "column", width: "100%", gap: 2, alignItems: "center" }}
-            >
-                <FormControl>
-                    <TextField
-                        name="login"
-                        placeholder="Ваш логин"
-                        required
-                        fullWidth
-                        variant="outlined"
-                        disabled={mutation.isPending}
-                        InputProps={{
-                            sx: {
-                                width: "clamp(280px, 50vw, 357px)",
-                                height: "clamp(40px, 5vw, 44px)",
-                                borderRadius: "10px",
-                                "& .MuiOutlinedInput-notchedOutline": { borderRadius: "10px" },
-                                "& input": { height: "100%", boxSizing: "border-box", padding: "0 14px" },
-                            },
-                        }}
-                    />
-                </FormControl>
+          <FormControl fullWidth>
+            <TextField
+              label="Электронная почта"
+              type="email"
+              autoComplete="email"
+              fullWidth
+              disabled={mutation.isPending}
+              error={!!errors.email}
+              helperText={errors.email?.message}
+              {...register("email")}
+            />
+          </FormControl>
 
-                <FormControl>
-                    <TextField
-                        name="password"
-                        placeholder="Пароль"
-                        type="password"
-                        required
-                        fullWidth
-                        variant="outlined"
-                        disabled={mutation.isPending}
-                        InputProps={{
-                            sx: {
-                                width: "clamp(280px, 50vw, 357px)",
-                                height: "clamp(40px, 5vw, 44px)",
-                                borderRadius: "10px",
-                                "& .MuiOutlinedInput-notchedOutline": { borderRadius: "10px" },
-                                "& input": { height: "100%", boxSizing: "border-box", padding: "0 14px" },
-                            },
-                        }}
-                    />
-                </FormControl>
+          <FormControl fullWidth>
+            <TextField
+              label="Пароль"
+              type="password"
+              autoComplete="new-password"
+              fullWidth
+              disabled={mutation.isPending}
+              error={!!errors.password}
+              helperText={errors.password?.message}
+              {...register("password")}
+            />
+          </FormControl>
 
-                <FormControl>
-                    <TextField
-                        name="confirmPassword"
-                        placeholder="Подтвердите пароль"
-                        type="password"
-                        required
-                        fullWidth
-                        variant="outlined"
-                        disabled={mutation.isPending}
-                        InputProps={{
-                            sx: {
-                                width: "clamp(280px, 50vw, 357px)",
-                                height: "clamp(40px, 5vw, 44px)",
-                                borderRadius: "10px",
-                                "& .MuiOutlinedInput-notchedOutline": { borderRadius: "10px" },
-                                "& input": { height: "100%", boxSizing: "border-box", padding: "0 14px" },
-                            },
-                        }}
-                    />
-                </FormControl>
+          <FormControl fullWidth>
+            <TextField
+              label="Полное имя"
+              fullWidth
+              disabled={mutation.isPending}
+              error={!!errors.fullName}
+              helperText={errors.fullName?.message}
+              {...register("fullName")}
+            />
+          </FormControl>
 
-                <FormControl
-                    sx={{ width: "clamp(280px, 50vw, 357px)", display: "flex", alignItems: "flex-start" }}
+          <FormControl fullWidth>
+            <TextField
+              label="Дата рождения"
+              type="date"
+              fullWidth
+              disabled={mutation.isPending}
+              error={!!errors.birthDate}
+              helperText={errors.birthDate?.message}
+              InputLabelProps={{ shrink: true }}
+              {...register("birthDate")}
+            />
+          </FormControl>
+
+          <Controller
+            control={control}
+            name="sex"
+            render={({ field }) => (
+              <FormControl fullWidth error={!!errors.sex}>
+                <InputLabel id="sex-label">Пол</InputLabel>
+                <Select
+                  {...field}
+                  labelId="sex-label"
+                  label="Пол"
+                  disabled={mutation.isPending}
                 >
-                    <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer" }}>
-                        <input
-                            type="checkbox"
-                            checked={chooseClinic}
-                            onChange={(e) => setChooseClinic(e.target.checked)}
-                            style={{ margin: 0 }}
-                        />
-                        <span>Выбрать клинику</span>
-                    </label>
-                </FormControl>
+                  {sexOptions.map((option) => (
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.label}
+                    </MenuItem>
+                  ))}
+                </Select>
+                {errors.sex ? (
+                  <Typography variant="caption" sx={{ color: "error.main", mt: 1.5, px: 1.75 }}>
+                    {errors.sex.message}
+                  </Typography>
+                ) : null}
+              </FormControl>
+            )}
+          />
 
-                {chooseClinic && (
-                    <FormControl sx={{ width: "clamp(280px, 50vw, 357px)" }}>
-                        <TextField
-                            select
-                            value={selectedClinic}
-                            onChange={(e) => {
-                                const v = e.target.value;
-                                setSelectedClinic(v === "" ? "" : Number(v));
-                            }}
-                            SelectProps={{ native: true }}
-                            disabled={clinicsLoading || mutation.isPending}
-                            sx={{
-                                "& .MuiOutlinedInput-root": { height: "clamp(48px, 5vw, 50px)", borderRadius: "10px" },
-                                "& .MuiSelect-select": {
-                                    display: "flex",
-                                    alignItems: "center",
-                                    height: "100%",
-                                    padding: "0 14px",
-                                    boxSizing: "border-box",
-                                },
-                            }}
-                            InputProps={{ sx: { borderRadius: "10px" } }}
-                        >
-                            <option value="">Не выбрано</option>
-                            {clinics.map((clinic) => (
-                                <option key={clinic.id} value={clinic.id}>
-                                    {clinic.name}
-                                </option>
-                            ))}
-                        </TextField>
-                    </FormControl>
-                )}
+          <Button type="submit" fullWidth variant="contained" disabled={mutation.isPending} sx={{ textTransform: "none", mt: 1 }}>
+            {mutation.isPending ? "Регистрация..." : "Зарегистрироваться"}
+          </Button>
+        </Box>
 
-                <Button
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    disabled={mutation.isPending}
-                    sx={{
-                        width: "clamp(280px, 50vw, 357px)",
-                        height: "clamp(40px, 5vw, 44px)",
-                        borderRadius: "10px",
-                        fontWeight: 500,
-                    }}
-                >
-                    {mutation.isPending ? "Создаём..." : "Зарегистрироваться"}
-                </Button>
-
-                {openSnackbar && (
-                    <Box sx={{ width: "100%" }}>
-                        <Alert severity="error" onClose={() => setOpenSnackbar(false)}>
-                            {errorMessage}
-                        </Alert>
-                    </Box>
-                )}
-            </Box>
-
-            <Divider sx={{ width: "100%" }} />
-            <Typography sx={{ textAlign: "center" }}>
-                Уже есть аккаунт?
-                <Link component={RouterLink} to="/" sx={{ ml: 1 }}>
-                    Войти
-                </Link>
-            </Typography>
-        </Card>
-    );
+        <Box sx={{ pt: 3, borderTop: "1px solid #E5E5E7", textAlign: "center" }}>
+          <Typography variant="body2" sx={{ color: "text.secondary" }}>
+            Уже есть учетная запись?
+            <Link component={RouterLink} to="/" sx={{ ml: 1 }}>
+              Войти
+            </Link>
+          </Typography>
+        </Box>
+      </Card>
+    </Box>
+  );
 };
 
 export default SignUp;

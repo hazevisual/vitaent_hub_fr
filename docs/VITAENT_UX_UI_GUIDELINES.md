@@ -1,634 +1,500 @@
-VITAENT UX/UI GUIDELINES
+# VITAENT UX/UI GUIDELINES
 
-
-
-Version 1.1
-
-Status: Active
-
+Version 2.0  
+Status: Active  
 Scope: All Frontend UI Work
 
+This document defines the **visual design rules and UI implementation constraints** for Vitaent.
 
+All frontend agents and developers must follow this document strictly.
 
-1\. Design Philosophy
+If a task conflicts with this document, the agent must **stop and explain the conflict before proceeding**.
 
+---
 
+# 1. Design Philosophy
 
 Vitaent is a medical system.
 
-
-
 The interface must feel:
 
-
-
-Calm
-
-
-
-Clean
-
-
-
-Structured
-
-
-
-Neutral
-
-
-
+Calm  
+Clean  
+Structured  
+Neutral  
 Stable
-
-
 
 Priorities:
 
-
-
-Readability
-
-
-
-Structure
-
-
-
-Clarity
-
-
-
+Readability  
+Structure  
+Clarity  
 Minimal visual noise
 
+The UI must **never feel decorative, colorful, or playful**.
 
+Medical software must emphasize clarity and stability.
 
-The UI must never feel aggressive, colorful, or decorative.
+---
 
+# 2. Color System
 
+## 2.1 Base Colors
 
-2\. Color System
+Primary Text  
+#000000
 
-2.1 Base Colors
+Secondary Text  
+#6B6B6B
 
+Page Background  
+#F5F5F7
 
+Card Background  
+#FFFFFF
 
-Primary Text
+Borders  
+#C9C9CB
 
-\#000000
+Dividers  
+#E5E5E7
 
+---
 
-
-Secondary Text
-
-\#6B6B6B
-
-
-
-Page Background
-
-\#F5F5F7
-
-
-
-Card Background
-
-\#FFFFFF
-
-
-
-Borders
-
-\#C9C9CB
-
-
-
-Dividers
-
-\#E5E5E7
-
-
-
-2.2 Accent Blue
-
-
+## 2.2 Accent Blue
 
 Blue is used ONLY for:
 
-
-
-Primary buttons
-
-
-
-Active navigation items
-
-
-
-Links
-
-
-
-Progress indicators
-
-
-
+Primary buttons  
+Active navigation items  
+Links  
+Progress indicators  
 Interactive active icons
-
-
 
 Blue must NOT be used for:
 
-
-
-Card backgrounds
-
-
-
-Large content blocks
-
-
-
-Selection backgrounds
-
-
-
+Card backgrounds  
+Large content blocks  
+Selection backgrounds  
 Decorative UI
 
+---
 
+## 2.3 Neutral Selection Style
 
-2.3 Neutral Selection Style
-
-
-
-For selected list items and neutral highlights:
-
-
+Selected items must use neutral highlight.
 
 Background:
 
-\#F5F5F7
-
-
+#F5F5F7
 
 Border:
 
 1px solid #C9C9CB
 
-
-
 Border Radius:
 
 12px
 
+Blue selection backgrounds are strictly forbidden.
 
+---
 
-Blue background for selection is forbidden.
+# 3. Card System
 
+## 3.1 Border Radius
 
-
-3\. Card System
-
-3.1 Border Radius
-
-
-
-Large cards:
+Large cards
 
 16px
 
-
-
-Inner blocks:
+Inner blocks
 
 12px
 
-
-
-Small elements (inputs, badges):
+Small elements (inputs, badges)
 
 8px
 
-
-
 Strict rule:
-
-
 
 Do NOT globally modify borderRadius.
 
+Local overrides are allowed only if they match these values exactly.
 
+---
 
-Local overrides are allowed only if they strictly match the values above.
-
-
-
-3.2 Shadows
-
-
+## 3.2 Shadows
 
 Use minimal shadows.
 
-
-
 Preferred visual style:
 
-Border + clean background instead of heavy drop shadow.
+Border + clean background
 
+Avoid heavy elevation effects.
 
+---
 
-No aggressive elevation.
+# 4. Typography
 
+## Card Titles
 
-
-4\. Typography
-
-4.1 Card Titles
-
-
-
-Font size:
+Font size
 
 16–18px
 
-
-
-Font weight:
+Font weight
 
 500–600
 
+---
 
+## Large Metrics
 
-4.2 Large Metrics (e.g., “100%”)
+Examples: “100%”, key statistics
 
-
-
-Font size:
+Font size
 
 48–72px
 
-
-
-Font weight:
+Font weight
 
 600
 
+---
 
+## Recommendation Text
 
-4.3 Recommendation Text
-
-
-
-Font size:
+Font size
 
 24–28px
 
-
-
-Font weight:
+Font weight
 
 500
 
+Must remain visually balanced.
 
+Typography scaling based on screen width is forbidden.
 
-Must not appear oversized or visually heavy.
+---
 
+# 5. States & Interaction
 
-
-Scaling typography based on screen width is forbidden.
-
-
-
-5\. States \& Interaction
-
-5.1 Active List Item
-
-
+## Active List Item
 
 Never use blue background.
 
-
-
 Always use:
 
-
-
-Light grey background
-
-
-
-Thin neutral border
-
-
-
+Light grey background  
+Thin neutral border  
 Soft hover
 
+---
 
+## Hover State
 
-5.2 Hover State
+Background shift must be subtle.
 
+Recommended change:
 
-
-Background shift must be subtle (3–5% darker).
+3–5% darker background
 
 No strong contrast jumps.
 
+---
 
+## Disabled State
 
-5.3 Disabled State
-
-
-
-Opacity:
+Opacity
 
 0.5–0.6
 
-
-
 Layout must not shift.
 
+---
 
+## Error State
 
-5.4 Error State
+Use:
 
-
-
-Red text only.
-
-
-
-Red card backgrounds are forbidden.
-
-
-
-6\. Buttons
-
-6.1 Primary Button
-
-
-
-Blue background
-
-
-
-White text
-
-
-
-Border radius: 12px
-
-
-
-No heavy shadow
-
-
-
-6.2 Secondary Button
-
-
-
-Transparent background
-
-
-
-Blue text
-
-
-
-1px blue border
-
-
-
-6.3 Dangerous Button
-
-
-
-Red color allowed only for:
-
-
-
-Errors
-
-
-
-Critical destructive actions
-
-
-
-7\. Layout Rules
-
-7.1 Max Content Width
-
-
-
-Max content width:
-
-1440–1600px
-
-
-
-margin: 0 auto;
-
-
-
-The layout must remain visually consistent on:
-
-
-
-1920px
-
-
-
-2560px
-
-
-
-On larger screens (2560px):
-
-
-
-Allowed:
-
-
-
-Increase internal card padding by 20–25%
-
-
-
-Use only existing spacing scale values (8 / 12 / 16 / 24 / 32 multiples)
-
-
+Red text only
 
 Forbidden:
 
+Red card backgrounds.
 
+---
 
-Scaling text
+# 6. Buttons
 
+## Primary Button
 
+Blue background  
+White text  
+Border radius 12px
 
-Using transform: scale
+No heavy shadows.
 
+---
 
+## Secondary Button
 
-Changing layout structure
+Transparent background  
+Blue text  
+1px blue border
 
+---
 
+## Dangerous Button
 
-Increasing max width beyond defined range unless explicitly required
+Red color allowed only for:
 
+Critical destructive actions  
+Errors
 
+---
 
-8\. Spacing System
+# 7. Layout Rules
 
+## Max Content Width
 
+Max width:
 
-Spacing must follow 4px scale:
+1440–1600px
 
+Use:
 
+margin: 0 auto
 
-8px – Small
+The layout must remain visually consistent on:
 
+1920px  
+2560px
 
+---
 
-12px – Compact
+## Large Screen Behavior (2560px)
 
+Allowed:
 
+Increase internal card padding by 20–25%
 
-16px – Default
+Use existing spacing scale values only.
 
+Forbidden:
 
+Scaling typography  
+Using transform: scale  
+Changing layout structure  
+Increasing max width beyond defined range
 
-24px – Section spacing
+---
 
+# 8. Spacing System
 
+Spacing must follow the **4px scale**.
 
-32px – Large spacing
+Allowed values:
 
+8px — Small  
+12px — Compact  
+16px — Default  
+24px — Section spacing  
+32px — Large spacing
 
+Random spacing values are forbidden.
 
-No random spacing values.
+---
 
+# 9. Icons
 
+Icons must be:
 
-All responsive spacing adjustments must still respect the 4px scale.
+Monochrome  
+Neutral
 
+Blue only when active.
 
+No decorative colored icons.
 
-9\. Icons
+---
 
-
-
-Monochrome
-
-
-
-Blue only when active
-
-
-
-No decorative colored icons
-
-
-
-10\. Visual Hierarchy
-
-
+# 10. Visual Hierarchy
 
 Priority order:
 
-
-
-Structure (cards and layout)
-
-
-
-Content
-
-
-
-Interaction
-
-
-
-Accent
-
-
+1 Structure (cards and layout)  
+2 Content  
+3 Interaction  
+4 Accent
 
 Accent must never overpower structure.
 
+---
 
+# 11. UI Primitives (MANDATORY)
 
-11\. Strictly Forbidden
+All pages must use existing primitives.
 
+Core primitives:
 
+PageContainer  
+SoftCard  
+AppLayout
 
-Global borderRadius changes
+These define:
 
+Page padding  
+Card styling  
+Content width  
+Spacing
 
+Agents must NOT create alternative layout wrappers.
 
-Random color additions
+If layout changes are required:
 
+Modify primitives instead of creating new layout components.
 
+---
 
-Decorative gradients
+# 12. Standard Page Layout
 
+All pages must follow this structure:
 
+AppLayout  
+ └ PageContainer  
+      ├ Page Header  
+      └ Page Content
 
-Bright card backgrounds
+Typical content layout:
 
+Two-column layout.
 
+Left column:
 
-Excessive accent usage
+Primary content cards.
 
+Right column:
 
+Information / secondary cards.
 
-Blue selection backgrounds
+Avoid deeply nested containers.
 
+---
 
+# 13. Grid System
 
-Typography scaling based on screen width
+Preferred layout method:
 
+display: grid
 
+Typical page grid:
 
-Layout refactor outside task scope
+grid-template-columns:
 
+2fr 1fr
 
+or
 
-12\. Implementation Rules for Codex / AI Agents
+3fr 1fr
 
+Avoid unnecessary nested flex containers when grid is sufficient.
 
+---
 
-All UI-related tasks must:
+# 14. Scroll Behavior
 
+Page headers must remain fixed.
 
+Scrollable content must exist inside internal containers.
 
-Follow this document strictly
+Correct pattern:
 
+PageContainer  
+ ├ Header (fixed)  
+ └ Scrollable content inside cards
 
+Never allow text expansion to push layout beyond page bounds.
 
-Avoid introducing new colors
+---
 
+# 15. Content Width Protection
 
+Cards must not grow based on text length.
 
-Avoid global theme overrides
+Use:
 
+min-width: 0  
+overflow-wrap: break-word
 
+Long content must scroll inside containers:
 
-Avoid scaling typography
+overflow-y: auto
 
+---
 
+# 16. Data Loading States
 
-Maintain consistent behavior at 1920px and 2560px
+All API-driven UI must support:
 
+Loading state  
+Error state  
+Success state
 
+Use TanStack Query for data fetching.
 
-Fix layout issues locally before modifying shared layout components
+Mutation rules:
 
+Disable buttons during requests.
 
+Display inline errors when operations fail.
 
+---
+
+# 17. Component Reuse
+
+Before creating a new component agents must:
+
+1 Check existing components  
+2 Reuse existing UI primitives  
+3 Extend existing components if appropriate
+
+Creating duplicate components is forbidden.
+
+---
+
+# 18. Strictly Forbidden
+
+Global borderRadius changes  
+Random color additions  
+Decorative gradients  
+Bright card backgrounds  
+Excessive accent usage  
+Blue selection backgrounds  
+Typography scaling  
+Layout refactors outside task scope
+
+---
+
+# 19. Implementation Rules for Codex Agents
+
+All frontend tasks must:
+
+Follow this document strictly  
+Avoid introducing new colors  
+Avoid global theme overrides  
+Avoid scaling typography  
+Preserve layout behavior at 1920px and 2560px  
+Fix layout issues locally before modifying shared components  
 Avoid refactoring unrelated code
 
+If a change conflicts with this document:
 
+The agent must stop and explain the conflict before proceeding.
 
-If a change conflicts with this file, the agent must stop and explicitly explain the conflict before proceeding.
+---
 
+End of document.

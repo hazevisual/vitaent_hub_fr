@@ -5,8 +5,14 @@ export type AuthResponse = {
     refreshToken?: string;
     errorMessage?: string;
     user?: {
-        userId: number;
+        userId: string;
         userName: string;
         urlHospital: string;
+        tenantId?: string | null;
+        tenantSlug?: string | null;
+        membershipId?: string | null;
+        roles?: string[];
+        patientId?: string | null;
+        doctorId?: string | null;
     };
 };

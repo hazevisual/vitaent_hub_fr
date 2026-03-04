@@ -1,3 +1,5 @@
+using backend.Application.Auth;
+using backend.Application.Authorization;
 using backend.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -6,18 +8,18 @@ namespace backend.Controllers;
 
 [ApiController]
 [Route("api")]
-public class MeController : ControllerBase
+public class MeController(IAuthApplicationService authApplicationService) : ControllerBase
 {
-    [Authorize]
+    [Authorize(Policy = AuthorizationPolicies.TenantMember)]
     [HttpGet("me")]
-    public ActionResult<MeResponse> Me()
+    public async Task<ActionResult<MeResponse>> Me(CancellationToken cancellationToken)
     {
-        var username = User.Identity?.Name;
-        if (string.IsNullOrWhiteSpace(username))
+        var response = await authApplicationService.GetCurrentUserAsync(User, cancellationToken);
+        if (response is null)
         {
             return Unauthorized();
         }
 
-        return Ok(new MeResponse(username));
+        return Ok(response);
     }
 }

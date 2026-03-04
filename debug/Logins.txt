@@ -1,0 +1,12 @@
+ What changed:
+
+  - Added four dev accounts, one per role:
+      - admin@vitaent.local / Admin123!
+      - clinic@vitaent.local / Clinic123!
+      - doctor@vitaent.local / Doctor123!
+      - patient@vitaent.local / Patient123!
+  - Accounts are seeded idempotently by email.
+  - Existing accounts are kept and their dev credentials are refreshed so the test passwords stay predictable.
+  - Each account is linked to the default tenant membership.
+  - Each account is assigned its matching role through the existing MembershipRoles flow.
+  - Startup now logs the test credentials in development after seeding completes.

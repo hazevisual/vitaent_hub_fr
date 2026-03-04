@@ -1,0 +1,877 @@
+==========================================
+       VITAENT DOCKER RESTART
+==========================================
+
+time="2026-03-04T16:19:25+03:00" level=warning msg="C:\\Users\\Parti\\OneDrive\\Документы\\GitHub\\vitaent_hosp_build_fr\\vitaent_hub_fr\\docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+[+] down 5/5
+ ✔ Container vitaent-frontend             Removed                                                                   0.4s
+ ✔ Container vitaent-backend              Removed                                                                   0.1s
+ ✔ Container vitaent-postgres             Removed                                                                   0.5s
+ ✔ Network vitaent_hub_fr_vitaent-network Removed                                                                   0.3s
+ ✔ Volume vitaent_hub_fr_postgres-data    Removed                                                                   0.1s
+
+time="2026-03-04T16:19:27+03:00" level=warning msg="C:\\Users\\Parti\\OneDrive\\Документы\\GitHub\\vitaent_hosp_build_fr\\vitaent_hub_fr\\docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+#1 [internal] load local bake definitions
+#1 reading from stdin 1.25kB 0.0s done
+#1 DONE 0.0s
+
+#2 [frontend internal] load build definition from Dockerfile
+#2 transferring dockerfile: 739B done
+#2 DONE 0.0s
+
+#3 [backend internal] load build definition from Dockerfile
+#3 transferring dockerfile: 730B done
+#3 DONE 0.0s
+
+#4 [auth] library/node:pull token for registry-1.docker.io
+#4 DONE 0.0s
+
+#5 [frontend internal] load metadata for docker.io/library/node:20-alpine
+#5 ...
+
+#6 [backend internal] load metadata for mcr.microsoft.com/dotnet/aspnet:8.0-alpine
+#6 DONE 0.5s
+
+#7 [backend internal] load metadata for mcr.microsoft.com/dotnet/sdk:8.0-alpine
+#7 DONE 0.5s
+
+#8 [backend internal] load .dockerignore
+#8 transferring context: 179B done
+#8 DONE 0.0s
+
+#9 [backend build 1/6] FROM mcr.microsoft.com/dotnet/sdk:8.0-alpine@sha256:b3b30660074659c3f41373d7a3d6f2512b79453b017c0754693215eb64854745
+#9 resolve mcr.microsoft.com/dotnet/sdk:8.0-alpine@sha256:b3b30660074659c3f41373d7a3d6f2512b79453b017c0754693215eb64854745 0.0s done
+#9 DONE 0.0s
+
+#10 [backend stage-1 1/5] FROM mcr.microsoft.com/dotnet/aspnet:8.0-alpine@sha256:f7c13dc6c0bfc8f988a3677b739296c95794557ddd0e62e315eae8fc3aa505c1
+#10 resolve mcr.microsoft.com/dotnet/aspnet:8.0-alpine@sha256:f7c13dc6c0bfc8f988a3677b739296c95794557ddd0e62e315eae8fc3aa505c1 0.0s done
+#10 DONE 0.0s
+
+#11 [backend internal] load build context
+#11 transferring context: 3.42kB 0.0s done
+#11 DONE 0.0s
+
+#12 [backend build 6/6] RUN dotnet publish -c Release -o /app/publish /p:UseAppHost=false
+#12 CACHED
+
+#13 [backend build 4/6] RUN dotnet restore
+#13 CACHED
+
+#14 [backend build 5/6] COPY . ./
+#14 CACHED
+
+#15 [backend build 2/6] WORKDIR /src
+#15 CACHED
+
+#16 [backend build 3/6] COPY backend.csproj ./
+#16 CACHED
+
+#17 [backend stage-1 4/5] COPY --from=build /app/publish .
+#17 CACHED
+
+#18 [backend stage-1 2/5] WORKDIR /app
+#18 CACHED
+
+#19 [backend stage-1 3/5] RUN apk add --no-cache curl
+#19 CACHED
+
+#20 [backend stage-1 5/5] RUN addgroup -g 1000 appuser &&     adduser -D -u 1000 -G appuser appuser
+#20 CACHED
+
+#21 [backend] exporting to image
+#21 exporting layers done
+#21 exporting manifest sha256:3ac226b8fa46991a5aaa6bee771682c41faf23dca7cdd8d775528396cba8a4ef done
+#21 exporting config sha256:6d8bfcf8cd3a9b0ecbb4d4596f91ea8bd14dc9223fc40a8c742ff26ad050140f done
+#21 exporting attestation manifest sha256:abd8bcf846b2b7b9e05b2157e50bb107c1f9d34a2332592a1da6cdd2b7740f1c 0.0s done
+#21 exporting manifest list sha256:b65dc7c7323121c29add9f2cbbbbdd87c6a20ce0d07e16b00b2181101fd06c79 0.0s done
+#21 naming to docker.io/library/vitaent_hub_fr-backend:latest done
+#21 unpacking to docker.io/library/vitaent_hub_fr-backend:latest 0.0s done
+#21 DONE 0.1s
+
+#5 [frontend internal] load metadata for docker.io/library/node:20-alpine
+#5 ...
+
+#22 [backend] resolving provenance for metadata file
+#22 DONE 0.0s
+
+#5 [frontend internal] load metadata for docker.io/library/node:20-alpine
+#5 DONE 1.8s
+
+#23 [frontend internal] load .dockerignore
+#23 transferring context: 204B done
+#23 DONE 0.0s
+
+#24 [frontend build 1/6] FROM docker.io/library/node:20-alpine@sha256:09e2b3d9726018aecf269bd35325f46bf75046a643a66d28360ec71132750ec8
+#24 resolve docker.io/library/node:20-alpine@sha256:09e2b3d9726018aecf269bd35325f46bf75046a643a66d28360ec71132750ec8 0.0s done
+#24 DONE 0.0s
+
+#25 [frontend internal] load build context
+#25 transferring context: 10.89kB 0.0s done
+#25 DONE 0.0s
+
+#26 [frontend stage-1 3/5] RUN npm install -g serve
+#26 CACHED
+
+#27 [frontend build 3/6] COPY package.json package-lock.json ./
+#27 CACHED
+
+#28 [frontend build 2/6] WORKDIR /app
+#28 CACHED
+
+#29 [frontend build 6/6] RUN npm run build
+#29 CACHED
+
+#30 [frontend stage-1 4/5] COPY --from=build /app/dist ./dist
+#30 CACHED
+
+#31 [frontend build 5/6] COPY . .
+#31 CACHED
+
+#32 [frontend build 4/6] RUN npm ci
+#32 CACHED
+
+#33 [frontend stage-1 5/5] RUN addgroup -g 1001 appuser &&     adduser -D -u 1001 -G appuser appuser
+#33 CACHED
+
+#34 [frontend] exporting to image
+#34 exporting layers done
+#34 exporting manifest sha256:2c0aa8362a6d23fc7a4e8e0eeb795bf957e70f88bc1e193b22112d69df78e8c0 done
+#34 exporting config sha256:16b0ed67bf051c6c2a3da2a4f8104bd105cf1d8dc0783f0cac78b65fb2c61afa done
+#34 exporting attestation manifest sha256:81cc3907301992b2f364ed1c354b3a4134b47f7b0b8e4f6abf3713c1b1c3e973
+#34 exporting attestation manifest sha256:81cc3907301992b2f364ed1c354b3a4134b47f7b0b8e4f6abf3713c1b1c3e973 0.0s done
+#34 exporting manifest list sha256:478f083ab988da30183344598264c734493b896637b21500ec6649f1a0283909 0.0s done
+#34 naming to docker.io/library/vitaent_hub_fr-frontend:latest done
+#34 unpacking to docker.io/library/vitaent_hub_fr-frontend:latest 0.0s done
+#34 DONE 0.1s
+
+#35 [frontend] resolving provenance for metadata file
+#35 DONE 0.0s
+[+] up 7/7
+ ✔ Image vitaent_hub_fr-backend           Built                                                                     3.0s
+ ✔ Image vitaent_hub_fr-frontend          Built                                                                     3.0s
+ ✔ Network vitaent_hub_fr_vitaent-network Created                                                                   0.0s
+ ✔ Volume vitaent_hub_fr_postgres-data    Created                                                                   0.0s
+ ✔ Container vitaent-postgres             Created                                                                   0.1s
+ ✔ Container vitaent-backend              Created                                                                   0.1s
+ ✔ Container vitaent-frontend             Created                                                                   0.1s
+Attaching to vitaent-backend, vitaent-frontend, vitaent-postgres
+Container vitaent-postgres Waiting
+vitaent-postgres  | The files belonging to this database system will be owned by user "postgres".
+vitaent-postgres  | This user must also own the server process.
+vitaent-postgres  |
+vitaent-postgres  | The database cluster will be initialized with locale "en_US.utf8".
+vitaent-postgres  | The default database encoding has accordingly been set to "UTF8".
+vitaent-postgres  | The default text search configuration will be set to "english".
+vitaent-postgres  |
+vitaent-postgres  | Data page checksums are disabled.
+vitaent-postgres  |
+vitaent-postgres  | fixing permissions on existing directory /var/lib/postgresql/data ... ok
+vitaent-postgres  | creating subdirectories ... ok
+vitaent-postgres  | selecting dynamic shared memory implementation ... posix
+vitaent-postgres  | selecting default max_connections ... 100
+vitaent-postgres  | selecting default shared_buffers ... 128MB
+vitaent-postgres  | selecting default time zone ... UTC
+vitaent-postgres  | creating configuration files ... ok
+vitaent-postgres  | running bootstrap script ... ok
+vitaent-postgres  | sh: locale: not found
+vitaent-postgres  | 2026-03-04 13:19:32.072 UTC [35] WARNING:  no usable system locales were found
+vitaent-postgres  | performing post-bootstrap initialization ... ok
+vitaent-postgres  | initdb: warning: enabling "trust" authentication for local connections
+vitaent-postgres  | initdb: hint: You can change this by editing pg_hba.conf or using the option -A, or --auth-local and --auth-host, the next time you run initdb.
+vitaent-postgres  | syncing data to disk ... ok
+vitaent-postgres  |
+vitaent-postgres  |
+vitaent-postgres  | Success. You can now start the database server using:
+vitaent-postgres  |
+vitaent-postgres  |     pg_ctl -D /var/lib/postgresql/data -l logfile start
+vitaent-postgres  |
+vitaent-postgres  | waiting for server to start....2026-03-04 13:19:33.078 UTC [41] LOG:  starting PostgreSQL 16.12 on x86_64-pc-linux-musl, compiled by gcc (Alpine 15.2.0) 15.2.0, 64-bit
+vitaent-postgres  | 2026-03-04 13:19:33.081 UTC [41] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+vitaent-postgres  | 2026-03-04 13:19:33.090 UTC [44] LOG:  database system was shut down at 2026-03-04 13:19:32 UTC
+vitaent-postgres  | 2026-03-04 13:19:33.099 UTC [41] LOG:  database system is ready to accept connections
+vitaent-postgres  |  done
+vitaent-postgres  | server started
+vitaent-postgres  | CREATE DATABASE
+vitaent-postgres  |
+vitaent-postgres  |
+vitaent-postgres  | /usr/local/bin/docker-entrypoint.sh: ignoring /docker-entrypoint-initdb.d/*
+vitaent-postgres  |
+vitaent-postgres  | waiting for server to shut down....2026-03-04 13:19:33.248 UTC [41] LOG:  received fast shutdown request
+vitaent-postgres  | 2026-03-04 13:19:33.250 UTC [41] LOG:  aborting any active transactions
+vitaent-postgres  | 2026-03-04 13:19:33.253 UTC [41] LOG:  background worker "logical replication launcher" (PID 47) exited with exit code 1
+vitaent-postgres  | 2026-03-04 13:19:33.254 UTC [42] LOG:  shutting down
+vitaent-postgres  | 2026-03-04 13:19:33.256 UTC [42] LOG:  checkpoint starting: shutdown immediate
+vitaent-postgres  | 2026-03-04 13:19:33.371 UTC [42] LOG:  checkpoint complete: wrote 926 buffers (5.7%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.035 s, sync=0.074 s, total=0.118 s; sync files=301, longest=0.003 s, average=0.001 s; distance=4272 kB, estimate=4272 kB; lsn=0/191E928, redo lsn=0/191E928
+vitaent-postgres  | 2026-03-04 13:19:33.390 UTC [41] LOG:  database system is shut down
+vitaent-postgres  |  done
+vitaent-postgres  | server stopped
+vitaent-postgres  |
+vitaent-postgres  | PostgreSQL init process complete; ready for start up.
+vitaent-postgres  |
+vitaent-postgres  | 2026-03-04 13:19:33.483 UTC [1] LOG:  starting PostgreSQL 16.12 on x86_64-pc-linux-musl, compiled by gcc (Alpine 15.2.0) 15.2.0, 64-bit
+vitaent-postgres  | 2026-03-04 13:19:33.483 UTC [1] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+vitaent-postgres  | 2026-03-04 13:19:33.483 UTC [1] LOG:  listening on IPv6 address "::", port 5432
+vitaent-postgres  | 2026-03-04 13:19:33.488 UTC [1] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+vitaent-postgres  | 2026-03-04 13:19:33.495 UTC [57] LOG:  database system was shut down at 2026-03-04 13:19:33 UTC
+vitaent-postgres  | 2026-03-04 13:19:33.504 UTC [1] LOG:  database system is ready to accept connections
+Container vitaent-postgres Healthy
+vitaent-backend   | info: Startup[0]
+vitaent-backend   |       Applying migrations (attempt 1/10)
+vitaent-backend   | info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+vitaent-backend   |       Executed DbCommand (44ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+vitaent-backend   |       SELECT EXISTS (
+vitaent-backend   |           SELECT 1 FROM pg_catalog.pg_class c
+vitaent-backend   |           JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+vitaent-backend   |           WHERE n.nspname='public' AND
+vitaent-backend   |                 c.relname='__EFMigrationsHistory'
+vitaent-backend   |       )
+vitaent-backend   | info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+vitaent-backend   |       Executed DbCommand (4ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+vitaent-backend   |       SELECT EXISTS (
+vitaent-backend   |           SELECT 1 FROM pg_catalog.pg_class c
+vitaent-backend   |           JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+vitaent-backend   |           WHERE n.nspname='public' AND
+vitaent-backend   |                 c.relname='__EFMigrationsHistory'
+vitaent-backend   |       )
+vitaent-backend   | info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+vitaent-backend   |       Executed DbCommand (13ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+vitaent-backend   |       CREATE TABLE "__EFMigrationsHistory" (
+vitaent-backend   |           "MigrationId" character varying(150) NOT NULL,
+vitaent-backend   |           "ProductVersion" character varying(32) NOT NULL,
+vitaent-backend   |           CONSTRAINT "PK___EFMigrationsHistory" PRIMARY KEY ("MigrationId")
+vitaent-backend   |       );
+vitaent-backend   | info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+vitaent-backend   |       Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+vitaent-backend   |       SELECT EXISTS (
+vitaent-backend   |           SELECT 1 FROM pg_catalog.pg_class c
+vitaent-backend   |           JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+vitaent-backend   |           WHERE n.nspname='public' AND
+vitaent-backend   |                 c.relname='__EFMigrationsHistory'
+vitaent-backend   |       )
+vitaent-backend   | info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+vitaent-backend   |       Executed DbCommand (3ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+vitaent-backend   |       SELECT "MigrationId", "ProductVersion"
+vitaent-backend   |       FROM "__EFMigrationsHistory"
+vitaent-backend   |       ORDER BY "MigrationId";
+vitaent-backend   | info: Microsoft.EntityFrameworkCore.Migrations[20402]
+
+
+vitaent-backend   |       Applying migration '20260801000000_InitialCreate'.
+vitaent-backend   | info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+vitaent-backend   |       Executed DbCommand (12ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+vitaent-backend   |       CREATE TABLE "Users" (
+vitaent-backend   |           "Id" uuid NOT NULL,
+vitaent-backend   |           "Username" character varying(256) NOT NULL,
+vitaent-backend   |           "PasswordHash" text NOT NULL,
+vitaent-backend   |           CONSTRAINT "PK_Users" PRIMARY KEY ("Id")
+vitaent-backend   |       );
+vitaent-backend   | info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+vitaent-backend   |       Executed DbCommand (4ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+vitaent-backend   |       CREATE UNIQUE INDEX "IX_Users_Username" ON "Users" ("Username");
+vitaent-backend   | info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+vitaent-backend   |       Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+vitaent-backend   |       INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
+vitaent-backend   |       VALUES ('20260801000000_InitialCreate', '8.0.8');
+vitaent-frontend  |  INFO  Accepting connections at http://localhost:3001
+vitaent-backend   | info: Startup[0]
+vitaent-backend   |       Database migrations applied successfully.
+vitaent-postgres  | 2026-03-04 13:19:38.590 UTC [69] ERROR:  relation "users" does not exist at character 80
+vitaent-backend   | fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+vitaent-postgres  | 2026-03-04 13:19:38.590 UTC [69] STATEMENT:  SELECT u.id, u.created_at, u.email, u.password_hash, u.status, u.username
+vitaent-backend   |       Failed executing DbCommand (6ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+vitaent-postgres  |     FROM users AS u
+vitaent-backend   |       SELECT u.id, u.created_at, u.email, u.password_hash, u.status, u.username
+vitaent-postgres  |     WHERE u.username = 'vitaent'
+
+
+vitaent-postgres  |     LIMIT 1
+vitaent-backend   |       FROM users AS u
+vitaent-backend   |       WHERE u.username = 'vitaent'
+vitaent-backend   |       LIMIT 1
+vitaent-backend   | fail: Microsoft.EntityFrameworkCore.Query[10100]
+vitaent-backend   |       An exception occurred while iterating over the results of a query for context type 'backend.Data.ApplicationDbContext'.
+vitaent-backend   |       Npgsql.PostgresException (0x80004005): 42P01: relation "users" does not exist
+vitaent-backend   |
+vitaent-backend   |       POSITION: 80
+vitaent-backend   |          at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+vitaent-backend   |          at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+vitaent-backend   |          at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+vitaent-backend   |          at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+vitaent-backend   |          at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+vitaent-backend   |          at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+vitaent-backend   |          at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+vitaent-backend   |          at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+vitaent-backend   |          at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+vitaent-backend   |          at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+vitaent-backend   |          at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+vitaent-backend   |          at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+vitaent-backend   |         Exception data:
+vitaent-backend   |           Severity: ERROR
+vitaent-backend   |           SqlState: 42P01
+vitaent-backend   |           MessageText: relation "users" does not exist
+vitaent-backend   |           Position: 80
+vitaent-backend   |           File: parse_relation.c
+vitaent-backend   |           Line: 1449
+vitaent-backend   |           Routine: parserOpenTable
+vitaent-backend   |       Npgsql.PostgresException (0x80004005): 42P01: relation "users" does not exist
+vitaent-backend   |
+vitaent-backend   |       POSITION: 80
+vitaent-backend   |          at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+vitaent-backend   |          at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+vitaent-backend   |          at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+vitaent-backend   |          at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+vitaent-backend   |          at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+vitaent-backend   |          at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+vitaent-backend   |          at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+vitaent-backend   |          at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+vitaent-backend   |          at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+vitaent-backend   |          at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+vitaent-backend   |          at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+vitaent-backend   |          at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+vitaent-backend   |         Exception data:
+vitaent-backend   |           Severity: ERROR
+vitaent-backend   |           SqlState: 42P01
+vitaent-backend   |           MessageText: relation "users" does not exist
+vitaent-backend   |           Position: 80
+vitaent-backend   |           File: parse_relation.c
+vitaent-backend   |           Line: 1449
+vitaent-backend   |           Routine: parserOpenTable
+vitaent-backend   | Unhandled exception. Npgsql.PostgresException (0x80004005): 42P01: relation "users" does not exist
+vitaent-backend   |
+vitaent-backend   | POSITION: 80
+vitaent-backend   |    at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+vitaent-backend   |    at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+vitaent-backend   |    at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+vitaent-backend   |    at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+vitaent-backend   |    at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+vitaent-backend   |    at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+vitaent-backend   |    at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+vitaent-backend   |    at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+vitaent-backend   |    at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+vitaent-backend   |    at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+vitaent-backend   |    at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+vitaent-backend   |    at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+vitaent-backend   |    at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync[TSource](IAsyncEnumerable`1 asyncEnumerable, CancellationToken cancellationToken)
+vitaent-backend   |    at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync[TSource](IAsyncEnumerable`1 asyncEnumerable, CancellationToken cancellationToken)
+vitaent-backend   |    at Program.<Main>$(String[] args) in /src/Program.cs:line 131
+vitaent-backend   |    at Program.<Main>(String[] args)
+vitaent-backend   |   Exception data:
+vitaent-backend   |     Severity: ERROR
+vitaent-backend   |     SqlState: 42P01
+vitaent-backend   |     MessageText: relation "users" does not exist
+vitaent-backend   |     Position: 80
+vitaent-backend   |     File: parse_relation.c
+vitaent-backend   |     Line: 1449
+vitaent-backend   |     Routine: parserOpenTable
+vitaent-backend exited with code 139 (restarting)
+vitaent-backend   | info: Startup[0]
+vitaent-backend   |       Applying migrations (attempt 1/10)
+vitaent-backend   | info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+vitaent-backend   |       Executed DbCommand (45ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+vitaent-backend   |       SELECT EXISTS (
+vitaent-backend   |           SELECT 1 FROM pg_catalog.pg_class c
+vitaent-backend   |           JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+vitaent-backend   |           WHERE n.nspname='public' AND
+vitaent-backend   |                 c.relname='__EFMigrationsHistory'
+vitaent-backend   |       )
+vitaent-backend   | info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+vitaent-backend   |       Executed DbCommand (5ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+vitaent-backend   |       SELECT "MigrationId", "ProductVersion"
+vitaent-backend   |       FROM "__EFMigrationsHistory"
+vitaent-backend   |       ORDER BY "MigrationId";
+vitaent-backend   | info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+vitaent-backend   |       Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+vitaent-backend   |       SELECT EXISTS (
+vitaent-backend   |           SELECT 1 FROM pg_catalog.pg_class c
+vitaent-backend   |           JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+vitaent-backend   |           WHERE n.nspname='public' AND
+vitaent-backend   |                 c.relname='__EFMigrationsHistory'
+vitaent-backend   |       )
+vitaent-backend   | info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+vitaent-backend   |       Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+vitaent-backend   |       SELECT EXISTS (
+vitaent-backend   |           SELECT 1 FROM pg_catalog.pg_class c
+vitaent-backend   |           JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+vitaent-backend   |           WHERE n.nspname='public' AND
+vitaent-backend   |                 c.relname='__EFMigrationsHistory'
+vitaent-backend   |       )
+vitaent-backend   | info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+vitaent-backend   |       Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+vitaent-backend   |       SELECT "MigrationId", "ProductVersion"
+vitaent-backend   |       FROM "__EFMigrationsHistory"
+vitaent-backend   |       ORDER BY "MigrationId";
+vitaent-backend   | info: Microsoft.EntityFrameworkCore.Migrations[20405]
+vitaent-backend   |       No migrations were applied. The database is already up to date.
+vitaent-backend   | info: Startup[0]
+vitaent-backend   |       Database migrations applied successfully.
+vitaent-postgres  | 2026-03-04 13:19:41.347 UTC [74] ERROR:  relation "users" does not exist at character 80
+
+vitaent-backend   | fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+vitaent-backend   |       Failed executing DbCommand (6ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+vitaent-backend   |       SELECT u.id, u.created_at, u.email, u.password_hash, u.status, u.username
+vitaent-backend   |       FROM users AS u
+vitaent-postgres  | 2026-03-04 13:19:41.347 UTC [74] STATEMENT:  SELECT u.id, u.created_at, u.email, u.password_hash, u.status, u.username|       LIMIT 1
+vitaent-postgres  |     FROM users AS u
+vitaent-postgres  |     WHERE u.username = 'vitaent'
+
+vitaent-postgres  |     LIMIT 1
+vitaent-backend   |       An exception occurred while iterating over the results of a query for context type 'backend.Data.ApplicationDbContext'.
+vitaent-backend   |       Npgsql.PostgresException (0x80004005): 42P01: relation "users" does not exist
+vitaent-backend   |
+vitaent-backend   |       POSITION: 80
+vitaent-backend   |          at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+vitaent-backend   |          at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+vitaent-backend   |          at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+vitaent-backend   |          at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+vitaent-backend   |          at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+vitaent-backend   |          at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+vitaent-backend   |          at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+vitaent-backend   |          at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+vitaent-backend   |          at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+vitaent-backend   |          at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+vitaent-backend   |          at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+vitaent-backend   |          at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+vitaent-backend   |         Exception data:
+vitaent-backend   |           Severity: ERROR
+vitaent-backend   |           SqlState: 42P01
+vitaent-backend   |           MessageText: relation "users" does not exist
+vitaent-backend   |           Position: 80
+vitaent-backend   |           File: parse_relation.c
+vitaent-backend   |           Line: 1449
+vitaent-backend   |           Routine: parserOpenTable
+vitaent-backend   |       Npgsql.PostgresException (0x80004005): 42P01: relation "users" does not exist
+vitaent-backend   |
+vitaent-backend   |       POSITION: 80
+vitaent-backend   |          at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+vitaent-backend   |          at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+vitaent-backend   |          at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+vitaent-backend   |          at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+vitaent-backend   |          at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+vitaent-backend   |          at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+vitaent-backend   |          at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+vitaent-backend   |          at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+vitaent-backend   |          at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+vitaent-backend   |          at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+vitaent-backend   |          at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+vitaent-backend   |          at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+vitaent-backend   |         Exception data:
+vitaent-backend   |           Severity: ERROR
+vitaent-backend   |           SqlState: 42P01
+vitaent-backend   |           MessageText: relation "users" does not exist
+vitaent-backend   |           Position: 80
+vitaent-backend   |           File: parse_relation.c
+vitaent-backend   |           Line: 1449
+vitaent-backend   |           Routine: parserOpenTable
+vitaent-backend   | Unhandled exception. Npgsql.PostgresException (0x80004005): 42P01: relation "users" does not exist
+vitaent-backend   | POSITION: 80
+vitaent-backend   |    at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+vitaent-backend   |    at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+vitaent-backend   |    at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+vitaent-backend   |    at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+vitaent-backend   |    at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+vitaent-backend   |    at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+vitaent-backend   |    at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+vitaent-backend   |    at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+vitaent-backend   |    at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+vitaent-backend   |    at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+vitaent-backend   |    at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+vitaent-backend   |    at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+vitaent-backend   |    at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync[TSource](IAsyncEnumerable`1 asyncEnumerable, CancellationToken cancellationToken)
+vitaent-backend   |    at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync[TSource](IAsyncEnumerable`1 asyncEnumerable, CancellationToken cancellationToken)
+vitaent-backend   |    at Program.<Main>$(String[] args) in /src/Program.cs:line 131
+vitaent-backend   |    at Program.<Main>(String[] args)
+vitaent-backend   |   Exception data:
+vitaent-backend   |     Severity: ERROR
+vitaent-backend   |     SqlState: 42P01
+vitaent-backend   |     MessageText: relation "users" does not exist
+vitaent-backend   |     Position: 80
+vitaent-backend   |     File: parse_relation.c
+vitaent-backend   |     Line: 1449
+vitaent-backend   |     Routine: parserOpenTable
+vitaent-frontend  |  HTTP  3/4/2026 1:19:42 PM ::1 GET /
+vitaent-frontend  |  HTTP  3/4/2026 1:19:42 PM ::1 Returned 200 in 19 ms
+vitaent-backend exited with code 139 (restarting)
+vitaent-backend   | info: Startup[0]
+vitaent-backend   |       Applying migrations (attempt 1/10)
+vitaent-backend   | info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+vitaent-backend   |       Executed DbCommand (45ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+vitaent-backend   |       SELECT EXISTS (
+vitaent-backend   |           SELECT 1 FROM pg_catalog.pg_class c
+vitaent-backend   |           JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+vitaent-backend   |           WHERE n.nspname='public' AND
+vitaent-backend   |                 c.relname='__EFMigrationsHistory'
+vitaent-backend   |       )
+vitaent-backend   | info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+vitaent-backend   |       Executed DbCommand (5ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+vitaent-backend   |       SELECT "MigrationId", "ProductVersion"
+vitaent-backend   |       FROM "__EFMigrationsHistory"
+vitaent-backend   |       ORDER BY "MigrationId";
+vitaent-backend   | info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+vitaent-backend   |       Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+vitaent-backend   |       SELECT EXISTS (
+vitaent-backend   |           SELECT 1 FROM pg_catalog.pg_class c
+vitaent-backend   |           JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+vitaent-backend   |           WHERE n.nspname='public' AND
+vitaent-backend   |                 c.relname='__EFMigrationsHistory'
+vitaent-backend   |       )
+vitaent-backend   | info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+vitaent-backend   |       Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+vitaent-backend   |       SELECT EXISTS (
+vitaent-backend   |           SELECT 1 FROM pg_catalog.pg_class c
+vitaent-backend   |           JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+vitaent-backend   |           WHERE n.nspname='public' AND
+vitaent-backend   |                 c.relname='__EFMigrationsHistory'
+vitaent-backend   |       )
+vitaent-backend   | info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+vitaent-backend   |       Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+vitaent-backend   |       SELECT "MigrationId", "ProductVersion"
+vitaent-backend   |       FROM "__EFMigrationsHistory"
+vitaent-backend   |       ORDER BY "MigrationId";
+vitaent-backend   | info: Microsoft.EntityFrameworkCore.Migrations[20405]
+vitaent-backend   |       No migrations were applied. The database is already up to date.
+vitaent-backend   | info: Startup[0]
+vitaent-backend   |       Database migrations applied successfully.
+vitaent-postgres  | 2026-03-04 13:19:43.927 UTC [85] ERROR:  relation "users" does not exist at character 80
+vitaent-backend   | fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+vitaent-backend   |       Failed executing DbCommand (7ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+vitaent-backend   |       SELECT u.id, u.created_at, u.email, u.password_hash, u.status, u.username
+vitaent-backend   |       FROM users AS u
+vitaent-backend   |       WHERE u.username = 'vitaent'
+vitaent-backend   |       LIMIT 1
+vitaent-postgres  | 2026-03-04 13:19:43.927 UTC [85] STATEMENT:  SELECT u.id, u.created_at, u.email, u.password_hash, u.status, u.username
+vitaent-postgres  |     FROM users AS u
+vitaent-postgres  |     WHERE u.username = 'vitaent'
+vitaent-backend   | fail: Microsoft.EntityFrameworkCore.Query[10100]
+vitaent-backend   |       An exception occurred while iterating over the results of a query for context type 'backend.Data.ApplicationDbContext'.
+vitaent-backend   |       Npgsql.PostgresException (0x80004005): 42P01: relation "users" does not exist
+vitaent-backend   |
+vitaent-backend   |       POSITION: 80
+vitaent-backend   |          at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+vitaent-backend   |          at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+vitaent-backend   |          at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+vitaent-backend   |          at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+vitaent-backend   |          at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+vitaent-backend   |          at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+vitaent-backend   |          at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+vitaent-backend   |          at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+vitaent-backend   |          at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+vitaent-backend   |          at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+vitaent-backend   |          at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+vitaent-backend   |          at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+vitaent-backend   |         Exception data:
+vitaent-backend   |           Severity: ERROR
+vitaent-backend   |           SqlState: 42P01
+vitaent-backend   |           MessageText: relation "users" does not exist
+vitaent-backend   |           Position: 80
+vitaent-backend   |           File: parse_relation.c
+vitaent-backend   |           Line: 1449
+vitaent-backend   |           Routine: parserOpenTable
+vitaent-backend   |       Npgsql.PostgresException (0x80004005): 42P01: relation "users" does not exist
+vitaent-backend   |
+vitaent-backend   |       POSITION: 80
+vitaent-backend   |          at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+vitaent-backend   |          at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+vitaent-backend   |          at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+vitaent-backend   |          at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+vitaent-backend   |          at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+vitaent-backend   |          at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+vitaent-backend   |          at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+vitaent-backend   |          at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+vitaent-backend   |          at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+vitaent-backend   |          at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+vitaent-backend   |          at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+vitaent-backend   |          at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+vitaent-backend   |         Exception data:
+vitaent-backend   |           Severity: ERROR
+vitaent-backend   |           SqlState: 42P01
+vitaent-backend   |           MessageText: relation "users" does not exist
+vitaent-backend   |           Position: 80
+vitaent-backend   |           File: parse_relation.c
+vitaent-backend   |           Line: 1449
+vitaent-backend   |           Routine: parserOpenTable
+vitaent-postgres  |     LIMIT 1
+vitaent-backend   | Unhandled exception. Npgsql.PostgresException (0x80004005): 42P01: relation "users" does not exist
+vitaent-backend   |
+vitaent-backend   | POSITION: 80
+vitaent-backend   |    at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+vitaent-backend   |    at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+vitaent-backend   |    at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+vitaent-backend   |    at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+vitaent-backend   |    at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+vitaent-backend   |    at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+vitaent-backend   |    at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+vitaent-backend   |    at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+vitaent-backend   |    at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+vitaent-backend   |    at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+vitaent-backend   |    at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+vitaent-backend   |    at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+vitaent-backend   |    at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync[TSource](IAsyncEnumerable`1 asyncEnumerable, CancellationToken cancellationToken)
+vitaent-backend   |    at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync[TSource](IAsyncEnumerable`1 asyncEnumerable, CancellationToken cancellationToken)
+vitaent-backend   |    at Program.<Main>$(String[] args) in /src/Program.cs:line 131
+vitaent-backend   |    at Program.<Main>(String[] args)
+vitaent-backend   |   Exception data:
+vitaent-backend   |     Severity: ERROR
+vitaent-backend   |     SqlState: 42P01
+vitaent-backend   |     MessageText: relation "users" does not exist
+vitaent-backend   |     Position: 80
+vitaent-backend   |     File: parse_relation.c
+vitaent-backend   |     Line: 1449
+vitaent-backend   |     Routine: parserOpenTable
+vitaent-backend exited with code 139 (restarting)
+vitaent-backend   | info: Startup[0]
+vitaent-backend   |       Applying migrations (attempt 1/10)
+vitaent-backend   | info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+vitaent-backend   |       Executed DbCommand (43ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+vitaent-backend   |       SELECT EXISTS (
+vitaent-backend   |           SELECT 1 FROM pg_catalog.pg_class c
+vitaent-backend   |           JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+vitaent-backend   |           WHERE n.nspname='public' AND
+vitaent-backend   |                 c.relname='__EFMigrationsHistory'
+vitaent-backend   |       )
+vitaent-backend   | info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+vitaent-backend   |       Executed DbCommand (5ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+vitaent-backend   |       SELECT "MigrationId", "ProductVersion"
+vitaent-backend   |       FROM "__EFMigrationsHistory"
+vitaent-backend   |       ORDER BY "MigrationId";
+vitaent-backend   | info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+vitaent-backend   |       Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+vitaent-backend   |       SELECT EXISTS (
+vitaent-backend   |           SELECT 1 FROM pg_catalog.pg_class c
+vitaent-backend   |           JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+vitaent-backend   |           WHERE n.nspname='public' AND
+vitaent-backend   |                 c.relname='__EFMigrationsHistory'
+vitaent-backend   |       )
+vitaent-backend   | info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+vitaent-backend   |       Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+vitaent-backend   |       SELECT EXISTS (
+vitaent-backend   |           SELECT 1 FROM pg_catalog.pg_class c
+vitaent-backend   |           JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+vitaent-backend   |           WHERE n.nspname='public' AND
+vitaent-backend   |                 c.relname='__EFMigrationsHistory'
+vitaent-backend   |       )
+vitaent-backend   | info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+vitaent-backend   |       Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+vitaent-backend   |       SELECT "MigrationId", "ProductVersion"
+vitaent-backend   |       FROM "__EFMigrationsHistory"
+vitaent-backend   |       ORDER BY "MigrationId";
+vitaent-backend   | info: Microsoft.EntityFrameworkCore.Migrations[20405]
+vitaent-backend   |       No migrations were applied. The database is already up to date.
+vitaent-backend   | info: Startup[0]
+vitaent-backend   |       Database migrations applied successfully.
+vitaent-postgres  | 2026-03-04 13:19:46.736 UTC [89] ERROR:  relation "users" does not exist at character 80
+vitaent-backend   | fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+vitaent-backend   |       Failed executing DbCommand (5ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+vitaent-backend   |       SELECT u.id, u.created_at, u.email, u.password_hash, u.status, u.username
+vitaent-backend   |       FROM users AS u
+vitaent-backend   |       WHERE u.username = 'vitaent'
+vitaent-backend   |       LIMIT 1
+vitaent-postgres  | 2026-03-04 13:19:46.736 UTC [89] STATEMENT:  SELECT u.id, u.created_at, u.email, u.password_hash, u.status, u.username
+vitaent-postgres  |     FROM users AS u
+vitaent-postgres  |     WHERE u.username = 'vitaent'
+
+vitaent-backend   | fail: Microsoft.EntityFrameworkCore.Query[10100]
+vitaent-backend   |       An exception occurred while iterating over the results of a query for context type 'backend.Data.ApplicationDbContext'.
+vitaent-backend   |       Npgsql.PostgresException (0x80004005): 42P01: relation "users" does not exist
+vitaent-backend   |
+vitaent-backend   |       POSITION: 80
+vitaent-backend   |          at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+vitaent-backend   |          at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+vitaent-backend   |          at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+vitaent-backend   |          at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+vitaent-backend   |          at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+vitaent-backend   |          at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+vitaent-backend   |          at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+vitaent-backend   |          at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+vitaent-backend   |          at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+vitaent-backend   |          at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+vitaent-backend   |          at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+vitaent-backend   |          at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+vitaent-backend   |         Exception data:
+vitaent-backend   |           Severity: ERROR
+vitaent-backend   |           SqlState: 42P01
+vitaent-backend   |           MessageText: relation "users" does not exist
+vitaent-backend   |           Position: 80
+vitaent-backend   |           File: parse_relation.c
+vitaent-backend   |           Line: 1449
+vitaent-backend   |           Routine: parserOpenTable
+vitaent-backend   |       Npgsql.PostgresException (0x80004005): 42P01: relation "users" does not exist
+vitaent-backend   |
+vitaent-backend   |       POSITION: 80
+vitaent-backend   |          at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+vitaent-backend   |          at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+vitaent-backend   |          at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+vitaent-backend   |          at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+vitaent-backend   |          at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+vitaent-backend   |          at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+vitaent-backend   |          at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+vitaent-backend   |          at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalComvitaent-backend   |          at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+vitaent-backend   |          at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+vitaent-backend   |          at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+vitaent-backend   |          at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+vitaent-backend   |         Exception data:
+vitaent-backend   |           Severity: ERROR
+vitaent-backend   |           SqlState: 42P01
+vitaent-backend   |           MessageText: relation "users" does not exist
+vitaent-backend   |           Position: 80
+vitaent-backend   |           File: parse_relation.c
+vitaent-backend   |           Line: 1449
+vitaent-backend   |           Routine: parserOpenTable
+vitaent-postgres  |     LIMIT 1
+vitaent-backend   | Unhandled exception. Npgsql.PostgresException (0x80004005): 42P01: relation "users" does not exist
+
+vitaent-backend   |
+vitaent-backend   | POSITION: 80
+vitaent-backend   |    at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+vitaent-backend   |    at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+vitaent-backend   |    at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+vitaent-backend   |    at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+vitaent-backend   |    at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken vitaent-backend   |    at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+vitaent-backend   |    at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+vitaent-backend   |    at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+vitaent-backend   |    at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+vitaent-backend   |    at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+vitaent-backend   |    at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+vitaent-backend   |    at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+vitaent-backend   |    at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync[TSource](IAsyncEnumerable`1 asyncEnumerable, CancellationToken cancellationToken)
+vitaent-backend   |    at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync[TSource](IAsyncEnumerable`1 asyncEnumerable, CancellationToken cancellationToken)
+vitaent-backend   |    at Program.<Main>$(String[] args) in /src/Program.cs:line 131
+vitaent-backend   |    at Program.<Main>(String[] args)
+vitaent-backend   |   Exception data:
+vitaent-backend   |     Severity: ERROR
+vitaent-backend   |     SqlState: 42P01
+vitaent-backend   |     MessageText: relation "users" does not exist
+vitaent-backend   |     Position: 80
+vitaent-backend   |     File: parse_relation.c
+vitaent-backend   |     Line: 1449
+vitaent-backend   |     Routine: parserOpenTable
+vitaent-frontend  |  HTTP  3/4/2026 1:19:47 PM ::1 GET /
+vitaent-frontend  |  HTTP  3/4/2026 1:19:47 PM ::1 Returned 200 in 1 ms
+vitaent-backend exited with code 139 (restarting)
+vitaent-backend   | info: Startup[0]
+vitaent-backend   |       Applying migrations (attempt 1/10)
+vitaent-backend   | info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+vitaent-backend   |       Executed DbCommand (42ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+vitaent-backend   |       SELECT EXISTS (
+vitaent-backend   |           SELECT 1 FROM pg_catalog.pg_class c
+vitaent-backend   |           JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+vitaent-backend   |           WHERE n.nspname='public' AND
+vitaent-backend   |                 c.relname='__EFMigrationsHistory'
+vitaent-backend   |       )
+vitaent-backend   | info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+vitaent-backend   |       Executed DbCommand (5ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+vitaent-backend   |       SELECT "MigrationId", "ProductVersion"
+vitaent-backend   |       FROM "__EFMigrationsHistory"
+vitaent-backend   |       ORDER BY "MigrationId";
+vitaent-backend   | info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+vitaent-backend   |       Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+vitaent-backend   |       SELECT EXISTS (
+vitaent-backend   |           SELECT 1 FROM pg_catalog.pg_class c
+vitaent-backend   |           JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+vitaent-backend   |           WHERE n.nspname='public' AND
+vitaent-backend   |                 c.relname='__EFMigrationsHistory'
+vitaent-backend   |       )
+vitaent-backend   | info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+vitaent-backend   |       Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+vitaent-backend   |       SELECT EXISTS (
+vitaent-backend   |           SELECT 1 FROM pg_catalog.pg_class c
+vitaent-backend   |           JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+vitaent-backend   |           WHERE n.nspname='public' AND
+vitaent-backend   |                 c.relname='__EFMigrationsHistory'
+vitaent-backend   |       )
+vitaent-backend   | info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+vitaent-backend   |       Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+vitaent-backend   |       SELECT "MigrationId", "ProductVersion"
+vitaent-backend   |       FROM "__EFMigrationsHistory"
+vitaent-backend   |       ORDER BY "MigrationId";
+vitaent-backend   | info: Microsoft.EntityFrameworkCore.Migrations[20405]
+vitaent-backend   |       No migrations were applied. The database is already up to date.
+vitaent-backend   | info: Startup[0]
+vitaent-backend   |       Database migrations applied successfully.
+vitaent-postgres  | 2026-03-04 13:19:49.808 UTC [100] ERROR:  relation "users" does not exist at character 80
+vitaent-backend   | fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+vitaent-backend   |       Failed executing DbCommand (6ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+vitaent-backend   |       SELECT u.id, u.created_at, u.email, u.password_hash, u.status, u.username
+vitaent-backend   |       FROM users AS u
+vitaent-backend   |       WHERE u.username = 'vitaent'
+vitaent-backend   |       LIMIT 1
+vitaent-postgres  | 2026-03-04 13:19:49.808 UTC [100] STATEMENT:  SELECT u.id, u.created_at, u.email, u.password_hash, u.status, u.username
+vitaent-postgres  |     FROM users AS u
+vitaent-postgres  |     WHERE u.username = 'vitaent'
+vitaent-postgres  |     LIMIT 1
+vitaent-backend   | fail: Microsoft.EntityFrameworkCore.Query[10100]
+vitaent-backend   |       An exception occurred while iterating over the results of a query for context type 'backend.Data.ApplicationDbContext'.
+vitaent-backend   |       Npgsql.PostgresException (0x80004005): 42P01: relation "users" does not exist
+vitaent-backend   |
+vitaent-backend   |       POSITION: 80
+vitaent-backend   |          at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+vitaent-backend   |          at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+vitaent-backend   |          at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+vitaent-backend   |          at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+vitaent-backend   |          at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+vitaent-backend   |          at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+vitaent-backend   |          at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+vitaent-backend   |          at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+vitaent-backend   |          at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+vitaent-backend   |          at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+vitaent-backend   |          at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+vitaent-backend   |          at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+vitaent-backend   |         Exception data:
+vitaent-backend   |           Severity: ERROR
+vitaent-backend   |           SqlState: 42P01
+vitaent-backend   |           MessageText: relation "users" does not exist
+vitaent-backend   |           Position: 80
+vitaent-backend   |           File: parse_relation.c
+vitaent-backend   |           Line: 1449
+vitaent-backend   |           Routine: parserOpenTable
+vitaent-backend   |       Npgsql.PostgresException (0x80004005): 42P01: relation "users" does not exist
+vitaent-backend   |
+vitaent-backend   |       POSITION: 80
+vitaent-backend   |          at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+vitaent-backend   |          at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+vitaent-backend   |          at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+vitaent-backend   |          at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+vitaent-backend   |          at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+vitaent-backend   |          at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+vitaent-backend   |          at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+vitaent-backend   |          at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+vitaent-backend   |          at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+vitaent-backend   |          at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+vitaent-backend   |          at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+vitaent-backend   |          at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+vitaent-backend   |         Exception data:
+vitaent-backend   |           Severity: ERROR
+vitaent-backend   |           SqlState: 42P01
+vitaent-backend   |           MessageText: relation "users" does not exist
+vitaent-backend   |           Position: 80
+vitaent-backend   |           File: parse_relation.c
+vitaent-backend   |           Line: 1449
+vitaent-backend   |           Routine: parserOpenTable
+vitaent-backend   | Unhandled exception. Npgsql.PostgresException (0x80004005): 42P01: relation "users" does not exist
+vitaent-backend   |
+vitaent-backend   | POSITION: 80
+vitaent-backend   |    at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+vitaent-backend   |    at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+vitaent-backend   |    at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+vitaent-backend   |    at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+vitaent-backend   |    at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+vitaent-backend   |    at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+vitaent-backend   |    at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+vitaent-backend   |    at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+vitaent-backend   |    at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+vitaent-backend   |    at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+vitaent-backend   |    at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+vitaent-backend   |    at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+vitaent-backend   |    at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync[TSource](IAsyncEnumerable`1 asyncEnumerable, CancellationToken cancellationToken)
+vitaent-backend   |    at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync[TSource](IAsyncEnumerable`1 asyncEnumerable, CancellationToken cancellationToken)
+vitaent-backend   |    at Program.<Main>$(String[] args) in /src/Program.cs:line 131
+vitaent-backend   |    at Program.<Main>(String[] args)
+vitaent-backend   |   Exception data:
+vitaent-backend   |     Severity: ERROR
+vitaent-backend   |     SqlState: 42P01
+vitaent-backend   |     MessageText: relation "users" does not exist
+vitaent-backend   |     Position: 80
+vitaent-backend   |     File: parse_relation.c
+vitaent-backend   |     Line: 1449
+vitaent-backend   |     Routine: parserOpenTable
+vitaent-backend exited with code 139 (restarting)
+vitaent-frontend  |  HTTP  3/4/2026 1:19:52 PM ::

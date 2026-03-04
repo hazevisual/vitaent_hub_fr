@@ -1,6 +1,8 @@
 import axios from "axios";
+import { clearMockSession, mockAdapter } from "./mockAdapter";
 
 const TOKEN_STORAGE_KEY = "vitaent.accessToken";
+const apiMocksEnabled = (import.meta.env.VITE_API_MOCKS as string | undefined)?.toLowerCase() === "true";
 
 let accessToken: string | null = localStorage.getItem(TOKEN_STORAGE_KEY);
 
@@ -11,6 +13,9 @@ export const setAccessToken = (token: string | null) => {
         localStorage.setItem(TOKEN_STORAGE_KEY, token);
     } else {
         localStorage.removeItem(TOKEN_STORAGE_KEY);
+        if (apiMocksEnabled) {
+            clearMockSession();
+        }
     }
 };
 
@@ -23,6 +28,7 @@ const apiBaseUrl = normalizedEnvApiUrl || (import.meta.env.DEV ? "" : "http://lo
 export const api = axios.create({
     baseURL: apiBaseUrl || undefined,
     withCredentials: false,
+    adapter: apiMocksEnabled ? mockAdapter : undefined,
 });
 
 api.interceptors.request.use((config) => {

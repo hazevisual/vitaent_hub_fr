@@ -1,157 +1,159 @@
 import { Box, Button, Divider, Typography } from "@mui/material";
-import SoftCard from "@/components/ui/SoftCard";
 import AccessTimeRoundedIcon from "@mui/icons-material/AccessTimeRounded";
 import ArrowBackIosNewRoundedIcon from "@mui/icons-material/ArrowBackIosNewRounded";
+import SoftCard from "@/components/ui/SoftCard";
 
 const sleepIntervals = [
-  { title: "1-ый интервал сна", start: "01:15", end: "8:00" },
-  { title: "2-ой интервал сна", start: "15:00", end: "16:00" },
+  { title: "Первый интервал сна", start: "01:15", end: "08:00" },
+  { title: "Второй интервал сна", start: "15:00", end: "16:00" },
 ] as const;
 
 const attributes = [
-  { label: "Сон", status: "Заполненно", active: true },
-  { label: "Прием Пищи", status: "Не заполненно", active: false },
-  { label: "Соц. Активность", status: "Не заполненно", active: false },
-  { label: "Подвижность", status: "Не заполненно", active: false },
+  { label: "Сон", status: "Заполнено", active: true },
+  { label: "Прием пищи", status: "Не заполнено", active: false },
+  { label: "Соц. активность", status: "Не заполнено", active: false },
+  { label: "Подвижность", status: "Не заполнено", active: false },
 ] as const;
 
 export default function WeekDayViewContent() {
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
+    <Box sx={{ display: "flex", flexDirection: "column", gap: { xs: 2, md: 3 }, minWidth: 0 }}>
       <Box
         sx={{
           display: "grid",
           gridTemplateColumns: "minmax(0, 1fr)",
-          gap: 3,
+          gap: { xs: 2, md: 3 },
+          minWidth: 0,
           "@media (min-width:1280px)": {
-            gridTemplateColumns: "minmax(320px, 1fr) minmax(380px, 1.25fr) minmax(320px, 1fr)",
+            gridTemplateColumns: "minmax(300px, 1fr) minmax(360px, 1.2fr) minmax(300px, 1fr)",
           },
         }}
       >
-        <Box sx={{ display: "flex", flexDirection: "column", minWidth: 0 }}>
-          <Box
+        <SoftCard title="Расписание сна" sx={{ minWidth: 0 }} contentSx={{ gap: 3, minWidth: 0 }}>
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+            {sleepIntervals.map((interval, index) => (
+              <Box key={interval.title}>
+                <Typography sx={{ fontSize: "1rem", fontWeight: 600, color: "#171717", mb: 1.5 }}>
+                  {interval.title}
+                </Typography>
+                <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, color: "#2D6AE3", mb: 2, flexWrap: "wrap" }}>
+                  <AccessTimeRoundedIcon sx={{ fontSize: 20 }} />
+                  <Typography sx={{ color: "#2D6AE3", fontWeight: 500 }}>{interval.start}</Typography>
+                  <Typography sx={{ color: "#C9C9CB" }}>—</Typography>
+                  <AccessTimeRoundedIcon sx={{ fontSize: 20 }} />
+                  <Typography sx={{ color: "#2D6AE3", fontWeight: 500 }}>{interval.end}</Typography>
+                </Box>
+                {index < sleepIntervals.length - 1 && <Divider sx={{ borderColor: "#E5E5E7" }} />}
+              </Box>
+            ))}
+          </Box>
+
+          <Button
+            variant="outlined"
             sx={{
-              display: "flex",
-              flexDirection: "column",
-              flex: 1,
-              minHeight: "100%",
-              bgcolor: "#FFFFFF",
-              border: "1px solid #E5E5E7",
-              borderRadius: "16px",
-              p: 3,
-              gap: 3,
-              "@media (min-width:2000px)": {
-                p: 3.75,
-              },
+              alignSelf: "flex-start",
+              borderRadius: "12px",
+              textTransform: "none",
+              borderColor: "#2D6AE3",
+              color: "#2D6AE3",
+              px: 2,
+              py: 1,
             }}
           >
-            <Typography sx={{ textAlign: "left", fontSize: "1.05rem", fontWeight: 500, color: "#000000" }}>Расписание сна</Typography>
-            <Box sx={{ display: "flex", flexDirection: "column", gap: 2.5 }}>
-              {sleepIntervals.map((interval, index) => (
-                <Box key={interval.title}>
-                  <Typography sx={{ fontSize: "1.06rem", fontWeight: 500, color: "#000", mb: 1.5 }} variant="body1">
-                    {interval.title}
-                  </Typography>
-                  <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, color: "#2D6AE3", mb: 1.5 }}>
-                    <AccessTimeRoundedIcon sx={{ fontSize: 22 }} />
-                    <Typography sx={{ color: "#2D6AE3", fontWeight: 500 }}>{interval.start}</Typography>
-                    <Typography sx={{ color: "#C9C9CB" }}>—</Typography>
-                    <AccessTimeRoundedIcon sx={{ fontSize: 22 }} />
-                    <Typography sx={{ color: "#2D6AE3", fontWeight: 500 }}>{interval.end}</Typography>
-                  </Box>
-                  {index < sleepIntervals.length - 1 && <Divider sx={{ borderColor: "#E5E5E7" }} />}
-                </Box>
-              ))}
-              <Button
-                variant="outlined"
-                sx={{
-                  alignSelf: "flex-start",
-                  borderRadius: "12px",
-                  textTransform: "none",
-                  borderColor: "#2D6AE3",
-                  color: "#2D6AE3",
-                  px: 2,
-                  py: 0.9,
-                }}
-              >
-                Добавить временной слот
-              </Button>
-            </Box>
+            Добавить временной слот
+          </Button>
 
-            <Box
-              sx={{
-                p: 2,
-                borderRadius: "12px",
-                border: "1px solid #C9C9CB",
-                bgcolor: "#F5F5F7",
-                display: "flex",
-                flexDirection: "column",
-                gap: 1,
-              }}
-            >
-              <Typography sx={{ color: "#000", fontWeight: 500 }}>Качество сна</Typography>
-              <Typography sx={{ color: "#000", fontWeight: 500 }}>Оценка за ночь</Typography>
-              <Typography sx={{ color: "#6B6B6B" }}>Плейсхолдер: 7 ч 20 мин сна, 1 пробуждение</Typography>
-              <Typography sx={{ color: "#6B6B6B" }}>Плейсхолдер: стабильный режим, рекомендуем сохранить время отхода ко сну.</Typography>
-            </Box>
+          <Box
+            sx={{
+              p: { xs: 2, md: 3 },
+              borderRadius: "12px",
+              border: "1px solid #C9C9CB",
+              bgcolor: "#F5F5F7",
+              display: "flex",
+              flexDirection: "column",
+              gap: 1,
+              minWidth: 0,
+            }}
+          >
+            <Typography sx={{ color: "#171717", fontWeight: 600 }}>Качество сна</Typography>
+            <Typography sx={{ color: "#171717", fontWeight: 500 }}>Оценка за ночь</Typography>
+            <Typography sx={{ color: "#6B7280" }}>Плейсхолдер: 7 ч 20 мин сна, 1 пробуждение.</Typography>
+            <Typography sx={{ color: "#6B7280" }}>
+              Плейсхолдер: режим сна стабильный, рекомендуется сохранить текущее время отхода ко сну.
+            </Typography>
           </Box>
-        </Box>
+        </SoftCard>
 
-        <Box sx={{ display: "flex", flexDirection: "column", gap: 3, minWidth: 0 }}>
-          <Typography sx={{ textAlign: "center", fontSize: "1.05rem", fontWeight: 500, color: "#6B6B6B" }}>Атрибуты</Typography>
-          <SoftCard>
-            <Box sx={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: 2.5 }}>
+        <Box sx={{ display: "flex", flexDirection: "column", gap: { xs: 2, md: 3 }, minWidth: 0 }}>
+          <Typography sx={{ textAlign: "center", fontSize: "1rem", fontWeight: 500, color: "#6B7280" }}>
+            Атрибуты
+          </Typography>
+          <SoftCard sx={{ minWidth: 0 }} contentSx={{ minWidth: 0 }}>
+            <Box sx={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: { xs: 2, md: 3 }, minWidth: 0 }}>
               {attributes.map((item) => (
                 <Box
                   key={item.label}
                   sx={{
-                    borderRadius: "16px",
+                    borderRadius: "12px",
                     border: "1px solid #C9C9CB",
-                    p: 2,
+                    p: { xs: 2, md: 3 },
                     display: "flex",
                     flexDirection: "column",
-                    gap: 1,
+                    gap: 1.5,
                     alignItems: "center",
                     justifyContent: "center",
-                    minHeight: 220,
+                    minHeight: { xs: 180, md: 220 },
+                    minWidth: 0,
                   }}
                 >
-                  <Box sx={{ width: 96, height: 96, borderRadius: "16px", border: "1px solid #C9C9CB", bgcolor: item.active ? "#000" : "#F5F5F7" }} />
-                  <Typography sx={{ color: "#000", fontWeight: 500, textAlign: "center" }}>{item.label}</Typography>
-                  <Typography sx={{ color: "#2D6AE3", textAlign: "center" }}>{item.status}</Typography>
+                  <Box
+                    sx={{
+                      width: { xs: 72, md: 88 },
+                      height: { xs: 72, md: 88 },
+                      borderRadius: "16px",
+                      border: "1px solid #C9C9CB",
+                      bgcolor: item.active ? "#171717" : "#F5F5F7",
+                    }}
+                  />
+                  <Typography sx={{ color: "#171717", fontWeight: 500, textAlign: "center" }}>{item.label}</Typography>
+                  <Typography sx={{ color: item.active ? "#2D6AE3" : "#6B7280", textAlign: "center" }}>{item.status}</Typography>
                 </Box>
               ))}
             </Box>
           </SoftCard>
         </Box>
 
-        <Box sx={{ display: "flex", flexDirection: "column", gap: 3, minWidth: 0 }}>
-          <Typography sx={{ textAlign: "center", fontSize: "1.05rem", fontWeight: 500, color: "#6B6B6B" }}>Информация</Typography>
-          <SoftCard>
-            <Typography sx={{ color: "#6B6B6B", lineHeight: 1.6 }}>
+        <Box sx={{ display: "flex", flexDirection: "column", gap: { xs: 2, md: 3 }, minWidth: 0 }}>
+          <Typography sx={{ textAlign: "center", fontSize: "1rem", fontWeight: 500, color: "#6B7280" }}>
+            Информация
+          </Typography>
+          <SoftCard sx={{ minWidth: 0, height: "100%" }} contentSx={{ minWidth: 0, height: "100%", gap: 2 }}>
+            <Typography sx={{ color: "#6B7280", lineHeight: 1.6 }}>
               <Box component="span" sx={{ color: "#2D6AE3" }}>
                 Сон
               </Box>{" "}
-              - это физиологическое состояние, которое повторяется регулярно, каждый день. Он помогает организму отдохнуть, набраться сил, восстановить иммунитет.
+              — это физиологическое состояние, которое регулярно повторяется каждый день. Оно помогает организму
+              восстановиться, отдохнуть и поддерживать устойчивую работу нервной системы.
             </Typography>
-            <Typography sx={{ color: "#6B6B6B", lineHeight: 1.6, mt: 2.5 }}>
-              Ухудшение качества сна всегда сказывается на самочувствии. Хронические нарушения сна отражаются на здоровье центральной нервной системы.
+            <Typography sx={{ color: "#6B7280", lineHeight: 1.6 }}>
+              Ухудшение качества сна влияет на самочувствие, концентрацию и общий эмоциональный фон. Регулярное
+              отслеживание помогает заметить изменения раньше.
             </Typography>
-            <Box sx={{ mt: "auto", pt: 4, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 2 }}>
+            <Box sx={{ mt: "auto", pt: 3, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 2, flexWrap: "wrap" }}>
               <Button startIcon={<ArrowBackIosNewRoundedIcon />} variant="text" sx={{ textTransform: "none", color: "#2D6AE3" }}>
                 Назад
               </Button>
               <Button
                 variant="contained"
                 sx={{
-                  bgcolor: "#000",
-                  color: "#fff",
+                  bgcolor: "#171717",
+                  color: "#FFFFFF",
                   borderRadius: "12px",
                   textTransform: "none",
                   boxShadow: "none",
-                  px: 2.5,
+                  px: 3,
                   py: 1,
-                  "&:hover": { bgcolor: "#161616", boxShadow: "none" },
+                  "&:hover": { bgcolor: "#222222", boxShadow: "none" },
                 }}
               >
                 Завершить заполнение данных

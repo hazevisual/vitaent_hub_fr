@@ -21,27 +21,7 @@ import PushPinRoundedIcon from "@mui/icons-material/PushPinRounded";
 import PageContainer from "@/components/ui/PageContainer";
 import SoftCard from "@/components/ui/SoftCard";
 
-type Doctor = {
-  id: string;
-  name: string;
-  specialty: string;
-  avatar: string;
-  experienceYears: number;
-  credentials: string[];
-  hasUnread?: boolean;
-};
-
-type Message = {
-  id: string;
-  doctorId: string;
-  author: string;
-  text: string;
-  time: string;
-  fromDoctor: boolean;
-  date: string;
-};
-
-const doctors: Doctor[] = [
+const doctors = [
   {
     id: "d1",
     name: "Ирина Смирнова",
@@ -68,17 +48,9 @@ const doctors: Doctor[] = [
     credentials: ["Доктор медицинских наук", "Высшая категория", "Член РАЭ"],
     hasUnread: true,
   },
-  {
-    id: "d4",
-    name: "Дмитрий Орлов",
-    specialty: "Невролог",
-    avatar: "ДО",
-    experienceYears: 11,
-    credentials: ["Кандидат медицинских наук", "Высшая категория"],
-  },
 ];
 
-const initialMessages: Message[] = [
+const initialMessages = [
   {
     id: "m1",
     doctorId: "d1",
@@ -86,7 +58,6 @@ const initialMessages: Message[] = [
     text: "Здравствуйте. Как вы себя чувствуете после последнего приема?",
     time: "09:12",
     fromDoctor: true,
-    date: "24 января",
   },
   {
     id: "m2",
@@ -95,7 +66,6 @@ const initialMessages: Message[] = [
     text: "Доброе утро. Стало лучше, но после еды иногда сохраняется дискомфорт.",
     time: "09:16",
     fromDoctor: false,
-    date: "24 января",
   },
   {
     id: "m3",
@@ -104,29 +74,8 @@ const initialMessages: Message[] = [
     text: "Поняла. Продолжайте диету и напишите, если симптом усилится.",
     time: "09:22",
     fromDoctor: true,
-    date: "24 января",
-  },
-  {
-    id: "m4",
-    doctorId: "d2",
-    author: "Алексей Никифоров",
-    text: "Не забудьте измерять давление утром и вечером.",
-    time: "11:05",
-    fromDoctor: true,
-    date: "23 января",
-  },
-  {
-    id: "m5",
-    doctorId: "d3",
-    author: "Мария Левина",
-    text: "Подготовьте, пожалуйста, результаты анализов к следующей встрече.",
-    time: "13:50",
-    fromDoctor: true,
-    date: "22 января",
   },
 ];
-
-const CONTENT_MAX_WIDTH = 1920;
 
 export default function MessagesPage() {
   const [activeDoctorId, setActiveDoctorId] = React.useState(doctors[0].id);
@@ -141,272 +90,202 @@ export default function MessagesPage() {
       searchInputRef.current?.focus();
       return;
     }
-
     setSearchQuery("");
   }, [searchOpen]);
 
-  const activeDoctor = React.useMemo(
-    () => doctors.find((doctor) => doctor.id === activeDoctorId) ?? doctors[0],
-    [activeDoctorId]
-  );
-
-  const activeMessages = React.useMemo(
-    () => messages.filter((message) => message.doctorId === activeDoctorId),
-    [activeDoctorId, messages]
-  );
+  const activeDoctor = React.useMemo(() => doctors.find((doctor) => doctor.id === activeDoctorId) ?? doctors[0], [activeDoctorId]);
+  const activeMessages = React.useMemo(() => messages.filter((message) => message.doctorId === activeDoctorId), [activeDoctorId, messages]);
 
   const onSendMessage = () => {
     const text = draft.trim();
-    if (!text) {
-      return;
-    }
-
+    if (!text) return;
     const now = new Date();
     const time = now.toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit" });
-
-    setMessages((prev) => [
-      ...prev,
-      {
-        id: `local-${Date.now()}`,
-        doctorId: activeDoctorId,
-        author: "Вы",
-        text,
-        time,
-        fromDoctor: false,
-        date: "24 января",
-      },
-    ]);
+    setMessages((prev) => [...prev, { id: `local-${Date.now()}`, doctorId: activeDoctorId, author: "Вы", text, time, fromDoctor: false }]);
     setDraft("");
   };
 
   return (
     <PageContainer>
-      <Box sx={{ width: "100%", maxWidth: CONTENT_MAX_WIDTH, mx: "auto", minWidth: 0 }}>
-        <Box
-          sx={{
-            display: "grid",
-            gridTemplateColumns: "minmax(0, 1fr)",
-            gap: { xs: 2, sm: 3, lg: 4 },
-            "@media (min-width:1200px)": {
-              gridTemplateColumns: "minmax(0, 2.2fr) minmax(320px, 0.9fr)",
-            },
-          }}
-        >
-          <SoftCard sx={{ minHeight: { xs: 620, lg: 700, xl: 740 } }} contentSx={{ p: 0 }}>
-            <Box
-              sx={{
-                display: "grid",
-                gridTemplateColumns: "minmax(200px, 0.9fr) minmax(0, 2.1fr)",
-                minHeight: "100%",
-              }}
-            >
-              <Box sx={{ borderRight: "1px solid #E5E5E7", minWidth: 0 }}>
-                <Box sx={{ px: { xs: 2, md: 3 }, py: 2.5 }}>
-                  <Typography variant="body2" sx={{ color: "text.secondary", fontWeight: 600 }}>
-                    Диалоги с врачами
-                  </Typography>
-                </Box>
-                <List disablePadding sx={{ px: 1.2, pb: 1.5 }}>
-                  {doctors.map((doctor) => {
-                    const isActive = doctor.id === activeDoctorId;
-                    return (
-                      <ListItemButton
-                        key={doctor.id}
-                        onClick={() => setActiveDoctorId(doctor.id)}
-                        sx={{
-                          borderRadius: "12px",
-                          mb: 0.75,
-                          px: 1.2,
-                          py: 1,
-                          border: "1px solid",
-                          borderColor: isActive ? "#C9C9CB" : "transparent",
-                          bgcolor: isActive ? "#F5F5F7" : "transparent",
-                          "&:hover": { bgcolor: "#F5F5F7" },
-                          gap: 1.25,
-                        }}
-                      >
-                        <Badge
-                          variant="dot"
-                          color="primary"
-                          overlap="circular"
-                          invisible={!doctor.hasUnread}
-                          anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-                        >
-                          <Avatar sx={{ width: 34, height: 34, fontSize: 12, bgcolor: "#E8EEF9", color: "#3B4E6D" }}>
-                            {doctor.avatar}
-                          </Avatar>
-                        </Badge>
-                        <ListItemText
-                          primary={doctor.name}
-                          secondary={doctor.specialty}
-                          primaryTypographyProps={{ fontSize: 13.5, fontWeight: 600, color: "text.primary", noWrap: true }}
-                          secondaryTypographyProps={{ fontSize: 12, color: "text.secondary", noWrap: true }}
-                        />
-                      </ListItemButton>
-                    );
-                  })}
-                </List>
+      <Box
+        sx={{
+          display: "grid",
+          gridTemplateColumns: "minmax(0, 1fr)",
+          gap: { xs: 2, md: 3 },
+          minWidth: 0,
+          "@media (min-width:1200px)": {
+            gridTemplateColumns: "minmax(0, 2.2fr) minmax(320px, 0.9fr)",
+          },
+        }}
+      >
+        <SoftCard sx={{ minHeight: { xs: 620, lg: 700, xl: 740 }, minWidth: 0 }} contentSx={{ p: 0, minWidth: 0, height: "100%" }}>
+          <Box
+            sx={{
+              display: "grid",
+              gridTemplateColumns: { xs: "minmax(0, 1fr)", md: "minmax(240px, 0.95fr) minmax(0, 2.05fr)" },
+              minHeight: "100%",
+              minWidth: 0,
+            }}
+          >
+            <Box sx={{ borderRight: { md: "1px solid #E5E5E7" }, borderBottom: { xs: "1px solid #E5E5E7", md: "none" }, minWidth: 0 }}>
+              <Box sx={{ px: { xs: 2, md: 3 }, py: { xs: 2, md: 3 } }}>
+                <Typography variant="body2" sx={{ color: "text.secondary", fontWeight: 600 }}>
+                  Диалоги с врачами
+                </Typography>
               </Box>
+              <List disablePadding sx={{ px: { xs: 2, md: 2 }, pb: { xs: 2, md: 2 }, minWidth: 0 }}>
+                {doctors.map((doctor) => {
+                  const isActive = doctor.id === activeDoctorId;
+                  return (
+                    <ListItemButton
+                      key={doctor.id}
+                      onClick={() => setActiveDoctorId(doctor.id)}
+                      sx={{
+                        borderRadius: "12px",
+                        mb: 1,
+                        px: 2,
+                        py: 1.5,
+                        border: "1px solid",
+                        borderColor: isActive ? "#C9C9CB" : "transparent",
+                        bgcolor: isActive ? "#F5F5F7" : "transparent",
+                        "&:hover": { bgcolor: "#F5F5F7" },
+                        gap: 1.5,
+                        minWidth: 0,
+                      }}
+                    >
+                      <Badge variant="dot" color="primary" overlap="circular" invisible={!doctor.hasUnread} anchorOrigin={{ vertical: "bottom", horizontal: "right" }}>
+                        <Avatar sx={{ width: 36, height: 36, fontSize: 12, bgcolor: "#E8EEF9", color: "#3B4E6D" }}>
+                          {doctor.avatar}
+                        </Avatar>
+                      </Badge>
+                      <ListItemText
+                        primary={doctor.name}
+                        secondary={doctor.specialty}
+                        primaryTypographyProps={{ fontSize: 14, fontWeight: 600, color: "text.primary", noWrap: true }}
+                        secondaryTypographyProps={{ fontSize: 12, color: "text.secondary", noWrap: true }}
+                      />
+                    </ListItemButton>
+                  );
+                })}
+              </List>
+            </Box>
 
-              <Box sx={{ display: "flex", flexDirection: "column", minWidth: 0, minHeight: 0 }}>
-                <Box sx={{ px: { xs: 2, md: 3 }, py: 2, borderBottom: "1px solid #E5E5E7" }}>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      gap: 1.5,
-                    }}
-                  >
-                    <Stack direction="row" alignItems="center" spacing={1.5} sx={{ minWidth: 0, flex: 1 }}>
-                      <Avatar sx={{ bgcolor: "#E8EEF9", color: "#3B4E6D" }}>{activeDoctor.avatar}</Avatar>
-                      <Typography variant="h6" sx={{ fontSize: "1rem", fontWeight: 600, minWidth: 0, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-                        {activeDoctor.name}
-                      </Typography>
-                    </Stack>
-                    <Stack direction="row" spacing={1} alignItems="center" sx={{ flexShrink: 0 }}>
-                      <IconButton
+            <Box sx={{ display: "flex", flexDirection: "column", minWidth: 0, minHeight: 0 }}>
+              <Box sx={{ px: { xs: 2, md: 3 }, py: { xs: 2, md: 3 }, borderBottom: "1px solid #E5E5E7" }}>
+                <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 2, flexWrap: "wrap" }}>
+                  <Stack direction="row" alignItems="center" spacing={2} sx={{ minWidth: 0, flex: 1 }}>
+                    <Avatar sx={{ bgcolor: "#E8EEF9", color: "#3B4E6D" }}>{activeDoctor.avatar}</Avatar>
+                    <Typography variant="h6" sx={{ fontSize: "1rem", fontWeight: 600, minWidth: 0, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                      {activeDoctor.name}
+                    </Typography>
+                  </Stack>
+                  <Stack direction="row" spacing={1} alignItems="center" sx={{ flexShrink: 0, flexWrap: "wrap" }}>
+                    <IconButton size="small" aria-label="Открыть поиск по сообщениям" onClick={() => setSearchOpen((prev) => !prev)}>
+                      <SearchRoundedIcon fontSize="small" />
+                    </IconButton>
+                    <Button size="small" variant="outlined" startIcon={<PushPinRoundedIcon sx={{ fontSize: 16 }} />} sx={{ whiteSpace: "nowrap", flexShrink: 0, textTransform: "none" }}>
+                      Закрепленные сообщения
+                    </Button>
+                  </Stack>
+                </Box>
+
+                <Collapse in={searchOpen} timeout="auto" unmountOnExit>
+                  <Box sx={{ mt: 2 }}>
+                    <Stack direction="row" spacing={1} alignItems="center">
+                      <TextField
+                        inputRef={searchInputRef}
+                        fullWidth
                         size="small"
-                        aria-label="Открыть поиск по сообщениям"
-                        onClick={() => setSearchOpen((prev) => !prev)}
-                      >
-                        <SearchRoundedIcon fontSize="small" />
+                        placeholder="Поиск по истории сообщений"
+                        value={searchQuery}
+                        onChange={(event) => setSearchQuery(event.target.value)}
+                      />
+                      <IconButton size="small" aria-label="Закрыть поиск" onClick={() => setSearchOpen(false)}>
+                        <CloseRoundedIcon fontSize="small" />
                       </IconButton>
-                      <Button
-                        size="small"
-                        variant="outlined"
-                        startIcon={<PushPinRoundedIcon sx={{ fontSize: 16 }} />}
-                        sx={{ minWidth: { xs: 0, lg: 220 }, whiteSpace: "nowrap", flexShrink: 0 }}
-                      >
-                        Закрепленные сообщения
-                      </Button>
                     </Stack>
                   </Box>
-
-                  <Collapse in={searchOpen} timeout="auto" unmountOnExit>
-                    <Box sx={{ mt: 1.5 }}>
-                      <Stack direction="row" spacing={1} alignItems="center">
-                        <TextField
-                          inputRef={searchInputRef}
-                          fullWidth
-                          size="small"
-                          placeholder="Поиск по истории сообщений"
-                          value={searchQuery}
-                          onChange={(event) => setSearchQuery(event.target.value)}
-                        />
-                        <IconButton size="small" aria-label="Закрыть поиск" onClick={() => setSearchOpen(false)}>
-                          <CloseRoundedIcon fontSize="small" />
-                        </IconButton>
-                      </Stack>
-                    </Box>
-                  </Collapse>
-                </Box>
-
-                <Box sx={{ flex: 1, minHeight: 0, overflowY: "auto", px: { xs: 2, md: 3 }, py: 2.5 }}>
-                  <Stack spacing={1.5}>
-                    <Box sx={{ display: "flex", justifyContent: "center", py: 0.5 }}>
-                      <Typography
-                        variant="caption"
-                        sx={{ px: 1.5, py: 0.45, borderRadius: "999px", bgcolor: "#F5F5F7", border: "1px solid #C9C9CB", color: "text.secondary" }}
-                      >
-                        24 января
-                      </Typography>
-                    </Box>
-
-                    {activeMessages.map((message) => (
-                      <Box key={message.id} sx={{ display: "flex", justifyContent: message.fromDoctor ? "flex-start" : "flex-end" }}>
-                        <Box
-                          sx={{
-                            maxWidth: "78%",
-                            borderRadius: "12px",
-                            px: 1.5,
-                            py: 1.15,
-                            bgcolor: message.fromDoctor ? "#FFFFFF" : "#F5F5F7",
-                            border: "1px solid #E5E5E7",
-                          }}
-                        >
-                          <Typography variant="caption" sx={{ display: "block", color: "text.secondary", fontWeight: 600, mb: 0.5 }}>
-                            {message.author}
-                          </Typography>
-                          <Typography variant="body2" sx={{ color: "text.primary", lineHeight: 1.5 }}>
-                            {message.text}
-                          </Typography>
-                          <Typography variant="caption" sx={{ display: "block", textAlign: "right", color: "text.secondary", mt: 0.75 }}>
-                            {message.time}
-                          </Typography>
-                        </Box>
-                      </Box>
-                    ))}
-                  </Stack>
-                </Box>
-
-                <Divider />
-                <Box sx={{ p: { xs: 2, md: 3 }, bgcolor: "#FFFFFF" }}>
-                  <Stack direction="row" spacing={1.25} alignItems="center">
-                    <TextField
-                      fullWidth
-                      size="small"
-                      placeholder="Введите сообщение"
-                      value={draft}
-                      onChange={(event) => setDraft(event.target.value)}
-                      onKeyDown={(event) => {
-                        if (event.key === "Enter") {
-                          event.preventDefault();
-                          onSendMessage();
-                        }
-                      }}
-                    />
-                    <IconButton color="primary" onClick={onSendMessage} aria-label="Отправить сообщение">
-                      <SendRoundedIcon fontSize="small" />
-                    </IconButton>
-                  </Stack>
-                </Box>
+                </Collapse>
               </Box>
-            </Box>
-          </SoftCard>
 
-          <SoftCard title="Профиль врача" sx={{ minHeight: { xs: 220, lg: 280 }, alignSelf: "start" }}>
-            <Stack spacing={2.5} alignItems="center" sx={{ textAlign: "center", mt: 0.5 }}>
-              <Avatar sx={{ width: 92, height: 92, fontSize: 30, bgcolor: "#E8EEF9", color: "#3B4E6D" }}>{activeDoctor.avatar}</Avatar>
-              <Box>
-                <Typography variant="h6" sx={{ fontSize: "1.05rem", fontWeight: 600 }}>
-                  {activeDoctor.name}
-                </Typography>
-                <Typography variant="body2" sx={{ color: "text.secondary", mt: 0.5 }}>
-                  {activeDoctor.specialty}
-                </Typography>
-                <Typography variant="body2" sx={{ color: "text.secondary", mt: 0.75 }}>
-                  Стаж: {activeDoctor.experienceYears} лет
-                </Typography>
-                <Stack spacing={0.45} sx={{ mt: 1.1 }}>
-                  {activeDoctor.credentials.map((credential) => (
-                    <Typography key={credential} variant="caption" sx={{ color: "text.secondary" }}>
-                      {credential}
+              <Box sx={{ flex: 1, minHeight: 0, overflowY: "auto", px: { xs: 2, md: 3 }, py: { xs: 2, md: 3 }, minWidth: 0 }}>
+                <Stack spacing={2}>
+                  <Box sx={{ display: "flex", justifyContent: "center" }}>
+                    <Typography variant="caption" sx={{ px: 1.5, py: 0.5, borderRadius: "999px", bgcolor: "#F5F5F7", border: "1px solid #C9C9CB", color: "text.secondary" }}>
+                      24 января
                     </Typography>
+                  </Box>
+                  {activeMessages.map((message) => (
+                    <Box key={message.id} sx={{ display: "flex", justifyContent: message.fromDoctor ? "flex-start" : "flex-end", minWidth: 0 }}>
+                      <Box sx={{ maxWidth: { xs: "92%", md: "78%" }, borderRadius: "12px", px: 2, py: 1.5, bgcolor: message.fromDoctor ? "#FFFFFF" : "#F5F5F7", border: "1px solid #E5E5E7", minWidth: 0 }}>
+                        <Typography variant="caption" sx={{ display: "block", color: "text.secondary", fontWeight: 600, mb: 1 }}>
+                          {message.author}
+                        </Typography>
+                        <Typography variant="body2" sx={{ color: "text.primary", lineHeight: 1.5, overflowWrap: "anywhere" }}>
+                          {message.text}
+                        </Typography>
+                        <Typography variant="caption" sx={{ display: "block", textAlign: "right", color: "text.secondary", mt: 1 }}>
+                          {message.time}
+                        </Typography>
+                      </Box>
+                    </Box>
                   ))}
                 </Stack>
               </Box>
-              <Box
-                sx={{
-                  width: "100%",
-                  maxWidth: 300,
-                  aspectRatio: "16 / 10",
-                  borderRadius: "12px",
-                  border: "1px solid #C9C9CB",
-                  bgcolor: "#F5F5F7",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  px: 2,
-                }}
-              >
-                <Typography variant="body2" sx={{ color: "text.secondary" }}>
-                  Фото / сертификаты
-                </Typography>
+
+              <Divider />
+              <Box sx={{ p: { xs: 2, md: 3 }, bgcolor: "#FFFFFF" }}>
+                <Stack direction="row" spacing={1.5} alignItems="center">
+                  <TextField
+                    fullWidth
+                    size="small"
+                    placeholder="Введите сообщение"
+                    value={draft}
+                    onChange={(event) => setDraft(event.target.value)}
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter") {
+                        event.preventDefault();
+                        onSendMessage();
+                      }
+                    }}
+                  />
+                  <IconButton color="primary" onClick={onSendMessage} aria-label="Отправить сообщение" sx={{ flexShrink: 0 }}>
+                    <SendRoundedIcon fontSize="small" />
+                  </IconButton>
+                </Stack>
               </Box>
-            </Stack>
-          </SoftCard>
-        </Box>
+            </Box>
+          </Box>
+        </SoftCard>
+
+        <SoftCard title="Профиль врача" sx={{ minHeight: { xs: 220, lg: 280 }, alignSelf: "start", minWidth: 0 }}>
+          <Stack spacing={3} alignItems="center" sx={{ textAlign: "center", mt: 1, minWidth: 0 }}>
+            <Avatar sx={{ width: 92, height: 92, fontSize: 30, bgcolor: "#E8EEF9", color: "#3B4E6D" }}>{activeDoctor.avatar}</Avatar>
+            <Box sx={{ minWidth: 0 }}>
+              <Typography variant="h6" sx={{ fontSize: "1.05rem", fontWeight: 600 }}>
+                {activeDoctor.name}
+              </Typography>
+              <Typography variant="body2" sx={{ color: "text.secondary", mt: 1 }}>
+                {activeDoctor.specialty}
+              </Typography>
+              <Typography variant="body2" sx={{ color: "text.secondary", mt: 1 }}>
+                Стаж: {activeDoctor.experienceYears} лет
+              </Typography>
+              <Stack spacing={0.5} sx={{ mt: 2 }}>
+                {activeDoctor.credentials.map((credential) => (
+                  <Typography key={credential} variant="caption" sx={{ color: "text.secondary" }}>
+                    {credential}
+                  </Typography>
+                ))}
+              </Stack>
+            </Box>
+            <Box sx={{ width: "100%", maxWidth: 300, aspectRatio: "16 / 10", borderRadius: "12px", border: "1px solid #C9C9CB", bgcolor: "#F5F5F7", display: "flex", alignItems: "center", justifyContent: "center", px: 2 }}>
+              <Typography variant="body2" sx={{ color: "text.secondary", textAlign: "center" }}>
+                Фото / сертификаты
+              </Typography>
+            </Box>
+          </Stack>
+        </SoftCard>
       </Box>
     </PageContainer>
   );

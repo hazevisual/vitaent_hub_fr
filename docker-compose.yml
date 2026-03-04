@@ -59,6 +59,7 @@ services:
       - backend
     environment:
       VITE_API_URL: ${VITE_API_URL:-http://localhost:5163}
+      VITE_API_MOCKS: ${VITE_API_MOCKS:-false}
     healthcheck:
       test: ["CMD-SHELL", "wget -q --spider http://localhost:3001 || exit 1"]
       interval: 5s

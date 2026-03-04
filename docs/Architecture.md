@@ -1,297 +1,657 @@
-# VITAENT — Codex Agent Guide (Architecture + Task Rules)
+# VITAENT — System Architecture & Codex Agent Contract
 
-This document is a hard contract for Codex when implementing tasks in this repository.
-If a task conflicts with this doc, this doc wins unless the task explicitly overrides it.
+This document defines the **core architecture of the Vitaent system** and the **rules Codex agents must follow when modifying the repository**.
 
----
+This file acts as the **single source of truth** for:
 
-## 1) Goals
+- system architecture
+- data model
+- API contracts
+- multi-tenant rules
+- frontend integration rules
+- agent implementation constraints
 
-1) Build a multi-tenant medical information system with clear separation of:
-- Identity (login, sessions)
-- Tenancy (clinic/tenant boundaries)
-- Authorization (roles, permissions, policies)
-- Domain data (patients, doctors, appointments, records, chat)
-
-2) Enable parallel development:
-- Frontend can ship screens using mocks/stubs
-- Backend can be built incrementally without breaking UI contracts
-- Contracts (DTO + error shapes) stay stable
+If a task conflicts with this document, **Architecture.md takes precedence** unless the task explicitly overrides it.
 
 ---
 
-## 2) Non-negotiables (Must Always Hold)
+# 1. System Overview
 
-### Tenancy
-- Every domain record that belongs to a clinic MUST have `tenant_id`.
-- Every request MUST execute within a resolved TenantContext.
-- Never allow cross-tenant reads/writes.
+Vitaent is a **multi-tenant medical information system**.
 
-### Roles are per tenant membership
-- Roles are NOT global for a user.
-- A user can have different roles in different tenants.
+Primary domains:
 
-### Authorization is enforced on server
-- Frontend can hide UI, but server is the source of truth.
-- Authorization must be enforced:
-  1) at endpoint (coarse)
-  2) inside service/domain operation (true rules)
-  3) by data filtering (tenant + ownership/assignment)
+- patient portal
+- doctor interface
+- clinic administration
+- medical records
+- appointment scheduling
+- doctor–patient communication
 
-### UI Contract
-- Follow `docs/VITAENT_UX_UI_GUIDELINES.md` strictly.
-- Use existing primitives: `PageContainer`, `SoftCard`, existing app layout patterns.
-- Do NOT introduce new page architecture or redesign.
-- Do NOT add new libraries unless task explicitly allows.
+Core system layers:
 
-### Quality & Scope
-- Keep changes minimal and localized.
-- List changed files at the end of the task.
-- Provide concrete acceptance steps (what to click, what should happen).
 
----
+Frontend (React)
 
-## 3) Architecture Overview
+↓ API
 
-### Backend (recommended layering)
-- API layer: controllers/handlers, DTO mapping, endpoint-level auth checks
-- Application layer: use-cases/services, orchestration, policies
-- Domain layer: entities, invariants, domain rules
-- Infrastructure: EF Core/Postgres, repositories, integrations
+Backend (ASP.NET)
 
-### Frontend
-- React + TS + Vite + MUI + TanStack Query
-- Stable layout: prevent overflow issues (`minWidth: 0`, scroll containers, fixed headers when required)
-- A single API client module; no ad-hoc fetch scattered across pages
+↓ ORM
+
+Postgres
+
+
+The system must support:
+
+- multiple clinics (tenants)
+- multiple roles per user
+- strict data isolation between tenants
+- extensible domain modules
 
 ---
 
-## 4) Identity, Tenancy, and Access Control
+# 2. Multi-Tenant Architecture (Critical)
 
-### 4.1 Entities (conceptual)
-- User: global login identity
-- Tenant: clinic/organization
-- Membership: user inside a tenant
-- Roles: Patient / Doctor / ClinicAdmin / (optional) SystemAdmin
-- Permissions: granular capabilities (strings)
-- Policies: ABAC rules based on tenant + ownership/assignment
+Multi-tenancy is **non-negotiable**.
 
-### 4.2 Recommended minimal DB tables
-Identity:
-- `users` (global)
-  - id, email/phone, password_hash (or SSO), status, created_at
-Tenancy:
-- `tenants`
-  - id, slug/subdomain, name, status
-- `memberships`
-  - id, user_id, tenant_id, status (invited/active/blocked), created_at
-RBAC:
-- `roles` (seed)
-  - id, name (Patient/Doctor/ClinicAdmin/SystemAdmin)
-- `membership_roles`
-  - membership_id, role_id
-- `permissions` (seed)
-  - id, name (appointments.create, records.read, users.manage, ...)
-- `role_permissions`
-  - role_id, permission_id
+Every domain object that belongs to a clinic **must contain**:
 
-Domain profiles:
-- `patients`
-  - id, tenant_id, membership_id (unique per tenant), display fields
-- `doctors`
-  - id, tenant_id, membership_id (unique per tenant), specialty, experience, etc.
-Relationships for policies:
-- `care_team` (doctor ↔ patient assignment)
-  - tenant_id, doctor_id, patient_id, role, start_at, end_at
-Core domain:
-- `appointments`
-  - id, tenant_id, patient_id, doctor_id, status, starts_at, ends_at
-- `medical_records`
-  - id, tenant_id, patient_id, created_by_doctor_id, type, payload, created_at
-Chat (later):
-- `chat_threads`
-  - id, tenant_id, patient_id, doctor_id (or participants)
-- `chat_messages`
-  - id, tenant_id, thread_id, sender_membership_id, text, created_at
+
+tenant_id
+
+
+Rules:
+
+1) Every request must run inside a resolved **TenantContext**.
+
+2) Queries must always filter by tenant.
+
+Correct:
+
+
+WHERE tenant_id = currentTenant
+
+
+Incorrect:
+
+
+SELECT * FROM patients
+
+
+3) Cross-tenant data access is forbidden unless explicitly allowed for **SystemAdmin**.
+
+4) Tenant isolation must be enforced at:
+
+- API layer
+- application service layer
+- database queries
+
+---
+
+# 3. Identity Model
+
+Users are **global identities**.
+
+A user becomes part of a clinic through a **membership**.
+
+
+User
+↓
+Membership
+↓
+Tenant
+
+
+Example:
+
+User A  
+→ Doctor in Clinic A  
+→ Patient in Clinic B
+
+Roles are **assigned to memberships**, not users.
+
+---
+
+# 4. Core Entities
+
+## Identity
+
+### users
+Global login identity.
+
+Fields:
+
+
+id
+email
+password_hash
+status
+created_at
+
+
+---
+
+## Tenants
+
+### tenants
+
+
+id
+slug
+name
+status
+created_at
+
+
+Tenant slug may be used for:
+
+
+clinic1.vitaent.app
+
+
+---
+
+## Memberships
+
+### memberships
+
+Represents a user belonging to a tenant.
+
+
+id
+user_id
+tenant_id
+status
+created_at
+
 
 Constraints:
-- All domain tables must have `tenant_id` + indexes on `(tenant_id, id)`.
-- `memberships`: unique `(tenant_id, user_id)`.
-- `patients/doctors`: unique `(tenant_id, membership_id)`.
 
-### 4.3 JWT / Session Claims (minimum viable)
-- `sub` = userId
-- `membershipId` (active tenant membership)
-- `tenantId` (active tenant)
-- `roles` (optional; can also be loaded server-side)
-- optionally `patientId` / `doctorId` if resolved cheaply and stable
 
-Token strategy:
-- Access token short-lived
-- Refresh token/session stored server-side (or rotating refresh)
+UNIQUE (tenant_id, user_id)
 
-### 4.4 Authorization model
-Use RBAC + Policies:
-- RBAC: “who you are” in this tenant
-- Policy: “can you act on THIS resource” (tenant + ownership/assignment)
-
-Examples (must be enforced server-side):
-- Patient can read ONLY own patient data (`patient_id == actor.patientId`)
-- Doctor can read/write ONLY assigned patients OR patients with appointments relationship
-- ClinicAdmin can manage users within tenant, not across tenants
-- SystemAdmin can cross-tenant (must be audited)
 
 ---
 
-## 5) API Conventions
+# 5. Roles & Permissions
 
-### 5.1 Tenant resolution
-Preferred order:
-1) Subdomain/host → tenant
-2) Explicit `tenant` query param (legacy / current project pattern)
-3) Header `X-Tenant` if needed
+Roles define **high level responsibilities**.
 
-Within this project tasks may use:
-- `?tenant=clinic1` (if already used in existing endpoints)
+Permissions define **specific actions**.
 
-### 5.2 Stable response shapes
-Success:
-- JSON DTOs with stable field naming
-- Use ISO strings for dates
+## Roles
 
-Errors (mandatory):
-- Validation: `ValidationProblemDetails` (field errors)
-- Other: `ProblemDetails` (title, detail, status, traceId)
+Seeded roles:
 
-HTTP status conventions:
-- 400 validation / bad request
-- 401 unauthenticated
-- 403 forbidden (auth ok, policy fails)
-- 404 not found (resource missing in tenant scope)
-- 409 conflict (invalid transition, double submit)
 
-### 5.3 Minimal endpoints to enable frontend integration early
-- `POST /api/auth/login`
-- `POST /api/auth/refresh`
-- `GET /api/me` → `{ user, tenant, roles, patientId?, doctorId? }`
-- `GET /api/patients/me`
-- `GET /api/appointments?mine=1`
+Patient
+Doctor
+ClinicAdmin
+SystemAdmin
 
-When implementing new endpoints:
-- Always include tenant scope rules
-- Always return ProblemDetails/ValidationProblemDetails on errors
+
+Stored in:
+
+
+roles
+membership_roles
+
 
 ---
 
-## 6) Frontend Conventions (Vitaent UI)
+## Permissions
 
-### 6.1 Layout rules
-- Use `PageContainer` and `SoftCard` (existing primitives).
-- Keep headers that must be static as non-scrolling; use internal scroll areas for long content.
-- Prevent layout shift from long text:
-  - `minWidth: 0` on flex/grid children
-  - Use `overflow: hidden` / `overflowY: auto` on scrollable sub-blocks
-  - Avoid global scaling hacks
+Permissions represent actions:
 
-### 6.2 Data fetching
-- Use TanStack Query for all server state.
-- Mutations:
-  - disable buttons while in-flight
-  - show simple inline error per row or page-level error
-  - invalidate/refetch on success
+Examples:
 
-### 6.3 Mock strategy (parallel development)
-If backend endpoint is not available yet:
-- Use a single switch: `VITE_API_MOCKS=true`
-- Implement mocks via MSW or a thin mock adapter inside the API client.
-- Mock data MUST follow intended DTO shape so replacing with real API is painless.
 
----
+appointments.create
+appointments.read.own
+patients.read.assigned
+records.write.assigned
+users.manage
+chat.write
 
-## 7) Task Authoring Rules (How Codex Must Execute Tasks)
 
-### 7.1 Task format (must follow)
-Use this structure:
+Stored in:
 
-Task N: <Short title>
 
-Follow docs/VITAENT_UX_UI_GUIDELINES.md strictly
+permissions
+role_permissions
 
-Scope:
-- <List primary file paths>
-- (If needed) <Secondary file paths, keep minimal>
-
-Do:
-1) <Explicit bullet steps>
-2) <Exact endpoint/contracts if relevant>
-3) <UX rules (disable, errors, scroll behavior)>
-
-Do NOT:
-- <No new libraries>
-- <No redesign / no routing changes / no global theme changes unless required>
-
-Acceptance:
-- <Concrete steps to verify in UI/API>
-- <Expected results>
-- <Build/test commands if applicable>
-
-At the end:
-1) List changed files
-2) Short summary of what changed and where
-
-### 7.2 Change discipline
-- Prefer minimal edits in existing modules over adding new global abstractions.
-- Avoid refactors unless task explicitly asks.
-- If touching shared styles/layout, justify by concrete bug + keep impact narrow.
-
-### 7.3 Definition of Done
-A task is done only if:
-- App builds successfully (frontend `npm run build`)
-- No new lint/type errors introduced
-- UI contract is preserved (no layout regressions at common breakpoints)
-- Tenant boundaries are not violated (backend rules or mock parity)
 
 ---
 
-## 8) Recommended permission seeds (starter set)
+# 6. Domain Profiles
 
-Patient-facing:
-- `patients.read.own`
-- `appointments.read.own`
-- `appointments.create`
-- `appointments.cancel.own`
-- `chat.read.own`
-- `chat.write.own`
-- `records.read.own`
+Membership may create domain profiles.
 
-Doctor-facing:
-- `patients.read.assigned`
-- `appointments.read.assigned`
-- `appointments.manage.assigned`
-- `records.write.assigned`
-- `chat.read.assigned`
-- `chat.write.assigned`
+## patients
 
-Clinic admin:
-- `users.invite`
-- `users.manage`
-- `roles.assign`
-- `catalog.manage`
 
-System admin (optional):
-- `tenants.manage`
-- `tenants.read.any`
-- `users.read.any`
+id
+tenant_id
+membership_id
+display_name
+birth_date
+sex
+created_at
 
-Policies still required for resource-level access (tenant + ownership/assignment).
+
+Constraint:
+
+
+UNIQUE (tenant_id, membership_id)
+
 
 ---
 
-## 9) Notes for future modules
+## doctors
 
-Medical records and admin actions should be auditable:
-- log: actor membershipId, tenantId, action, resourceId, timestamp
-- consider separate audit table later
+
+id
+tenant_id
+membership_id
+specialty
+experience
+created_at
+
+
+Constraint:
+
+
+UNIQUE (tenant_id, membership_id)
+
+
+---
+
+# 7. Core Domain Tables
+
+## appointments
+
+
+id
+tenant_id
+patient_id
+doctor_id
+status
+starts_at
+ends_at
+created_at
+
+
+---
+
+## medical_records
+
+
+id
+tenant_id
+patient_id
+created_by_doctor_id
+type
+payload
+created_at
+
+
+---
+
+# 8. Relationship Tables
+
+## care_team
+
+Defines doctor ↔ patient relationship.
+
+
+tenant_id
+doctor_id
+patient_id
+role
+start_at
+end_at
+
+
+Used by authorization policies.
+
+---
+
+# 9. Chat Module (Future)
+
+## chat_threads
+
+
+id
+tenant_id
+patient_id
+doctor_id
+created_at
+
+
+---
+
+## chat_messages
+
+
+id
+tenant_id
+thread_id
+sender_membership_id
+text
+created_at
+
+
+---
+
+# 10. Authorization Model
+
+Vitaent uses:
+
+
+RBAC + Policy-based authorization
+
+
+RBAC determines **who the user is**.
+
+Policies determine **whether the user can access specific resources**.
+
+Examples:
+
+Patient:
+
+
+patient_id == actor.patientId
+
+
+Doctor:
+
+
+doctor assigned to patient
+OR
+doctor has appointment with patient
+
+
+ClinicAdmin:
+
+
+can manage users inside tenant
+
+
+SystemAdmin:
+
+
+cross-tenant operations (must be audited)
+
+
+Authorization must be enforced:
+
+1) endpoint
+2) service layer
+3) query filtering
+
+---
+
+# 11. Backend Architecture
+
+Backend must follow layered architecture.
+
+
+API Layer
+↓
+Application Layer
+↓
+Domain Layer
+↓
+Infrastructure Layer
+
+
+## API Layer
+
+Responsibilities:
+
+- controllers
+- DTO mapping
+- request validation
+- authentication
+
+---
+
+## Application Layer
+
+Responsibilities:
+
+- use cases
+- orchestration
+- authorization policies
+
+---
+
+## Domain Layer
+
+Responsibilities:
+
+- entities
+- domain invariants
+- domain rules
+
+---
+
+## Infrastructure
+
+Responsibilities:
+
+- EF Core
+- Postgres
+- repositories
+- integrations
+
+---
+
+# 12. API Conventions
+
+All APIs must follow consistent contracts.
+
+## Success responses
+
+Return JSON DTOs.
+
+Dates must be ISO strings.
+
+---
+
+## Errors
+
+Must use:
+
+
+ProblemDetails
+ValidationProblemDetails
+
+
+Status codes:
+
+
+400 validation
+401 unauthenticated
+403 forbidden
+404 not found
+409 conflict
+
+
+---
+
+# 13. Minimal API Set
+
+Required endpoints for frontend integration:
+
+
+POST /api/auth/login
+POST /api/auth/refresh
+
+GET /api/me
+GET /api/patients/me
+GET /api/appointments?mine=1
+
+
+These endpoints enable frontend development while backend evolves.
+
+---
+
+# 14. Frontend Architecture
+
+Stack:
+
+
+React
+TypeScript
+Vite
+MUI
+TanStack Query
+
+
+Rules:
+
+1) Use existing layout primitives:
+
+
+PageContainer
+SoftCard
+
+
+2) Do not redesign layout.
+
+3) Prevent layout shift:
+
+
+minWidth: 0
+overflow containers
+
+
+4) Use TanStack Query for server state.
+
+5) Use a **single API client module**.
+
+---
+
+# 15. Mock Strategy (Parallel Development)
+
+Frontend must support running without backend.
+
+Environment variable:
+
+
+VITE_API_MOCKS=true
+
+
+Mock strategy:
+
+- MSW or local API adapter
+- mock DTO shapes must match real API responses
+
+---
+
+# 16. Database Rules
+
+All domain tables must include:
+
+
+tenant_id
+
+
+Required indexes:
+
+
+tenant_id
+foreign keys
+
+
+Migrations must:
+
+- avoid destructive operations
+- preserve data integrity
+
+---
+
+# 17. DevOps Rules
+
+Local development must run with:
+
+
+docker compose up --build
+
+
+Required services:
+
+
+frontend
+backend
+postgres
+
+
+Environment variables must be documented.
+
+---
+
+# 18. Codex Agent Rules
+
+All Codex agents must:
+
+1) Read **Architecture.md before implementing tasks**.
+
+2) Preserve tenant isolation.
+
+3) Avoid breaking API contracts.
+
+4) Avoid introducing new libraries without explicit task approval.
+
+5) Avoid UI redesign unless task requires it.
+
+6) Keep changes minimal and localized.
+
+---
+
+# 19. Definition of Done
+
+A task is complete only if:
+
+- frontend builds successfully
+
+
+npm run build
+
+
+- backend compiles
+
+- no lint or type errors
+
+- tenant isolation is preserved
+
+- API contracts remain stable
+
+---
+
+# 20. Future Extensions
+
+Planned modules:
+
+
+analytics
+billing
+audit logging
+lab integrations
+notifications
+
+
+Medical actions should eventually be audited:
+
+
+actor_membership_id
+tenant_id
+action
+resource_id
+timestamp
+
 
 ---
 

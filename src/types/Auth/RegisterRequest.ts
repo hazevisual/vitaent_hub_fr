@@ -1,6 +1,8 @@
 export type RegisterRequest = {
-    login: string;
+    inviteCode: string;
+    email: string;
     password: string;
-    confirmPassword: string;
-    hospitalId?: number;
-}
+    fullName: string;
+    birthDate: string;
+    sex: "male" | "female" | "other" | "unknown";
+};
